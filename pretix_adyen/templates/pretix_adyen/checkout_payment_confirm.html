@@ -1,0 +1,16 @@
+{% load i18n %}
+
+{% if provider.method == "scheme" %}
+    <p>{% blocktrans trimmed %}
+        The total amount will be withdrawn from your credit card.
+    {% endblocktrans %}</p>
+{% else %}
+    <p>{% blocktrans trimmed %}
+        After you submitted your order, we will redirect you to the payment service provider to complete your payment.
+        You will then be redirected back here to get your tickets.
+    {% endblocktrans %}</p>
+    <dl class="dl-horizontal">
+        <dt>{% trans "Payment method" %}</dt>
+        <dd>{{ provider.public_name }}</dd>
+    </dl>
+{% endif %}

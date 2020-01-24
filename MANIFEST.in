@@ -1,0 +1,3 @@
+recursive-include pretix_adyen/static *
+recursive-include pretix_adyen/templates *
+recursive-include pretix_adyen/locale *

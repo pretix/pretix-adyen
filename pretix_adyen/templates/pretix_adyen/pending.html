@@ -1,0 +1,33 @@
+{% load i18n %}
+{% load eventurl %}
+
+{% if payment.state == "pending" %}
+    <p>{% blocktrans trimmed %}
+        We're waiting for an answer from the payment provider regarding your payment. Please contact us if this
+        takes more than a few days.
+    {% endblocktrans %}</p>
+{% elif payment.state == "created" and payment_info.resultCode in "AuthenticationFinished,ChallengeShopper,IdentifyShopper" %}
+    <p>{% blocktrans trimmed %}
+        You need to confirm your payment. Please click the link below to do so or start a new payment.
+    {% endblocktrans %}
+        <div class="text-right flip">
+            <a href="{% eventurl event "plugins:pretix_adyen:sca" order=order.code payment=payment.pk hash=payment_hash %}"
+                    class="btn btn-primary">
+                {% trans "Confirm payment" %}
+            </a>
+        </div>
+        <div class="clearfix"></div>
+    </p>
+
+{% else %}
+    <p>{% blocktrans trimmed %}
+        The payment transaction could not be completed for the following reason:
+    {% endblocktrans %}
+        <br/>
+        {% if payment_info and payment_info.refusalReason %}
+            {{ payment_info.refusalReason }}
+        {% else %}
+            {% trans "Unknown reason" %}
+        {% endif %}
+    </p>
+{% endif %}

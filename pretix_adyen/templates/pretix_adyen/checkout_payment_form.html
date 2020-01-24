@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<div class="form-horizontal adyen-container">
+    <div id="adyen-component-{{ method }}"></div>
+
+    <p class="help-block">
+        {% blocktrans trimmed %}
+            Your payment will be processed by Adyen NV. Your data will be transmitted directly to Adyen and never
+            touches our servers.
+        {% endblocktrans %}
+    </p>
+    <input type="hidden" name="adyen_paymentMethodsResponse-{{ method }}" value="{{ paymentMethodsResponse }}" id="adyen_paymentMethodsResponse-{{ method }}" />
+    <input type="hidden" name="adyen_paymentMethodData-{{ method }}" value="{{ request.session.payment_adyen_paymentMethodData }}" id="adyen_paymentMethodData-{{ method }}"/>
+</div>

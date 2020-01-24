@@ -1,0 +1,14 @@
+{% load static %}
+{% load compress %}
+{% load i18n %}
+
+{% compress js %}
+    <script type="text/javascript" src="{% static "pretix_adyen/pretix-adyen.js" %}"></script>
+{% endcompress %}
+<script src="https://checkoutshopper-{{ environment }}.adyen.com/checkoutshopper/sdk/3.4.0/adyen.js"></script>
+
+<link rel="stylesheet" href="https://checkoutshopper-{{ environment }}.adyen.com/checkoutshopper/sdk/3.4.0/adyen.css" />
+
+<script type="text/plain" id="adyen_locale">{{ locale }}</script>
+<script type="text/plain" id="adyen_environment">{{ environment }}</script>
+<script type="text/plain" id="adyen_originKey">{{ originKey }}</script>

@@ -1,0 +1,23 @@
+{% load i18n %}
+
+{% if payment_info %}
+    <dl class="dl-horizontal">
+        {% if "pspReference" in payment_info %}
+            <dt>{% trans "PSP reference" %}</dt>
+            <dd>{{ payment_info.pspReference }}</dd>
+        {% endif %}
+        {% if "refusalReason" in payment_info %}
+            <dt>{% trans "Refusal Reason" %}</dt>
+            <dd>{{ payment_info.refusalReason }}</dd>
+        {% endif %}
+        {% if "reason" in payment_info %}
+            <dt>{% trans "Reason" %}</dt>
+            <dd>{{ payment_info.reason }}</dd>
+        {% endif %}
+        {% if "amount" in payment_info %}
+            <dt>{% trans "Total value" %}</dt>
+            <dd>{{ payment_info.amount.value|floatformat:2 }} {{ payment_info.amount.currency|upper }}</dd>
+        {% endif %}
+
+    </dl>
+{% endif %}
