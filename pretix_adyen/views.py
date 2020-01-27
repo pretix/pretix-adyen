@@ -34,7 +34,7 @@ def webhook(request, *args, **kwargs):
             try:
                 if reference[2] == 'R':
                     refund = OrderRefund.objects.get(
-                        order__event__slug=reference[0],
+                        order__event__slug__iexact=reference[0],
                         order__code=reference[1],
                         local_id=reference[3]
                     )
@@ -58,7 +58,7 @@ def webhook(request, *args, **kwargs):
                         logger.exception('Webhook error: Could not verify HMAC. {}'.format(notification_item))
                 elif reference[2] == 'P':
                     payment = OrderPayment.objects.get(
-                        order__event__slug=reference[0],
+                        order__event__slug__iexact=reference[0],
                         order__code=reference[1],
                         local_id=reference[3]
                     )
