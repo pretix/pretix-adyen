@@ -2,16 +2,15 @@
 
 var pretixadyen = {
     adyen: null,
-    mountedcomponents: [],
+    mountedcomponent: null,
     schemebrand: 'card',
 
     'load': function (method) {
-        if (pretixadyen.mountedcomponents.includes(method)) {
-            return;
+        if (pretixadyen.mountedcomponent !== null) {
+            pretixadyen.unmountcomponent();
         }
-        pretixadyen.adyen = null;
 
-        //$('.adyen-container').closest("form").find(".checkout-button-row .btn-primary").prop("disabled", true);
+        $('.adyen-container').closest("form").find(".checkout-button-row .btn-primary").prop("disabled", true);
 
         pretixadyen.adyen = new AdyenCheckout({
             locale: $.trim($("#adyen_locale").html()),
@@ -23,6 +22,7 @@ var pretixadyen = {
                     case 'scheme':
                         if (state.isValid && pretixadyen.schemebrand != "card") {
                             $("#adyen_paymentMethodData-" + method).val(JSON.stringify(state.data));
+                            $('.adyen-container').closest("form").find(".checkout-button-row .btn-primary").prop("disabled", false);
                         } else {
                             $("#adyen_paymentMethodData-" + method).val('');
                         }
@@ -30,15 +30,12 @@ var pretixadyen = {
                     default:
                         if (state.isValid) {
                             $("#adyen_paymentMethodData-" + method).val(JSON.stringify(state.data));
+                            $('.adyen-container').closest("form").find(".checkout-button-row .btn-primary").prop("disabled", false);
                         } else {
                             $("#adyen_paymentMethodData-" + method).val('');
                         }
                 }
             },
-            // This is not supported on non-card components :(
-            // onConfigSuccess: function () {
-            //     $('.adyen-container').closest("form").find(".checkout-button-row .btn-primary").prop("disabled", false);
-            // },
             onBrand: function (brand) {
                 pretixadyen.schemebrand = brand.brand;
             }
@@ -57,7 +54,14 @@ var pretixadyen = {
                 break;
         }
 
-        pretixadyen.mountedcomponents.push(method);
+        pretixadyen.mountedcomponent = method;
+    },
+
+    'unmountcomponent': function() {
+        $('#adyen-component-' + pretixadyen.mountedcomponent).empty();
+        pretixadyen.mountedcomponent = null;
+        pretixadyen.adyen = null;
+        $('.adyen-container').closest("form").find(".checkout-button-row .btn-primary").prop("disabled", false);
     },
 
     'action': function () {
@@ -99,6 +103,10 @@ $(function () {
     $("input[name=payment][value^='adyen_']").change(function () {
         let method = $(this).val().replace('adyen_', '');
         pretixadyen.load(method);
+    });
+
+    $("input[name=payment]").not("[value^='adyen_']").change(function () {
+        pretixadyen.unmountcomponent();
     });
 
     if ($("input[name=payment][value^='adyen_']").is(':checked') || $(".payment-redo-form").length) {
