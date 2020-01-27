@@ -76,7 +76,7 @@ def webhook(request, *args, **kwargs):
 
                         payment.info = json.dumps(notification_item)
                         payment.save()
-                        refund.order.log_action('pretix_adyen.adyen.event', data=notification_item)
+                        payment.order.log_action('pretix_adyen.adyen.event', data=notification_item)
                     else:
                         logger.exception('Webhook error: Could not verify HMAC. {}'.format(notification_item))
                         return HttpResponse('Could not verify HMAC', status=403)
