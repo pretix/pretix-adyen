@@ -65,6 +65,8 @@ var pretixadyen = {
             return;
         }
 
+        waitingDialog.show(gettext("Contacting your bank …"));
+
         pretixadyen.adyen = new AdyenCheckout({
             locale: $.trim($("#adyen_locale").html()),
             environment: $.trim($("#adyen_environment").html()),
@@ -74,11 +76,15 @@ var pretixadyen = {
                 $('#scacontainer').hide();
                 $('#continuebutton').removeClass('hidden');
                 $('#continuebutton').closest("form").submit();
+                waitingDialog.show(gettext("Contacting your bank …"));
             }
         });
 
         let action = JSON.parse($("#adyen_action").val());
         pretixadyen.adyen.createFromAction(action).mount('#scacontainer');
+        $('#scacontainer iframe').load(function () {
+            waitingDialog.hide();
+        });
     }
 };
 
