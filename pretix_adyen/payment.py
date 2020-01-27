@@ -390,7 +390,6 @@ class AdyenMethod(BasePaymentProvider):
         if payment_info['resultCode'] == 'AuthenticationFinished':
             payment.state = OrderPayment.PAYMENT_STATE_CREATED
         elif payment_info['resultCode'] == 'Authorised':
-            payment.state = OrderPayment.PAYMENT_STATE_CONFIRMED
             payment.confirm()
         elif payment_info['resultCode'] == 'Cancelled':
             payment.state = OrderPayment.PAYMENT_STATE_CANCELED

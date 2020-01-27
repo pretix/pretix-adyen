@@ -46,7 +46,7 @@ def webhook(request, *args, **kwargs):
 
                     if is_valid_hmac(notification_item, hmac):
                         if notification_item['success'] == 'true':  # Yes, seriously...
-                            refund.state = OrderRefund.REFUND_STATE_DONE
+                            refund.done()
                         else:
                             refund.state = OrderRefund.REFUND_STATE_FAILED
 
@@ -70,11 +70,16 @@ def webhook(request, *args, **kwargs):
 
                     if is_valid_hmac(notification_item, hmac):
                         if notification_item['success'] == 'true':  # Yes, seriously...
-                            payment.state = OrderPayment.PAYMENT_STATE_CONFIRMED
+                            payment.confirm()
                         else:
                             payment.state = OrderPayment.PAYMENT_STATE_FAILED
+
+                        payment.info = json.dumps(notification_item)
+                        payment.save()
+                        refund.order.log_action('pretix_adyen.adyen.event', data=notification_item)
                     else:
                         logger.exception('Webhook error: Could not verify HMAC. {}'.format(notification_item))
+                        return HttpResponse('Could not verify HMAC', status=403)
 
                     payment.order.log_action('pretix_adyen.adyen.event', data=notification_item)
                 else:
@@ -110,11 +115,6 @@ class AdyenOrderView:
         return self.request.event.get_payment_providers()[self.payment.provider]
 
     def _redirect_to_order(self):
-        if self.request.session.get('payment_stripe_order_secret') != self.order.secret and self.payment.provider != 'stripe_ideal':
-            messages.error(self.request, _('Sorry, there was an error in the payment process. Please check the link '
-                                           'in your emails to continue.'))
-            return redirect(eventreverse(self.request.event, 'presale:event.index'))
-
         return redirect(eventreverse(self.request.event, 'presale:event.order', kwargs={
             'order': self.order.code,
             'secret': self.order.secret
