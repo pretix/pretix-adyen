@@ -118,24 +118,6 @@ class AdyenSettingsHolder(BasePaymentProvider):
         d.move_to_end('_enabled', last=False)
         return d
 
-    def _get_originKey(self, env):
-        originkeyenv = 'originkey_{}'.format(env)
-
-        if not self.settings[originkeyenv]:
-            self._init_api()
-
-            origin_domains = {
-                'originDomains': [
-                    settings.SITE_URL
-                ]
-            }
-
-            result = self.adyen.checkout.origin_keys(origin_domains)
-
-            self.settings[originkeyenv] = result.message['originKeys'][settings.SITE_URL]
-
-        return self.settings[originkeyenv]
-
 
 class AdyenMethod(BasePaymentProvider):
     identifier = ''
@@ -317,6 +299,24 @@ class AdyenMethod(BasePaymentProvider):
         refund.info = json.dumps(result.message)
         refund.state = OrderRefund.REFUND_STATE_TRANSIT
         refund.save()
+
+    def _get_originKey(self, env):
+        originkeyenv = 'originkey_{}'.format(env)
+
+        if not self.settings[originkeyenv]:
+            self._init_api()
+
+            origin_domains = {
+                'originDomains': [
+                    settings.SITE_URL
+                ]
+            }
+
+            result = self.adyen.checkout.origin_keys(origin_domains)
+
+            self.settings[originkeyenv] = result.message['originKeys'][settings.SITE_URL]
+
+        return self.settings[originkeyenv]
 
     def execute_payment(self, request: HttpRequest, payment: OrderPayment):
         self._init_api()
@@ -514,10 +514,6 @@ class AdyenMethod(BasePaymentProvider):
         }
 
         return template.render(ctx)
-
-    def _get_originKey(self, env):
-        provider = AdyenSettingsHolder(self.event)
-        return provider._get_originKey(env)
 
 
 class AdyenScheme(AdyenMethod):

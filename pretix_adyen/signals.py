@@ -21,9 +21,9 @@ def register_payment_provider(sender, **kwargs):
 
 @receiver(html_head, dispatch_uid="payment_adyen_html_head")
 def html_head_presale(sender, request=None, **kwargs):
-    from .payment import AdyenSettingsHolder
+    from .payment import AdyenMethod
 
-    provider = AdyenSettingsHolder(sender)
+    provider = AdyenMethod(sender)
     url = resolve(request.path_info)
     if provider.settings.get('_enabled', as_type=bool) and ("checkout" in url.url_name or "order.pay" in url.url_name):
         template = get_template('pretix_adyen/presale_head.html')
