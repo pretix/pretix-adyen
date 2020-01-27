@@ -299,6 +299,10 @@ class AdyenMethod(BasePaymentProvider):
         refund.info = json.dumps(result.message)
         refund.state = OrderRefund.REFUND_STATE_TRANSIT
         refund.save()
+        refund.order.log_action('pretix.event.order.refund.created', {
+            'local_id': refund.local_id,
+            'provider': refund.provider,
+        })
 
     def _get_originKey(self, env):
         originkeyenv = 'originkey_{}'.format(env)
@@ -371,6 +375,10 @@ class AdyenMethod(BasePaymentProvider):
                 payment.info = json.dumps(result.message)
                 payment.state = OrderPayment.PAYMENT_STATE_CREATED
                 payment.save()
+                payment.order.log_action('pretix.event.order.payment.started', {
+                    'local_id': payment.local_id,
+                    'provider': payment.provider
+                })
                 return build_absolute_uri(self.event, 'plugins:pretix_adyen:sca', kwargs={
                     'order': payment.order.code,
                     'payment': payment.pk,
@@ -387,28 +395,38 @@ class AdyenMethod(BasePaymentProvider):
     def _handle_resultcode(self, payment: OrderPayment):
         payment_info = json.loads(payment.info)
 
-        if payment_info['resultCode'] == 'AuthenticationFinished':
-            payment.state = OrderPayment.PAYMENT_STATE_CREATED
-        elif payment_info['resultCode'] == 'Authorised':
-            payment.confirm()
+        if payment_info['resultCode'] in [
+            'AuthenticationFinished',
+            'ChallengeShopper',
+            'IdentifyShopper',
+            'PresentToShopper',
+            'Received',
+            'RedirectShopper',
+        ]:
+            # At this point, the payment has already been created - so no need to set the status or log it again
+            # payment.state = OrderPayment.PAYMENT_STATE_CREATED
+            pass
+        elif payment_info['resultCode'] in ['Error', 'Refused']:
+            payment.state = OrderPayment.PAYMENT_STATE_FAILED
+            payment.order.log_action('pretix.event.order.payment.failed', {
+                'local_id': payment.local_id,
+                'provider': payment.provider
+            })
         elif payment_info['resultCode'] == 'Cancelled':
             payment.state = OrderPayment.PAYMENT_STATE_CANCELED
-        elif payment_info['resultCode'] == 'ChallengeShopper':
-            payment.state = OrderPayment.PAYMENT_STATE_CREATED
-        elif payment_info['resultCode'] == 'Error':
-            payment.state = OrderPayment.PAYMENT_STATE_FAILED
-        elif payment_info['resultCode'] == 'IdentifyShopper':
-            payment.state = OrderPayment.PAYMENT_STATE_CREATED
+            payment.order.log_action('pretix.event.order.payment.canceled', {
+                'local_id': payment.local_id,
+                'provider': payment.provider
+            })
         elif payment_info['resultCode'] == 'Pending':
             payment.state = OrderPayment.PAYMENT_STATE_PENDING
-        elif payment_info['resultCode'] == 'PresentToShopper':
-            payment.state = OrderPayment.PAYMENT_STATE_CREATED
-        elif payment_info['resultCode'] == 'Received':
-            payment.state = OrderPayment.PAYMENT_STATE_CREATED
-        elif payment_info['resultCode'] == 'RedirectShopper':
-            payment.state = OrderPayment.PAYMENT_STATE_CREATED
-        elif payment_info['resultCode'] == 'Refused':
-            payment.state = OrderPayment.PAYMENT_STATE_FAILED
+            # Nothing we can log here...
+        elif payment_info['resultCode'] == 'Authorised':
+            payment.confirm()
+            payment.order.log_action('pretix.event.order.payment.confirmed', {
+                'local_id': payment.local_id,
+                'provider': payment.provider
+            })
 
         payment.save()
         return payment.state
@@ -437,7 +455,6 @@ class AdyenMethod(BasePaymentProvider):
 
         if 'action' in result.message:
             payment.info = json.dumps(result.message)
-            payment.state = OrderPayment.PAYMENT_STATE_CREATED
             payment.save()
             return build_absolute_uri(self.event, 'plugins:pretix_adyen:sca', kwargs={
                 'order': payment.order.code,
