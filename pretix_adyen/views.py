@@ -99,9 +99,11 @@ def webhook(request, *args, **kwargs):
 
                     payment.order.log_action('pretix_adyen.adyen.event', data=notification_item)
                 else:
-                    logger.info('Ignoring webhook event. {}'.format(notification_item))
+                    # logger.info('Ignoring webhook event. {}'.format(notification_item))
+                    pass
             except (IndexError, OrderRefund.DoesNotExist, OrderPayment.DoesNotExist):
-                logger.info('Ignoring webhook - could not match order. {}'.format(notification_item))
+                # logger.info('Ignoring webhook - could not match order. {}'.format(notification_item))
+                pass
 
     return HttpResponse('[accepted]', status=200)
 
