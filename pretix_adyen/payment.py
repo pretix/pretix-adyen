@@ -518,7 +518,7 @@ class AdyenMethod(BasePaymentProvider):
                     self.payment_methods = json.dumps(response.message)
                     return True
             except AdyenAPIInvalidPermission as e:
-                logger.exception('AdyenAPIInvalidPermission: {}'.format(e.erstr))
+                logger.exception('AdyenAPIInvalidPermission: %s' % str(e))
                 return False
 
         return False
