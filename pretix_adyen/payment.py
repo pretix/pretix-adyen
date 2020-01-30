@@ -7,7 +7,7 @@ from decimal import Decimal
 from typing import Any, Dict, Union
 
 import Adyen
-from Adyen import AdyenAPICommunicationError
+from Adyen import AdyenAPICommunicationError, AdyenAPIInvalidPermission
 from django import forms
 from django.contrib import messages
 from django.http import HttpRequest
@@ -512,10 +512,14 @@ class AdyenMethod(BasePaymentProvider):
             if ia.country:
                 rqdata['countryCode'] = str(ia.country)
 
-            response = self.adyen.checkout.payment_methods(rqdata)
-            if any(d.get('type', None) == self.method for d in response.message['paymentMethods']):
-                self.payment_methods = json.dumps(response.message)
-                return True
+            try:
+                response = self.adyen.checkout.payment_methods(rqdata)
+                if any(d.get('type', None) == self.method for d in response.message['paymentMethods']):
+                    self.payment_methods = json.dumps(response.message)
+                    return True
+            except AdyenAPIInvalidPermission as e:
+                logger.exception('AdyenAPIInvalidPermission: {}'.format(e.erstr))
+                return False
 
         return False
 
