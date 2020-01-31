@@ -344,6 +344,7 @@ class AdyenMethod(BasePaymentProvider):
                 'channel': 'Web',
                 'origin': settings.SITE_URL,
                 'captureDelayHours': 0,
+                'shopperInteraction': 'Ecommerce',
                 **self.api_kwargs
             }
 
