@@ -7,7 +7,7 @@ from decimal import Decimal
 from typing import Any, Dict, Union
 
 import Adyen
-from Adyen import AdyenAPICommunicationError, AdyenAPIInvalidPermission
+from Adyen import AdyenError
 from django import forms
 from django.contrib import messages
 from django.http import HttpRequest
@@ -88,6 +88,17 @@ class AdyenSettingsHolder(BasePaymentProvider):
                  help_text=_('Please refer to the documentation '
                              '<a href="https://docs.adyen.com/development-resources/notifications/verify-hmac-signatures#enable-hmac-signatures">here</a> '
                              'on how to obtain your HMAC key.')
+             )),
+            ('prod_prefix',
+             forms.CharField(
+                 label=_('Production Endpoint Prefix'),
+                 required=False,
+                 help_text=_('Please refer to the documentation '
+                             '<a href="https://docs.adyen.com/development-resources/live-endpoints">here</a> '
+                             'on how to identify the Production Endpoint Prefix.<br />'
+                             'If your production checkout endpoint is '
+                             'https://[random]-[company name]-checkout-live.adyenpayments.com/, please use '
+                             '<i>[random]-[company name]</i> as the prefix.')
              )),
             ('prod_env',
              forms.ChoiceField(
@@ -196,10 +207,12 @@ class AdyenMethod(BasePaymentProvider):
 
         return kwargs
 
-    def _init_api(self):
+    def _init_api(self, env=None):
         self.adyen = Adyen.Adyen(
             app_name='pretix',
-            xapikey=self.settings.test_api_key if self.event.testmode else self.settings.prod_api_key
+            xapikey=self.settings.test_api_key if self.event.testmode else self.settings.prod_api_key,
+            platform=env if env else 'test' if self.event.testmode else self.settings.prod_env,
+            live_endpoint_prefix=self.settings.prod_prefix
         )
 
     def checkout_confirm_render(self, request) -> str:
@@ -294,7 +307,11 @@ class AdyenMethod(BasePaymentProvider):
             **self.api_kwargs
         }
 
-        result = self.adyen.payment.refund(rqdata)
+        try:
+            result = self.adyen.payment.refund(rqdata)
+        except AdyenError as e:
+            logger.exception('AdyenError: %s' % str(e))
+            return
 
         refund.info = json.dumps(result.message)
         refund.state = OrderRefund.REFUND_STATE_TRANSIT
@@ -308,7 +325,7 @@ class AdyenMethod(BasePaymentProvider):
         originkeyenv = 'originkey_{}'.format(env)
 
         if not self.settings[originkeyenv]:
-            self._init_api()
+            self._init_api(env)
 
             origin_domains = {
                 'originDomains': [
@@ -316,11 +333,13 @@ class AdyenMethod(BasePaymentProvider):
                 ]
             }
 
-            result = self.adyen.checkout.origin_keys(origin_domains)
+            try:
+                result = self.adyen.checkout.origin_keys(origin_domains)
+                self.settings[originkeyenv] = result.message['originKeys'][settings.SITE_URL]
+            except AdyenError as e:
+                logger.exception('AdyenError: %s' % str(e))
 
-            self.settings[originkeyenv] = result.message['originKeys'][settings.SITE_URL]
-
-        return self.settings[originkeyenv]
+        return self.settings.get(originkeyenv, '')
 
     def execute_payment(self, request: HttpRequest, payment: OrderPayment):
         self._init_api()
@@ -357,7 +376,7 @@ class AdyenMethod(BasePaymentProvider):
 
             try:
                 result = self.adyen.checkout.payments(rqdata)
-            except AdyenAPICommunicationError as e:
+            except AdyenError as e:
                 logger.exception('Adyen error: %s' % str(e))
                 payment.state = OrderPayment.PAYMENT_STATE_FAILED
                 payment.info = json.dumps({
@@ -437,17 +456,24 @@ class AdyenMethod(BasePaymentProvider):
 
         payment_info = json.loads(payment.info)
 
-        if statedata:
-            result = self.adyen.checkout.payments_details(json.loads(statedata))
-        elif payload:
-            result = self.adyen.checkout.payments_details({
-                'paymentData': payment_info['paymentData'],
-                'details': {
-                    'payload': payload,
-                },
-            })
-
-        else:
+        try:
+            if statedata:
+                result = self.adyen.checkout.payments_details(json.loads(statedata))
+            elif payload:
+                result = self.adyen.checkout.payments_details({
+                    'paymentData': payment_info['paymentData'],
+                    'details': {
+                        'payload': payload,
+                    },
+                })
+            else:
+                messages.error(self.request, _('Sorry, there was an error in the payment process.'))
+                return eventreverse(self.event, 'presale:event.order', kwargs={
+                    'order': payment.order.code,
+                    'secret': payment.order.secret
+                })
+        except AdyenError as e:
+            logger.exception('AdyenError: %s' % str(e))
             messages.error(self.request, _('Sorry, there was an error in the payment process.'))
             return eventreverse(self.event, 'presale:event.order', kwargs={
                 'order': payment.order.code,
@@ -481,7 +507,8 @@ class AdyenMethod(BasePaymentProvider):
         else:
             local_allowed = request.event.settings.payment_adyen_prod_merchant_account \
                 and request.event.settings.payment_adyen_prod_api_key \
-                and request.event.settings.payment_adyen_prod_hmac_key
+                and request.event.settings.payment_adyen_prod_hmac_key \
+                and request.event.settings.payment_adyen_prod_prefix
 
         if global_allowed and local_allowed:
             self._init_api()
@@ -518,8 +545,8 @@ class AdyenMethod(BasePaymentProvider):
                 if any(d.get('type', None) == self.method for d in response.message['paymentMethods']):
                     self.payment_methods = json.dumps(response.message)
                     return True
-            except AdyenAPIInvalidPermission as e:
-                logger.exception('AdyenAPIInvalidPermission: %s' % str(e))
+            except AdyenError as e:
+                logger.exception('AdyenError: %s' % str(e))
                 return False
 
         return False
