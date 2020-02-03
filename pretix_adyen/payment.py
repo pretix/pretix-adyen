@@ -5,6 +5,8 @@ import re
 from collections import OrderedDict
 from decimal import Decimal
 from typing import Any, Dict, Union
+from pretix import __version__
+from . import PluginApp
 
 import Adyen
 from Adyen import AdyenError
@@ -202,7 +204,18 @@ class AdyenMethod(BasePaymentProvider):
     def api_kwargs(self):
         kwargs = {
             'merchantAccount': self.settings.test_merchant_account if self.event.testmode
-            else self.settings.prod_merchant_account
+            else self.settings.prod_merchant_account,
+            'applicationInfo': {
+                'merchantApplication': {
+                    'name': 'pretix-adyen',
+                    'version': PluginApp.PretixPluginMeta.version,
+                },
+                'externalPlatform': {
+                    'name': 'pretix',
+                    'version': __version__,
+                    'integrator': settings.PRETIX_INSTANCE_NAME,
+                }
+            }
         }
 
         return kwargs
