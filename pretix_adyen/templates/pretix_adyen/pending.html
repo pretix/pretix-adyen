@@ -6,7 +6,7 @@
         We're waiting for an answer from the payment provider regarding your payment. Please contact us if this
         takes more than a few days.
     {% endblocktrans %}</p>
-{% elif payment.state == "created" and payment_info.resultCode in "AuthenticationFinished,ChallengeShopper,IdentifyShopper" %}
+{% elif payment.state == "created" and payment_info.resultCode in "AuthenticationFinished,ChallengeShopper,IdentifyShopper,RedirectShopper" %}
     <p>{% blocktrans trimmed %}
         You need to confirm your payment. Please click the link below to do so or start a new payment.
     {% endblocktrans %}
