@@ -452,7 +452,7 @@ class AdyenMethod(BasePaymentProvider):
         payment.save()
         return payment.state
 
-    def _handle_action(self, request: HttpRequest, payment: OrderPayment, statedata=None, payload=None):
+    def _handle_action(self, request: HttpRequest, payment: OrderPayment, statedata=None, payload=None, MD=None, PaRes=None):
         self._init_api()
 
         payment_info = json.loads(payment.info)
@@ -467,15 +467,23 @@ class AdyenMethod(BasePaymentProvider):
                         'payload': payload,
                     },
                 })
+            elif MD and PaRes:
+                result = self.adyen.checkout.payments_details({
+                    'paymentData': payment_info['paymentData'],
+                    'details': {
+                        'MD': MD,
+                        'PaRes': PaRes,
+                    },
+                })
             else:
-                messages.error(self.request, _('Sorry, there was an error in the payment process.'))
+                messages.error(request, _('Sorry, there was an error in the payment process.'))
                 return eventreverse(self.event, 'presale:event.order', kwargs={
                     'order': payment.order.code,
                     'secret': payment.order.secret
                 })
         except AdyenError as e:
             logger.exception('AdyenError: %s' % str(e))
-            messages.error(self.request, _('Sorry, there was an error in the payment process.'))
+            messages.error(request, _('Sorry, there was an error in the payment process.'))
             return eventreverse(self.event, 'presale:event.order', kwargs={
                 'order': payment.order.code,
                 'secret': payment.order.secret

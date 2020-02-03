@@ -182,6 +182,7 @@ class ScaView(AdyenOrderView, View):
         return self._redirect_to_order()
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 @method_decorator(xframe_options_exempt, 'dispatch')
 class ReturnView(AdyenOrderView, View):
     def get(self, request, *args, **kwargs):
@@ -194,6 +195,22 @@ class ReturnView(AdyenOrderView, View):
 
         if request.GET.get('payload'):
             return redirect(prov._handle_action(request, self.payment, payload=request.GET.get('payload')))
+
+        messages.error(self.request, _('Sorry, there was an error in the payment process.'))
+        return self._redirect_to_order()
+
+    def post(self, request, *args, **kwargs):
+        prov = self.pprov
+
+        if self.payment.state in (OrderPayment.PAYMENT_STATE_CONFIRMED,
+                                  OrderPayment.PAYMENT_STATE_CANCELED,
+                                  OrderPayment.PAYMENT_STATE_FAILED):
+            return self._redirect_to_order()
+
+        if request.POST.get('MD') and request.POST.get('PaRes'):
+            return redirect(
+                prov._handle_action(request, self.payment, MD=request.POST.get('MD'), PaRes=request.POST.get('PaRes'))
+            )
 
         messages.error(self.request, _('Sorry, there was an error in the payment process.'))
         return self._redirect_to_order()
