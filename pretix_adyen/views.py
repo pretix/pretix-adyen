@@ -46,11 +46,7 @@ def webhook(request, *args, **kwargs):
 
                     if is_valid_hmac(notification_item, hmac):
                         if notification_item['success'] == 'true':  # Yes, seriously...
-                            refund.done()
-                            refund.order.log_action('pretix.event.order.payment.confirmed', {
-                                'local_id': refund.local_id,
-                                'provider': refund.provider
-                            })
+                            done = refund.done()
                         else:
                             refund.state = OrderRefund.REFUND_STATE_FAILED
                             refund.order.log_action('pretix.event.order.refund.failed', {
@@ -79,10 +75,6 @@ def webhook(request, *args, **kwargs):
                     if is_valid_hmac(notification_item, hmac):
                         if notification_item['success'] == 'true':  # Yes, seriously...
                             payment.confirm()
-                            payment.order.log_action('pretix.event.order.payment.confirmed', {
-                                'local_id': payment.local_id,
-                                'provider': payment.provider
-                            })
                         else:
                             payment.state = OrderPayment.PAYMENT_STATE_FAILED
                             payment.order.log_action('pretix.event.order.payment.failed', {

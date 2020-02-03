@@ -444,10 +444,6 @@ class AdyenMethod(BasePaymentProvider):
             # Nothing we can log here...
         elif payment_info['resultCode'] == 'Authorised':
             payment.confirm()
-            payment.order.log_action('pretix.event.order.payment.confirmed', {
-                'local_id': payment.local_id,
-                'provider': payment.provider
-            })
 
         payment.save()
         return payment.state
