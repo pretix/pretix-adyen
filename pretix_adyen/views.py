@@ -156,8 +156,8 @@ class ScaView(AdyenOrderView, View):
             ctx = {
                 'order': self.order,
                 'locale': self.order.locale,
-                'environment': 'test' if self.order.testmode else self.order.event.settings.prod_env,
-                'originKey': prov._get_originKey('test' if self.order.testmode else self.order.event.settings.prod_env),
+                'environment': 'test' if self.order.testmode else prov.prod_env,
+                'originKey': prov._get_originKey('test' if self.order.testmode else prov.prod_env),
                 'action': json.dumps(payment_info['action'])
             }
 
