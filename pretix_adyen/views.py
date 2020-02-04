@@ -46,7 +46,7 @@ def webhook(request, *args, **kwargs):
 
                     if is_valid_hmac(notification_item, hmac):
                         if notification_item['success'] == 'true':  # Yes, seriously...
-                            done = refund.done()
+                            refund.done()
                         else:
                             refund.state = OrderRefund.REFUND_STATE_FAILED
                             refund.order.log_action('pretix.event.order.refund.failed', {
