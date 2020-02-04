@@ -5,8 +5,6 @@ import re
 from collections import OrderedDict
 from decimal import Decimal
 from typing import Any, Dict, Union
-from pretix import __version__
-from . import PluginApp
 
 import Adyen
 from Adyen import AdyenError
@@ -16,7 +14,7 @@ from django.http import HttpRequest
 from django.template.loader import get_template
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
-from pretix import settings
+from pretix import __version__, settings
 from pretix.base.decimal import round_decimal
 from pretix.base.models import Event, InvoiceAddress, OrderPayment, OrderRefund
 from pretix.base.payment import BasePaymentProvider, PaymentException
@@ -24,6 +22,8 @@ from pretix.base.settings import SettingsSandbox
 from pretix.helpers.urls import build_absolute_uri as build_global_uri
 from pretix.multidomain.urlreverse import build_absolute_uri, eventreverse
 from pretix.presale.views.cart import cart_session
+
+from . import PluginApp
 
 logger = logging.getLogger('pretix_adyen')
 
@@ -457,11 +457,12 @@ class AdyenMethod(BasePaymentProvider):
             # Nothing we can log here...
         elif payment_info['resultCode'] == 'Authorised':
             payment.confirm()
+            payment.refresh_from_db()
 
         payment.save()
         return payment.state
 
-    def _handle_action(self, request: HttpRequest, payment: OrderPayment, statedata=None, payload=None, MD=None, PaRes=None):
+    def _handle_action(self, request: HttpRequest, payment: OrderPayment, statedata=None, payload=None, md=None, pares=None):
         self._init_api()
 
         payment_info = json.loads(payment.info)
@@ -476,12 +477,12 @@ class AdyenMethod(BasePaymentProvider):
                         'payload': payload,
                     },
                 })
-            elif MD and PaRes:
+            elif md and pares:
                 result = self.adyen.checkout.payments_details({
                     'paymentData': payment_info['paymentData'],
                     'details': {
-                        'MD': MD,
-                        'PaRes': PaRes,
+                        'MD': md,
+                        'PaRes': pares,
                     },
                 })
             else:
@@ -498,17 +499,16 @@ class AdyenMethod(BasePaymentProvider):
                 'secret': payment.order.secret
             })
 
+        payment.info = json.dumps(result.message)
+        payment.save()
+
         if 'action' in result.message:
-            payment.info = json.dumps(result.message)
-            payment.save()
             return build_absolute_uri(self.event, 'plugins:pretix_adyen:sca', kwargs={
                 'order': payment.order.code,
                 'payment': payment.pk,
                 'hash': hashlib.sha1(payment.order.secret.lower().encode()).hexdigest(),
             })
         else:
-            payment.info = json.dumps(result.message)
-            payment.save()
             state = self._handle_resultcode(payment)
             return eventreverse(self.event, 'presale:event.order', kwargs={
                 'order': payment.order.code,
