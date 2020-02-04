@@ -1,6 +1,6 @@
 #!/bin/sh
-COMPONENTS=pretix/pretix-plugin-mollie
-DIR=pretix_mollie/locale
+COMPONENTS=pretix/pretix-plugin-adyen
+DIR=pretix_adyen/locale
 # Renerates .po files used for translating the plugin
 set -e
 set -x
