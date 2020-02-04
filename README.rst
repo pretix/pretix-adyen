@@ -1,5 +1,5 @@
 Adyen payments for pretix
-==========================
+=========================
 
 This is a plugin for `pretix`_. 
 
@@ -24,7 +24,7 @@ License
 -------
 
 
-Copyright Current year Raphael Michel
+Copyright 2020 Raphael Michel
 
 Released under the terms of the proprietary pretix Enterprise license.
 
