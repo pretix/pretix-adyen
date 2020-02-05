@@ -267,6 +267,8 @@ class AdyenMethod(BasePaymentProvider):
     def payment_control_render(self, request, payment) -> str:
         if payment.info:
             payment_info = json.loads(payment.info)
+            if 'amount' in payment_info:
+                payment_info['amount']['value'] /= 10 ** settings.CURRENCY_PLACES.get(self.event.currency, 2)
         else:
             payment_info = None
         template = get_template('pretix_adyen/control.html')
