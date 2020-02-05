@@ -26,6 +26,8 @@
         <br/>
         {% if payment_info and payment_info.refusalReason %}
             {{ payment_info.refusalReason }}
+        {% elif payment_info and payment_info.reason %}
+            {{ payment_info.reason }}
         {% else %}
             {% trans "Unknown reason" %}
         {% endif %}
