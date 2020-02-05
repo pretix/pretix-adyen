@@ -460,7 +460,6 @@ class AdyenMethod(BasePaymentProvider):
             # Nothing we can log here...
         elif payment_info['resultCode'] == 'Authorised':
             payment.confirm()
-            payment.refresh_from_db()
 
         return payment.state
 
@@ -502,7 +501,7 @@ class AdyenMethod(BasePaymentProvider):
             })
 
         payment.info = json.dumps(result.message)
-        payment.save()
+        payment.save(update_fields=['info'])
 
         if 'action' in result.message:
             return build_absolute_uri(self.event, 'plugins:pretix_adyen:sca', kwargs={
