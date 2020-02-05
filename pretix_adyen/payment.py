@@ -442,24 +442,26 @@ class AdyenMethod(BasePaymentProvider):
             pass
         elif payment_info['resultCode'] in ['Error', 'Refused']:
             payment.state = OrderPayment.PAYMENT_STATE_FAILED
+            payment.save(update_fields=['state'])
             payment.order.log_action('pretix.event.order.payment.failed', {
                 'local_id': payment.local_id,
                 'provider': payment.provider
             })
         elif payment_info['resultCode'] == 'Cancelled':
             payment.state = OrderPayment.PAYMENT_STATE_CANCELED
+            payment.save(update_fields=['state'])
             payment.order.log_action('pretix.event.order.payment.canceled', {
                 'local_id': payment.local_id,
                 'provider': payment.provider
             })
         elif payment_info['resultCode'] == 'Pending':
             payment.state = OrderPayment.PAYMENT_STATE_PENDING
+            payment.save(update_fields=['state'])
             # Nothing we can log here...
         elif payment_info['resultCode'] == 'Authorised':
             payment.confirm()
             payment.refresh_from_db()
 
-        payment.save()
         return payment.state
 
     def _handle_action(self, request: HttpRequest, payment: OrderPayment, statedata=None, payload=None, md=None, pares=None):

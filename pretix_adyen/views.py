@@ -45,18 +45,19 @@ def webhook(request, *args, **kwargs):
                         hmac = refund.order.event.settings.payment_adyen_test_hmac_key
 
                     if is_valid_hmac(notification_item, hmac):
+                        refund.order.log_action('pretix_adyen.adyen.event', data=notification_item)
                         refund.info = json.dumps(notification_item)
-                        refund.save()
+                        refund.save(update_fields=['info'])
 
                         if notification_item['success'] == 'true':  # Yes, seriously...
                             refund.done()
                         else:
                             refund.state = OrderRefund.REFUND_STATE_FAILED
+                            refund.save(update_fields=['state'])
                             refund.order.log_action('pretix.event.order.refund.failed', {
                                 'local_id': refund.local_id,
                                 'provider': refund.provider
                             })
-                        refund.order.log_action('pretix_adyen.adyen.event', data=notification_item)
                     else:
                         logger.exception('Webhook error: Could not verify HMAC. {}'.format(notification_item))
                         return HttpResponse('Could not verify HMAC', status=403)
@@ -73,18 +74,19 @@ def webhook(request, *args, **kwargs):
                         hmac = payment.order.event.settings.payment_adyen_test_hmac_key
 
                     if is_valid_hmac(notification_item, hmac):
+                        payment.order.log_action('pretix_adyen.adyen.event', data=notification_item)
                         payment.info = json.dumps(notification_item)
-                        payment.save()
+                        payment.save(update_fields=['info'])
 
                         if notification_item['success'] == 'true':  # Yes, seriously...
                             payment.confirm()
                         else:
                             payment.state = OrderPayment.PAYMENT_STATE_FAILED
+                            payment.save(update_fields=['state'])
                             payment.order.log_action('pretix.event.order.payment.failed', {
                                 'local_id': payment.local_id,
                                 'provider': payment.provider
                             })
-                        payment.order.log_action('pretix_adyen.adyen.event', data=notification_item)
                     else:
                         logger.exception('Webhook error: Could not verify HMAC. {}'.format(notification_item))
                         return HttpResponse('Could not verify HMAC', status=403)
