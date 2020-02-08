@@ -11,10 +11,11 @@ class PluginApp(PluginConfig):
     verbose_name = 'Adyen payments for pretix'
 
     class PretixPluginMeta:
-        name = ugettext_lazy('Adyen payments for pretix')
+        name = 'Adyen'
         author = 'Martin Gross'
         description = ugettext_lazy('This plugin allows to use Adyen as a payment provider')
         visible = True
+        category = 'PAYMENT'
         version = '1.0.0'
         compatibility = "pretix>=2.7.0"
 
