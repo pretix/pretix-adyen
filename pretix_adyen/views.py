@@ -30,7 +30,7 @@ def webhook(request, *args, **kwargs):
     if 'notificationItems' in event_json:
         for notification_item in event_json['notificationItems']:
             notification_item = notification_item['NotificationRequestItem']
-            reference = notification_item['merchantReference'].rsplit('-', 2)
+            reference = notification_item['merchantReference'].rsplit('-', 3)
             try:
                 if reference[2] == 'R':
                     refund = OrderRefund.objects.get(
