@@ -60,7 +60,6 @@ def webhook(request, *args, **kwargs):
                             })
                     else:
                         logger.exception('Webhook error: Could not verify HMAC. {}'.format(notification_item))
-                        return HttpResponse('Could not verify HMAC', status=403)
                 elif reference[2] == 'P':
                     payment = OrderPayment.objects.get(
                         order__event__slug__iexact=reference[0],
@@ -89,7 +88,6 @@ def webhook(request, *args, **kwargs):
                             })
                     else:
                         logger.exception('Webhook error: Could not verify HMAC. {}'.format(notification_item))
-                        return HttpResponse('Could not verify HMAC', status=403)
                 else:
                     # logger.info('Ignoring webhook event. {}'.format(notification_item))
                     pass
