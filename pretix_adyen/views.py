@@ -7,6 +7,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.decorators import method_decorator
 from django.utils.functional import cached_property
+from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from django.views import View
 from django.views.decorators.clickjacking import xframe_options_exempt
@@ -15,6 +16,7 @@ from django.views.decorators.http import require_POST
 from django_scopes import scopes_disabled
 from pretix.base.models import Order, OrderPayment, OrderRefund
 from pretix.multidomain.urlreverse import eventreverse
+from pretix_adyen.payment import AdyenScheme
 
 from .utils import is_valid_hmac
 
@@ -26,30 +28,98 @@ logger = logging.getLogger(__name__)
 @scopes_disabled()
 def webhook(request, *args, **kwargs):
     event_json = json.loads(request.body.decode('utf-8'))
-
+    print(event_json['notificationItems'])
     if 'notificationItems' in event_json:
         for notification_item in event_json['notificationItems']:
-            notification_item = notification_item['NotificationRequestItem']
-            reference = notification_item['merchantReference'].rsplit('-', 3)
             try:
-                if reference[2] == 'R':
-                    refund = OrderRefund.objects.get(
-                        order__event__slug__iexact=reference[0],
-                        order__code=reference[1],
-                        local_id=reference[3]
-                    )
+                notification_item = notification_item['NotificationRequestItem']
+                merchant_reference = notification_item['merchantReference'].rsplit('-', 3)
+                order = notification_item['additionalData']['merchantOrderReference'].rsplit('-', 1)
+                order = Order.objects.get(event__slug=order[0], code=order[1])
+                adyen = AdyenScheme(order.event)
 
-                    if event_json['live'] == 'true':
-                        hmac = refund.order.event.settings.payment_adyen_prod_hmac_key
-                    else:
-                        hmac = refund.order.event.settings.payment_adyen_test_hmac_key
+                if event_json['live'] == 'true':
+                    hmac = order.event.settings.payment_adyen_prod_hmac_key
+                else:
+                    hmac = order.event.settings.payment_adyen_test_hmac_key
 
-                    if is_valid_hmac(notification_item, hmac):
-                        refund.order.log_action('pretix_adyen.adyen.event', data=notification_item)
-                        refund.info = json.dumps(notification_item)
-                        refund.save(update_fields=['info'])
+                if is_valid_hmac(notification_item, hmac):
+                    order.log_action('pretix_adyen.adyen.event', data=notification_item)
+
+                    if notification_item['eventCode'] in ['AUTHORISATION', 'CAPTURE']:
+                        if merchant_reference[2] == 'P':
+                            payment = OrderPayment.objects.get(
+                                order__event__slug__iexact=merchant_reference[0],
+                                order__code=merchant_reference[1],
+                                local_id=merchant_reference[3]
+                            )
+                            payment.info = json.dumps(notification_item)
+                            payment.save(update_fields=['info'])
+                        else:
+                            payment = OrderPayment(
+                                order=order,
+                                amount=adyen._amount_to_decimal(notification_item['amount']['value']),
+                                provider=adyen.identifier,
+                                info=json.dumps(notification_item),
+                                payment_date=now()
+                            )
 
                         if notification_item['success'] == 'true':  # Yes, seriously...
+                            payment.confirm()
+                        else:
+                            payment.fail()
+                    # elif notification_item['eventCode'] == 'AUTHORISATION_ADJUSTMENT':
+                    #     pass
+                    # elif notification_item['eventCode'] in ['CANCELLATION', 'CANCEL_OR_REFUND']:
+                    #     pass
+                    elif notification_item['eventCode'] == 'CAPTURE_FAILED':
+                        if merchant_reference[2] == 'P':
+                            payment = OrderPayment.objects.get(
+                                order__event__slug__iexact=merchant_reference[0],
+                                order__code=merchant_reference[1],
+                                local_id=merchant_reference[3]
+                            )
+                            payment.info = json.dumps(notification_item)
+                            payment.save(update_fields=['info'])
+                        else:
+                            payment = OrderPayment(
+                                order=order,
+                                amount=adyen._amount_to_decimal(notification_item['amount']['value']),
+                                provider=adyen.identifier,
+                                info=json.dumps(notification_item),
+                                payment_date=now()
+                            )
+
+                        payment.fail()
+                    # elif notification_item['eventCode'] == 'HANDLED_EXTERNALLY':
+                    #     pass
+                    # elif notification_item['eventCode'] == 'ORDER_OPENED':
+                    #     pass
+                    # elif notification_item['eventCode'] == 'ORDER_CLOSED':
+                    #     pass
+                    # elif notification_item['eventCode'] == 'PENDING':
+                    #     pass
+                    # elif notification_item['eventCode'] == 'PROCESS_RETRY':
+                    #     pass
+                    elif notification_item['eventCode'] in ['REFUND']:
+                        if merchant_reference[2] == 'R':
+                            refund = OrderRefund.objects.get(
+                                order__event__slug__iexact=merchant_reference[0],
+                                order__code=merchant_reference[1],
+                                local_id=merchant_reference[3]
+                            )
+                            refund.info = json.dumps(notification_item)
+                            refund.save(update_fields=['info'])
+                        else:
+                            refund = OrderRefund(
+                                order=order,
+                                amount=adyen._amount_to_decimal(notification_item['amount']['value']),
+                                provider=adyen.identifier,
+                                info=json.dumps(notification_item),
+                                execution_date=now()
+                            )
+
+                        if notification_item['success'] == 'true':
                             refund.done()
                         else:
                             refund.state = OrderRefund.REFUND_STATE_FAILED
@@ -58,40 +128,90 @@ def webhook(request, *args, **kwargs):
                                 'local_id': refund.local_id,
                                 'provider': refund.provider
                             })
-                    else:
-                        logger.exception('Webhook error: Could not verify HMAC. {}'.format(notification_item))
-                elif reference[2] == 'P':
-                    payment = OrderPayment.objects.get(
-                        order__event__slug__iexact=reference[0],
-                        order__code=reference[1],
-                        local_id=reference[3]
-                    )
-
-                    if event_json['live'] == 'true':
-                        hmac = payment.order.event.settings.payment_adyen_prod_hmac_key
-                    else:
-                        hmac = payment.order.event.settings.payment_adyen_test_hmac_key
-
-                    if is_valid_hmac(notification_item, hmac):
-                        payment.order.log_action('pretix_adyen.adyen.event', data=notification_item)
-                        payment.info = json.dumps(notification_item)
-                        payment.save(update_fields=['info'])
-
-                        if notification_item['success'] == 'true':  # Yes, seriously...
-                            payment.confirm()
+                    elif notification_item['eventCode'] == 'REFUND_FAILED':
+                        if merchant_reference[2] == 'R':
+                            refund = OrderRefund.objects.get(
+                                order__event__slug__iexact=merchant_reference[0],
+                                order__code=merchant_reference[1],
+                                local_id=merchant_reference[3]
+                            )
+                            refund.info = json.dumps(notification_item)
+                            refund.save(update_fields=['info'])
                         else:
-                            payment.state = OrderPayment.PAYMENT_STATE_FAILED
-                            payment.save(update_fields=['state'])
-                            payment.order.log_action('pretix.event.order.payment.failed', {
-                                'local_id': payment.local_id,
-                                'provider': payment.provider
-                            })
+                            refund = OrderRefund(
+                                order=order,
+                                amount=adyen._amount_to_decimal(notification_item['amount']['value']),
+                                provider=adyen.identifier,
+                                info=json.dumps(notification_item),
+                                execution_date=now()
+                            )
+
+                        refund.state = OrderRefund.REFUND_STATE_FAILED
+                        refund.save(update_fields=['state'])
+                        refund.order.log_action('pretix.event.order.refund.failed', {
+                            'local_id': refund.local_id,
+                            'provider': refund.provider
+                        })
+                    elif notification_item['eventCode'] == 'REFUNDED_REVERSED':
+                        if merchant_reference[2] == 'R':
+                            refund = OrderRefund.objects.get(
+                                order__event__slug__iexact=merchant_reference[0],
+                                order__code=merchant_reference[1],
+                                local_id=merchant_reference[3]
+                            )
+                            refund.info = json.dumps(notification_item)
+                            refund.save(update_fields=['info'])
+                        else:
+                            refund = OrderRefund(
+                                order=order,
+                                amount=adyen._amount_to_decimal(notification_item['amount']['value']),
+                                provider=adyen.identifier,
+                                info=json.dumps(notification_item),
+                                execution_date=now()
+                            )
+
+                        refund.state = OrderRefund.REFUND_STATE_FAILED
+                        refund.save(update_fields=['state'])
+                        refund.order.log_action('pretix.event.order.refund.failed', {
+                            'local_id': refund.local_id,
+                            'provider': refund.provider
+                        })
+
+                        payment = OrderPayment(
+                            order=order,
+                            amount=adyen._amount_to_decimal(notification_item['amount']['value']),
+                            provider=adyen.identifier,
+                            info=json.dumps(notification_item),
+                            payment_date=now()
+                        )
+                        payment.confirm(send_mail=False)
+                    # elif notification_item['eventCode'] == 'REFUND_WITH_DATA':
+                    #     pass
+                    # elif notification_item['eventCode'] == 'REPORT_AVAILABLE':
+                    #     pass
+                    # elif notification_item['eventCode'] == 'VOID_PENDING_REFUND':
+                    #     pass
+                    elif notification_item['eventCode'] == 'CHARGEBACK':
+                        pass
+                    elif notification_item['eventCode'] == 'CHARGEBACK_REVERSED':
+                        pass
+                    elif notification_item['eventCode'] == 'NOTIFICATION_OF_CHARGEBACK':
+                        pass
+                    elif notification_item['eventCode'] == 'NOTIFICATION_OF_FRAUD':
+                        pass
+                    elif notification_item['eventCode'] == 'PREARBITRATION_LOST':
+                        pass
+                    elif notification_item['eventCode'] == 'PREARBITRATION_WON':
+                        pass
+                    elif notification_item['eventCode'] == 'REQUEST_FOR_INFORMATION':
+                        pass
+                    elif notification_item['eventCode'] == 'SECOND_CHARGEBACK':
+                        pass
                     else:
-                        logger.exception('Webhook error: Could not verify HMAC. {}'.format(notification_item))
+                        pass
                 else:
-                    # logger.info('Ignoring webhook event. {}'.format(notification_item))
-                    pass
-            except (IndexError, OrderRefund.DoesNotExist, OrderPayment.DoesNotExist):
+                    logger.exception('Webhook error: Could not verify HMAC. {}'.format(notification_item))
+            except (KeyError, IndexError, OrderRefund.DoesNotExist, OrderPayment.DoesNotExist):
                 # logger.info('Ignoring webhook - could not match order. {}'.format(notification_item))
                 pass
 
