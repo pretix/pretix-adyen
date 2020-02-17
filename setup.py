@@ -25,7 +25,7 @@ cmdclass = {
 
 setup(
     name='pretix-adyen',
-    version='1.0.0',
+    version='1.0.1',
     description='This plugin allows to use Adyen as a payment provider',
     long_description=long_description,
     url='https://code.rami.io/pretix/pretix-adyen',
