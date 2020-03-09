@@ -1,4 +1,4 @@
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 
 try:
     from pretix.base.plugins import PluginConfig
@@ -13,7 +13,7 @@ class PluginApp(PluginConfig):
     class PretixPluginMeta:
         name = 'Adyen'
         author = 'Martin Gross'
-        description = ugettext_lazy('This plugin allows to use Adyen as a payment provider')
+        description = gettext_lazy('This plugin allows to use Adyen as a payment provider')
         visible = True
         category = 'PAYMENT'
         version = '1.0.1'

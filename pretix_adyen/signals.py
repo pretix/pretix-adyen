@@ -4,7 +4,7 @@ from django.dispatch import receiver
 from django.http import HttpRequest, HttpResponse
 from django.template.loader import get_template
 from django.urls import resolve
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from pretix.base.middleware import _merge_csp, _parse_csp, _render_csp
 from pretix.base.signals import logentry_display, register_payment_providers
 from pretix.presale.signals import html_head, process_response

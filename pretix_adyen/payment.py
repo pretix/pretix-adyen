@@ -13,7 +13,7 @@ from django.contrib import messages
 from django.http import HttpRequest
 from django.template.loader import get_template
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from pretix import __version__, settings
 from pretix.base.decimal import round_decimal
 from pretix.base.models import Event, InvoiceAddress, OrderPayment, OrderRefund
