@@ -341,6 +341,9 @@ class AdyenMethod(BasePaymentProvider):
         originkeyenv = 'originkey_{}'.format(env)
 
         if not self.settings[originkeyenv]:
+            if not (self.settings.test_api_key if self.event.testmode else self.settings.prod_api_key):
+                return
+
             self._init_api(env)
 
             origin_domains = {
