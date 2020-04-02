@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-04 16:28+0100\n"
-"PO-Revision-Date: 2020-03-24 23:00+0000\n"
+"PO-Revision-Date: 2020-04-03 01:00+0000\n"
 "Last-Translator: Raphael Michel <michel@rami.io>\n"
 "Language-Team: German <https://translate.pretix.eu/projects/pretix/"
 "pretix-plugin-adyen/de/>\n"
@@ -16,15 +16,16 @@ msgstr ""
 
 #: pretix_adyen/__init__.py:14
 msgid "Adyen payments for pretix"
-msgstr ""
+msgstr "Adyen-Zahlungen für pretix"
 
 #: pretix_adyen/__init__.py:16
 msgid "This plugin allows to use Adyen as a payment provider"
 msgstr ""
+"Mit dieser Erweiterung kann Adyen als Zahlungsdienstleister verwendet werden"
 
 #: pretix_adyen/payment.py:33
 msgid "Adyen"
-msgstr ""
+msgstr "Adyen"
 
 #: pretix_adyen/payment.py:43
 msgid ""
