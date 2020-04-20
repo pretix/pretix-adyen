@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from pretix.base.middleware import _merge_csp, _parse_csp, _render_csp
 from pretix.base.signals import logentry_display, register_payment_providers
 from pretix.presale.signals import html_head, process_response
+from pretix_adyen.payment import AdyenSettingsHolder
 
 
 @receiver(register_payment_providers, dispatch_uid="payment_adyen")
@@ -39,25 +40,29 @@ def html_head_presale(sender, request=None, **kwargs):
 
 @receiver(signal=process_response, dispatch_uid="payment_adyen_middleware_resp")
 def signal_process_response(sender, request: HttpRequest, response: HttpResponse, **kwargs):
-    if 'Content-Security-Policy' in response:
-        h = _parse_csp(response['Content-Security-Policy'])
-    else:
-        h = {}
+    provider = AdyenSettingsHolder(sender)
+    url = resolve(request.path_info)
 
-    sources = ['frame-src', 'style-src', 'script-src', 'img-src', 'connect-src']
+    if provider.settings.get('_enabled', as_type=bool) and ("checkout" in url.url_name or "order.pay" in url.url_name):
+        if 'Content-Security-Policy' in response:
+            h = _parse_csp(response['Content-Security-Policy'])
+        else:
+            h = {}
 
-    envs = ['test', 'live', 'live-au', 'live-us']
+        sources = ['frame-src', 'style-src', 'script-src', 'img-src', 'connect-src']
 
-    csps = {src: ['https://checkoutshopper-{}.adyen.com'.format(env) for env in envs] for src in sources}
+        env = 'test' if sender.testmode else provider.settings.prod_env
 
-    # Adyen unfortunatly applies styles through their script-src
-    # Also, the unsafe-inline needs to specified within single quotes!
-    csps['style-src'].append("'unsafe-inline'")
+        csps = {src: ['https://checkoutshopper-{}.adyen.com'.format(env)] for src in sources}
 
-    _merge_csp(h, csps)
+        # Adyen unfortunately applies styles through their script-src
+        # Also, the unsafe-inline needs to specified within single quotes!
+        csps['style-src'].append("'unsafe-inline'")
 
-    if h:
-        response['Content-Security-Policy'] = _render_csp(h)
+        _merge_csp(h, csps)
+
+        if h:
+            response['Content-Security-Policy'] = _render_csp(h)
     return response
 
 
