@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-04 16:28+0100\n"
-"PO-Revision-Date: 2020-04-03 01:00+0000\n"
-"Last-Translator: Raphael Michel <michel@rami.io>\n"
+"PO-Revision-Date: 2020-06-30 02:00+0000\n"
+"Last-Translator: Dennis Lichtenthäler <lichtenthaeler@rami.io>\n"
 "Language-Team: German <https://translate.pretix.eu/projects/pretix/"
 "pretix-plugin-adyen/de/>\n"
 "Language: de\n"
@@ -95,11 +95,11 @@ msgstr ""
 
 #: pretix_adyen/payment.py:121
 msgid "Credit card payments"
-msgstr ""
+msgstr "Kreditkartenzahlungen"
 
 #: pretix_adyen/payment.py:126 pretix_adyen/payment.py:596
 msgid "giropay"
-msgstr ""
+msgstr "giropay"
 
 #: pretix_adyen/payment.py:147
 #, python-brace-format
@@ -115,7 +115,7 @@ msgstr ""
 
 #: pretix_adyen/payment.py:309
 msgid "No payment information found."
-msgstr ""
+msgstr "Keine Zahlungsinformationen gefunden."
 
 #: pretix_adyen/payment.py:405
 msgid ""
@@ -127,7 +127,7 @@ msgstr ""
 #: pretix_adyen/views.py:173 pretix_adyen/views.py:191
 #: pretix_adyen/views.py:207
 msgid "Sorry, there was an error in the payment process."
-msgstr ""
+msgstr "Im Zahlungsvorgang ist ein Fehler aufgetreten."
 
 #: pretix_adyen/payment.py:588
 msgid "Credit card via Adyen"
@@ -135,7 +135,7 @@ msgstr ""
 
 #: pretix_adyen/payment.py:589
 msgid "Credit card"
-msgstr ""
+msgstr "Kreditkarte"
 
 #: pretix_adyen/payment.py:595
 msgid "giropay via Adyen"
@@ -147,7 +147,7 @@ msgstr ""
 
 #: pretix_adyen/templates/pretix_adyen/checkout_payment_confirm.html:4
 msgid "The total amount will be withdrawn from your credit card."
-msgstr ""
+msgstr "Der Gesamtbetrag wird von Ihrer Kreditkarte eingezogen."
 
 #: pretix_adyen/templates/pretix_adyen/checkout_payment_confirm.html:8
 msgid ""
@@ -155,10 +155,13 @@ msgid ""
 "provider to complete your payment. You will then be redirected back here to "
 "get your tickets."
 msgstr ""
+"Nach dem Klick auf „Fortfahren“ werden wir Sie zum Zahlungsdienstleister "
+"weiterleiten, um Ihre Zahlungsdaten einzugeben. Sie werden danach wieder "
+"hierher zurückgeleitet, um Ihre Bestellung zu bestätigen."
 
 #: pretix_adyen/templates/pretix_adyen/checkout_payment_confirm.html:13
 msgid "Payment method"
-msgstr ""
+msgstr "Zahlungsmethode"
 
 #: pretix_adyen/templates/pretix_adyen/checkout_payment_form.html:7
 msgid ""
@@ -180,41 +183,46 @@ msgstr ""
 
 #: pretix_adyen/templates/pretix_adyen/control.html:18
 msgid "Total value"
-msgstr ""
+msgstr "Gesamtbetrag"
 
 #: pretix_adyen/templates/pretix_adyen/pending.html:5
 msgid ""
 "We're waiting for an answer from the payment provider regarding your "
 "payment. Please contact us if this takes more than a few days."
 msgstr ""
+"Wir warten auf eine Antwort des Zahlungsdienstleisters bezüglich Ihrer "
+"Zahlung. Bitte kontaktieren Sie uns, falls dies mehr als ein paar Tage "
+"dauert."
 
 #: pretix_adyen/templates/pretix_adyen/pending.html:10
 msgid ""
 "You need to confirm your payment. Please click the link below to do so or "
 "start a new payment."
 msgstr ""
+"Sie müssen Ihre Zahlung bestätigen. Bitte klicken Sie den Link weiter unten "
+"um dies zu erledigen oder eine neue Zahlung zu starten."
 
 #: pretix_adyen/templates/pretix_adyen/pending.html:16
 msgid "Confirm payment"
-msgstr ""
+msgstr "Zahlung bestätigen"
 
 #: pretix_adyen/templates/pretix_adyen/pending.html:23
 msgid ""
 "The payment transaction could not be completed for the following reason:"
-msgstr ""
+msgstr "Die Zahlung konnte aus folgendem Grund nicht abgeschlossen werden:"
 
 #: pretix_adyen/templates/pretix_adyen/pending.html:30
 msgid "Unknown reason"
-msgstr ""
+msgstr "Unbekannter Grund"
 
 #: pretix_adyen/templates/pretix_adyen/sca.html:5
 msgid "Pay order"
-msgstr ""
+msgstr "Bestellung bezahlen"
 
 #: pretix_adyen/templates/pretix_adyen/sca.html:14
 #, python-format
 msgid "Confirm payment: %(code)s"
-msgstr ""
+msgstr "Zahlung bestätigen: %(code)s"
 
 #: pretix_adyen/templates/pretix_adyen/sca.html:26
 msgid "Cancel"
@@ -222,4 +230,4 @@ msgstr "Abbrechen"
 
 #: pretix_adyen/templates/pretix_adyen/sca.html:34
 msgid "Continue"
-msgstr ""
+msgstr "Fortfahren"
