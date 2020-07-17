@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-04 16:28+0100\n"
-"PO-Revision-Date: 2020-06-30 02:00+0000\n"
+"PO-Revision-Date: 2020-07-16 22:00+0000\n"
 "Last-Translator: Dennis Lichtenthäler <lichtenthaeler@rami.io>\n"
 "Language-Team: German <https://translate.pretix.eu/projects/pretix/"
 "pretix-plugin-adyen/de/>\n"
@@ -34,24 +34,32 @@ msgid ""
 "to automatically cancel orders when charges are refunded externally and to "
 "process asynchronous payment methods like SOFORT."
 msgstr ""
+"Bitte richten Sie einen <a href=\"https://docs.adyen.com/"
+"development-resources/notifications\">Benachrichtigungs-Webhook</a> zum "
+"folgenden Endpunkt ein, um Bestellungen automatisch zu stornieren, wenn "
+"externe Rückzahlungen auftreten, und um asynchrone Zahlungsmethoden wie "
+"SOFORT zu verarbeiten."
 
 #: pretix_adyen/payment.py:54
 msgid "Test Merchant Account"
-msgstr ""
+msgstr "Händlerkonto (Test)"
 
 #: pretix_adyen/payment.py:59
 msgid "Test API Key"
-msgstr ""
+msgstr "API-Key (Test)"
 
 #: pretix_adyen/payment.py:61 pretix_adyen/payment.py:82
 msgid ""
 "Please refer to the documentation <a href=\"https://docs.adyen.com/user-"
 "management/how-to-get-the-api-key\">here</a> on how to obtain your API-key."
 msgstr ""
+"Für Informationen zum Erhalt Ihres API-Keys lesen Sie bitte die "
+"Dokumentation <a href=\"https://docs.adyen.com/user-management/how-to-get-"
+"the-api-key\">hier</a>."
 
 #: pretix_adyen/payment.py:67
 msgid "Test HMAC Key"
-msgstr ""
+msgstr "HMAC-Key (Test)"
 
 #: pretix_adyen/payment.py:69 pretix_adyen/payment.py:90
 msgid ""
@@ -59,22 +67,25 @@ msgid ""
 "development-resources/notifications/verify-hmac-signatures#enable-hmac-"
 "signatures\">here</a> on how to obtain your HMAC key."
 msgstr ""
+"Für Informationen zum Erhalt Ihres HMAC-Keys lesen Sie bitte die "
+"Dokumentation <a href=\"https://docs.adyen.com/development-resources/"
+"notifications/verify-hmac-signatures#enable-hmac-signatures\">hier</a>."
 
 #: pretix_adyen/payment.py:75
 msgid "Production Merchant Account"
-msgstr ""
+msgstr "Händlerkonto (Produktiv)"
 
 #: pretix_adyen/payment.py:80
 msgid "Production API Key"
-msgstr ""
+msgstr "API-Key (Produktiv)"
 
 #: pretix_adyen/payment.py:88
 msgid "Production HMAC Key"
-msgstr ""
+msgstr "HMAC-Key (Produktiv)"
 
 #: pretix_adyen/payment.py:96
 msgid "Production Endpoint Prefix"
-msgstr ""
+msgstr "Endpunkt-Präfix (Produktiv)"
 
 #: pretix_adyen/payment.py:98
 msgid ""
@@ -84,14 +95,20 @@ msgid ""
 "https://[random]-[company name]-checkout-live.adyenpayments.com/, please use "
 "<i>[random]-[company name]</i> as the prefix."
 msgstr ""
+"Für Informationen zur Identifikation Ihres Produktiv-Endpunkt-Präfix, lesen "
+"Sie bitte die Dokumentation <a href=\"https://docs.adyen.com/"
+"development-resources/live-endpoints\">hier</a>.<br />Wenn Ihr Produktiv-"
+"Checkout-Endpunkt \"https://[Zufälliger]-[Firmenname]-checkout-"
+"live.adyenpayments.com/\" ist, nutzen Sie bitte "
+"<i>[Zufälliger]-[Firmenname]</i> als Präfix."
 
 #: pretix_adyen/payment.py:107
 msgid "Production Environment"
-msgstr ""
+msgstr "Produktivumgebung"
 
 #: pretix_adyen/payment.py:114
 msgid "Please select the Adyen server closest to you."
-msgstr ""
+msgstr "Bitte wählen Sie den Adyen Server der Ihnen am nächsten ist."
 
 #: pretix_adyen/payment.py:121
 msgid "Credit card payments"
@@ -108,10 +125,14 @@ msgid ""
 ">many test cards</a> to perform a transaction. No money will actually be "
 "transferred."
 msgstr ""
+"Das Adyen Plugin befindet sich im Test-Modus. Sie können eine von <a {args}>"
+"vielen Test-Karten</a> nutzen um eine Zahlung durchzuführen. Es wird kein "
+"echtes Geld versendet."
 
 #: pretix_adyen/payment.py:178
 msgid "You may need to enable JavaScript for Adyen payments."
 msgstr ""
+"Möglicherweise müssen Sie JavaScript aktivieren um Adyen nutzen zu können."
 
 #: pretix_adyen/payment.py:309
 msgid "No payment information found."
@@ -122,6 +143,9 @@ msgid ""
 "We had trouble communicating with Adyen. Please try again and get in touch "
 "with us if this problem persists."
 msgstr ""
+"Es gab Probleme bei der Kommunikation mit Adyen; bitte versuchen Sie es "
+"erneut. Sollte der Fehler weiterhin auftreten, wenden Sie sich bitte an den "
+"Support."
 
 #: pretix_adyen/payment.py:488 pretix_adyen/payment.py:495
 #: pretix_adyen/views.py:173 pretix_adyen/views.py:191
@@ -131,7 +155,7 @@ msgstr "Im Zahlungsvorgang ist ein Fehler aufgetreten."
 
 #: pretix_adyen/payment.py:588
 msgid "Credit card via Adyen"
-msgstr ""
+msgstr "Kreditkarte über Adyen"
 
 #: pretix_adyen/payment.py:589
 msgid "Credit card"
@@ -139,11 +163,11 @@ msgstr "Kreditkarte"
 
 #: pretix_adyen/payment.py:595
 msgid "giropay via Adyen"
-msgstr ""
+msgstr "giropay über Adyen"
 
 #: pretix_adyen/signals.py:81
 msgid "Adyen reported an event: {} {}"
-msgstr ""
+msgstr "Adyen hat ein Ereignis gemeldet: {} {}"
 
 #: pretix_adyen/templates/pretix_adyen/checkout_payment_confirm.html:4
 msgid "The total amount will be withdrawn from your credit card."
@@ -168,18 +192,20 @@ msgid ""
 "Your payment will be processed by Adyen NV. Your data will be transmitted "
 "directly to Adyen and never touches our servers."
 msgstr ""
+"Ihre Zahlung wird durch Adyen NV abgewickelt. Ihre Daten werden direkt an "
+"Adyen übertragen und kommen nicht in Kontakt mit unseren Servern."
 
 #: pretix_adyen/templates/pretix_adyen/control.html:6
 msgid "PSP reference"
-msgstr ""
+msgstr "PSP Referenz"
 
 #: pretix_adyen/templates/pretix_adyen/control.html:10
 msgid "Refusal Reason"
-msgstr ""
+msgstr "Ablehnungsgrund"
 
 #: pretix_adyen/templates/pretix_adyen/control.html:14
 msgid "Reason"
-msgstr ""
+msgstr "Grund"
 
 #: pretix_adyen/templates/pretix_adyen/control.html:18
 msgid "Total value"
