@@ -221,13 +221,11 @@ class AdyenMethod(BasePaymentProvider):
         return kwargs
 
     def _init_api(self, env=None):
-        self.adyen = Adyen.Adyen(
-            app_name='pretix',
-            xapikey=self.settings.test_api_key if self.event.testmode else self.settings.prod_api_key,
-            # API-calls go only to -live in prod - not to -live-au or -live-us like in the frontend.
-            platform=env if env else 'test' if self.event.testmode else 'live',
-            live_endpoint_prefix=self.settings.prod_prefix
-        )
+        self.adyen = Adyen.Adyen()
+        self.adyen.client.xapikey = self.settings.test_api_key if self.event.testmode else self.settings.prod_api_key
+        # API-calls go only to -live in prod - not to -live-au or -live-us like in the frontend.
+        self.adyen.client.platform = env if env else 'test' if self.event.testmode else 'live'
+        self.adyen.client.live_endpoint_prefix = self.settings.prod_prefix
 
     def checkout_confirm_render(self, request) -> str:
         template = get_template('pretix_adyen/checkout_payment_confirm.html')

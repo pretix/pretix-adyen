@@ -16,7 +16,7 @@ class PluginApp(PluginConfig):
         description = gettext_lazy('This plugin allows to use Adyen as a payment provider')
         visible = True
         category = 'PAYMENT'
-        version = '1.1.1'
+        version = '1.1.2'
         compatibility = "pretix>=2.7.0"
 
     def ready(self):
