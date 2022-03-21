@@ -13,8 +13,10 @@ class PluginApp(PluginConfig):
     class PretixPluginMeta:
         name = 'Adyen'
         author = 'Martin Gross'
-        description = gettext_lazy('This plugin allows to use Adyen as a payment provider')
+        description = gettext_lazy('Accept payments through Adyen, a global payment service provider offering a '
+                                   'multitude of different payment methods.')
         visible = True
+        picture = 'pretix_adyen/adyen_logo.svg'
         category = 'PAYMENT'
         version = '1.1.2'
         compatibility = "pretix>=2.7.0"
