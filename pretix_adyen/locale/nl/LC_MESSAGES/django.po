@@ -7,11 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-04 16:28+0100\n"
+"POT-Creation-Date: 2022-03-21 15:03+0100\n"
 "PO-Revision-Date: 2021-11-15 00:00+0000\n"
 "Last-Translator: Maarten van den Berg <maartenberg1@gmail.com>\n"
-"Language-Team: Dutch <https://translate.pretix.eu/projects/pretix/"
-"pretix-plugin-adyen/nl/>\n"
+"Language-Team: Dutch <https://translate.pretix.eu/projects/pretix/pretix-"
+"plugin-adyen/nl/>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,13 +19,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.8\n"
 
-#: pretix_adyen/__init__.py:14
-msgid "Adyen payments for pretix"
-msgstr "Adyen-betalingen voor pretix"
-
 #: pretix_adyen/__init__.py:16
-msgid "This plugin allows to use Adyen as a payment provider"
-msgstr "Deze plugin staat u toe om Adyen als betalingsprovider te gebruiken"
+msgid ""
+"Accept payments through Adyen, a global payment service provider offering a "
+"multitude of different payment methods."
+msgstr ""
 
 #: pretix_adyen/payment.py:33
 msgid "Adyen"
@@ -38,10 +36,10 @@ msgid ""
 "to automatically cancel orders when charges are refunded externally and to "
 "process asynchronous payment methods like SOFORT."
 msgstr ""
-"Stel een <a href=\"https://docs.adyen.com/development-resources/"
-"notifications\">Webhook</a> in naar het volgende endpoint om automatisch "
-"bestellingen te annuleren wanneer een betaling extern wordt terugbetaald, en "
-"om asynchrone betalingsmethoden zoals SOFORT te kunnen verwerken."
+"Stel een <a href=\"https://docs.adyen.com/development-resources/notifications"
+"\">Webhook</a> in naar het volgende endpoint om automatisch bestellingen te "
+"annuleren wanneer een betaling extern wordt terugbetaald, en om asynchrone "
+"betalingsmethoden zoals SOFORT te kunnen verwerken."
 
 #: pretix_adyen/payment.py:54
 msgid "Test Merchant Account"
@@ -97,11 +95,11 @@ msgid ""
 "https://[random]-[company name]-checkout-live.adyenpayments.com/, please use "
 "<i>[random]-[company name]</i> as the prefix."
 msgstr ""
-"U kunt <a href=\"https://docs.adyen.com/development-resources/live-"
-"endpoints\">hier</a> informatie vinden over hoe u het juiste endpoint-"
-"voorvoegsel kunt vinden.<br />Als uw productieomgeving "
-"https://[willekeurig]-[bedrijfsnaam]-checkout-live.adyenpayments.com/ is, "
-"gebruik dan <i>[willekeurig]-[bedrijfsnaam]</i> als het voorvoegsel."
+"U kunt <a href=\"https://docs.adyen.com/development-resources/live-endpoints"
+"\">hier</a> informatie vinden over hoe u het juiste endpoint-voorvoegsel "
+"kunt vinden.<br />Als uw productieomgeving https://[willekeurig]-"
+"[bedrijfsnaam]-checkout-live.adyenpayments.com/ is, gebruik dan "
+"<i>[willekeurig]-[bedrijfsnaam]</i> als het voorvoegsel."
 
 #: pretix_adyen/payment.py:107
 msgid "Production Environment"
@@ -115,7 +113,7 @@ msgstr "Kies de Adyen-server die het dichtst bij u is."
 msgid "Credit card payments"
 msgstr "Creditcardbetalingen"
 
-#: pretix_adyen/payment.py:126 pretix_adyen/payment.py:596
+#: pretix_adyen/payment.py:126 pretix_adyen/payment.py:600
 msgid "giropay"
 msgstr "giropay"
 
@@ -138,7 +136,7 @@ msgstr "U moet mogelijk JavaScript inschakelen om Adyen te kunnen gebruiken."
 msgid "No payment information found."
 msgstr "Geen betalingsinformatie gevonden."
 
-#: pretix_adyen/payment.py:405
+#: pretix_adyen/payment.py:408
 msgid ""
 "We had trouble communicating with Adyen. Please try again and get in touch "
 "with us if this problem persists."
@@ -146,25 +144,25 @@ msgstr ""
 "Er is een probleem opgetreden tijdens het communiceren met Adyen. Probeer "
 "het opnieuw, neem contact met ons op als het probleem aanhoudt."
 
-#: pretix_adyen/payment.py:488 pretix_adyen/payment.py:495
-#: pretix_adyen/views.py:173 pretix_adyen/views.py:191
-#: pretix_adyen/views.py:207
+#: pretix_adyen/payment.py:493 pretix_adyen/payment.py:500
+#: pretix_adyen/views.py:171 pretix_adyen/views.py:189
+#: pretix_adyen/views.py:205
 msgid "Sorry, there was an error in the payment process."
 msgstr "Sorry, er is iets misgegaan in het betalingsproces."
 
-#: pretix_adyen/payment.py:588
+#: pretix_adyen/payment.py:592
 msgid "Credit card via Adyen"
 msgstr "Creditcard via Adyen"
 
-#: pretix_adyen/payment.py:589
+#: pretix_adyen/payment.py:593
 msgid "Credit card"
 msgstr "Creditcard"
 
-#: pretix_adyen/payment.py:595
+#: pretix_adyen/payment.py:599
 msgid "giropay via Adyen"
 msgstr "giropay via Adyen"
 
-#: pretix_adyen/signals.py:81
+#: pretix_adyen/signals.py:86
 msgid "Adyen reported an event: {} {}"
 msgstr "Adyen heeft een gebeurtenis gemeld: {} {}"
 
@@ -236,7 +234,7 @@ msgid ""
 "The payment transaction could not be completed for the following reason:"
 msgstr "De betaling kon om de volgende reden niet voltooid worden:"
 
-#: pretix_adyen/templates/pretix_adyen/pending.html:30
+#: pretix_adyen/templates/pretix_adyen/pending.html:32
 msgid "Unknown reason"
 msgstr "Onbekende reden"
 
@@ -256,3 +254,9 @@ msgstr "Annuleren"
 #: pretix_adyen/templates/pretix_adyen/sca.html:34
 msgid "Continue"
 msgstr "Doorgaan"
+
+#~ msgid "Adyen payments for pretix"
+#~ msgstr "Adyen-betalingen voor pretix"
+
+#~ msgid "This plugin allows to use Adyen as a payment provider"
+#~ msgstr "Deze plugin staat u toe om Adyen als betalingsprovider te gebruiken"

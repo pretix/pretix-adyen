@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-04 16:28+0100\n"
+"POT-Creation-Date: 2022-03-21 15:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,12 +16,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: pretix_adyen/__init__.py:14
-msgid "Adyen payments for pretix"
-msgstr ""
-
 #: pretix_adyen/__init__.py:16
-msgid "This plugin allows to use Adyen as a payment provider"
+msgid ""
+"Accept payments through Adyen, a global payment service provider offering a "
+"multitude of different payment methods."
 msgstr ""
 
 #: pretix_adyen/payment.py:33
@@ -98,7 +96,7 @@ msgstr ""
 msgid "Credit card payments"
 msgstr ""
 
-#: pretix_adyen/payment.py:126 pretix_adyen/payment.py:596
+#: pretix_adyen/payment.py:126 pretix_adyen/payment.py:600
 msgid "giropay"
 msgstr ""
 
@@ -118,31 +116,31 @@ msgstr ""
 msgid "No payment information found."
 msgstr ""
 
-#: pretix_adyen/payment.py:405
+#: pretix_adyen/payment.py:408
 msgid ""
 "We had trouble communicating with Adyen. Please try again and get in touch "
 "with us if this problem persists."
 msgstr ""
 
-#: pretix_adyen/payment.py:488 pretix_adyen/payment.py:495
-#: pretix_adyen/views.py:173 pretix_adyen/views.py:191
-#: pretix_adyen/views.py:207
+#: pretix_adyen/payment.py:493 pretix_adyen/payment.py:500
+#: pretix_adyen/views.py:171 pretix_adyen/views.py:189
+#: pretix_adyen/views.py:205
 msgid "Sorry, there was an error in the payment process."
 msgstr ""
 
-#: pretix_adyen/payment.py:588
+#: pretix_adyen/payment.py:592
 msgid "Credit card via Adyen"
 msgstr ""
 
-#: pretix_adyen/payment.py:589
+#: pretix_adyen/payment.py:593
 msgid "Credit card"
 msgstr ""
 
-#: pretix_adyen/payment.py:595
+#: pretix_adyen/payment.py:599
 msgid "giropay via Adyen"
 msgstr ""
 
-#: pretix_adyen/signals.py:81
+#: pretix_adyen/signals.py:86
 msgid "Adyen reported an event: {} {}"
 msgstr ""
 
@@ -204,7 +202,7 @@ msgid ""
 "The payment transaction could not be completed for the following reason:"
 msgstr ""
 
-#: pretix_adyen/templates/pretix_adyen/pending.html:30
+#: pretix_adyen/templates/pretix_adyen/pending.html:32
 msgid "Unknown reason"
 msgstr ""
 
