@@ -40,12 +40,12 @@ class AdyenSettingsHolder(BasePaymentProvider):
         self.settings = SettingsSandbox('payment', 'adyen', event)
 
     def settings_content_render(self, request):
-        return "<div class='alert alert-info'>%s<br /><code>%s</code></div>" % (
-            _('Please configure a <a href="https://docs.adyen.com/development-resources/notifications">Notification '
-              'Webhook</a> to the following endpoint in order to automatically cancel orders when charges are refunded '
-              'externally and to process asynchronous payment methods like SOFORT.'),
-            build_global_uri('plugins:pretix_adyen:webhook')
-        )
+        template = get_template('pretix_adyen/control_settings.html')
+        ctx = {
+            'webhook': build_global_uri('plugins:pretix_adyen:webhook'),
+            'partnerid': 'e7e675cd-00b4-4ee5-8ebd-2e13bdd5cc78&v=aTrVy8cj'
+        }
+        return template.render(ctx)
 
     @property
     def settings_form_fields(self):
