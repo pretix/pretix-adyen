@@ -5,10 +5,14 @@
 {% compress js %}
     <script type="text/javascript" src="{% static "pretix_adyen/pretix-adyen.js" %}"></script>
 {% endcompress %}
-<script src="https://checkoutshopper-{{ environment }}.adyen.com/checkoutshopper/sdk/3.4.0/adyen.js"></script>
+<script src="https://checkoutshopper-{{ environment }}.adyen.com/checkoutshopper/sdk/5.14.0/adyen.js"
+        integrity="sha384-JsWtX9H7PkCMYb50ZDb4AdPdVNcPDx/O+aUYtLyLxU3D04jiqFEqnLKMDUIWxBpv"
+        crossorigin="anonymous"></script>
 
-<link rel="stylesheet" href="https://checkoutshopper-{{ environment }}.adyen.com/checkoutshopper/sdk/3.4.0/adyen.css" />
+<link rel="stylesheet" href="https://checkoutshopper-{{ environment }}.adyen.com/checkoutshopper/sdk/5.14.0/adyen.css"
+     integrity="sha384-Dm1w8jaVOWA8rxpzkxA41DIyw5VlBjpoMTPfAijlfepYGgLKF+hke3NKeU/KTX7t"
+     crossorigin="anonymous" />
 
 <script type="text/plain" id="adyen_locale">{{ locale }}</script>
 <script type="text/plain" id="adyen_environment">{{ environment }}</script>
-<script type="text/plain" id="adyen_originKey">{{ originKey }}</script>
+<script type="text/plain" id="adyen_clientKey">{{ clientKey }}</script>

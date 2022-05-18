@@ -31,6 +31,7 @@ logger = logging.getLogger('pretix_adyen')
 class AdyenSettingsHolder(BasePaymentProvider):
     identifier = 'adyen_settings'
     verbose_name = _('Adyen')
+    payment_methods_settingsholder = []
     is_enabled = False
     is_meta = True
 
@@ -70,6 +71,14 @@ class AdyenSettingsHolder(BasePaymentProvider):
                              '<a href="https://docs.adyen.com/development-resources/notifications/verify-hmac-signatures#enable-hmac-signatures">here</a> '
                              'on how to obtain your HMAC key.')
              )),
+            ('test_client_key',
+             forms.CharField(
+                 label=_('Test Client Key'),
+                 required=False,
+                 help_text=_('Please refer to the documentation '
+                             '<a href="https://docs.adyen.com/development-resources/client-side-authentication/migrate-from-origin-key-to-client-key">here</a> '
+                             'on how to obtain your Client key.')
+             )),
             ('prod_merchant_account',
              forms.CharField(
                  label=_('Production Merchant Account'),
@@ -90,6 +99,14 @@ class AdyenSettingsHolder(BasePaymentProvider):
                  help_text=_('Please refer to the documentation '
                              '<a href="https://docs.adyen.com/development-resources/notifications/verify-hmac-signatures#enable-hmac-signatures">here</a> '
                              'on how to obtain your HMAC key.')
+             )),
+            ('prod_client_key',
+             forms.CharField(
+                 label=_('Test Client Key'),
+                 required=False,
+                 help_text=_('Please refer to the documentation '
+                             '<a href="https://docs.adyen.com/development-resources/client-side-authentication/migrate-from-origin-key-to-client-key">here</a> '
+                             'on how to obtain your Client key.')
              )),
             ('prod_prefix',
              forms.CharField(
@@ -115,18 +132,7 @@ class AdyenSettingsHolder(BasePaymentProvider):
              )),
         ]
         d = OrderedDict(
-            fields + [
-                ('method_scheme',
-                 forms.BooleanField(
-                     label=_('Credit card payments'),
-                     required=False,
-                 )),
-                ('method_giropay',
-                 forms.BooleanField(
-                     label=_('giropay'),
-                     required=False,
-                 )),
-            ] + list(super().settings_form_fields.items())
+            fields + self.payment_methods_settingsholder + list(super().settings_form_fields.items())
         )
         d.move_to_end('_enabled', last=False)
         return d
@@ -335,29 +341,6 @@ class AdyenMethod(BasePaymentProvider):
             'provider': refund.provider,
         })
 
-    def _get_originKey(self, env):
-        originkeyenv = 'originkey_{}'.format(env)
-
-        if not self.settings[originkeyenv]:
-            if not (self.settings.test_api_key if self.event.testmode else self.settings.prod_api_key):
-                return
-
-            self._init_api(env)
-
-            origin_domains = {
-                'originDomains': [
-                    settings.SITE_URL
-                ]
-            }
-
-            try:
-                result = self.adyen.checkout.origin_keys(origin_domains)
-                self.settings[originkeyenv] = result.message['originKeys'][settings.SITE_URL]
-            except AdyenError as e:
-                logger.exception('AdyenError: %s' % str(e))
-
-        return self.settings.get(originkeyenv, '')
-
     def execute_payment(self, request: HttpRequest, payment: OrderPayment):
         self._init_api()
         try:
@@ -466,7 +449,7 @@ class AdyenMethod(BasePaymentProvider):
 
         return payment.state
 
-    def _handle_action(self, request: HttpRequest, payment: OrderPayment, statedata=None, payload=None, md=None, pares=None):
+    def _handle_action(self, request: HttpRequest, payment: OrderPayment, statedata=None, payload=None, redirectResult=None, md=None, pares=None):
         self._init_api()
 
         payment_info = json.loads(payment.info)
@@ -479,6 +462,12 @@ class AdyenMethod(BasePaymentProvider):
                     'paymentData': payment_info['paymentData'],
                     'details': {
                         'payload': payload,
+                    },
+                })
+            elif redirectResult:
+                result = self.adyen.checkout.payments_details({
+                    'details': {
+                        'redirectResult': redirectResult,
                     },
                 })
             elif md and pares:
@@ -585,17 +574,3 @@ class AdyenMethod(BasePaymentProvider):
         }
 
         return template.render(ctx)
-
-
-class AdyenScheme(AdyenMethod):
-    identifier = 'adyen_scheme'
-    verbose_name = _('Credit card via Adyen')
-    public_name = _('Credit card')
-    method = 'scheme'
-
-
-class AdyenGiropay(AdyenMethod):
-    identifier = 'adyen_giropay'
-    verbose_name = _('giropay via Adyen')
-    public_name = _('giropay')
-    method = 'giropay'

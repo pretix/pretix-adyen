@@ -3,24 +3,23 @@
 var pretixadyen = {
     adyen: null,
     mountedcomponent: null,
-    schemebrand: 'card',
 
-    'load': function (method) {
+    'load': async function (method) {
         if (pretixadyen.mountedcomponent !== null) {
             pretixadyen.unmountcomponent();
         }
 
         $('.adyen-container').closest("form").find(".checkout-button-row .btn-primary").prop("disabled", true);
 
-        pretixadyen.adyen = new AdyenCheckout({
+        pretixadyen.adyen = await AdyenCheckout({
             locale: $.trim($("#adyen_locale").html()),
             environment: $.trim($("#adyen_environment").html()),
-            originKey: $.trim($("#adyen_originKey").html()),
+            clientKey: $.trim($("#adyen_clientKey").html()),
             paymentMethodsResponse: JSON.parse($("#adyen_paymentMethodsResponse-" + method).val()),
             onChange: function (state, component) {
                 switch (method) {
                     case 'scheme':
-                        if (state.isValid && pretixadyen.schemebrand != "card") {
+                        if (state.isValid) {
                             $("#adyen_paymentMethodData-" + method).val(JSON.stringify(state.data));
                             $('.adyen-container').closest("form").find(".checkout-button-row .btn-primary").prop("disabled", false);
                         } else {
@@ -36,10 +35,19 @@ var pretixadyen = {
                         }
                 }
             },
-            onBrand: function (brand) {
-                pretixadyen.schemebrand = brand.brand;
+            onError: function (error) {
+                console.log("onError", error);
+            },
+            onSubmit: function (state, component) {
+                if (state.isValid) {
+                    $("#adyen_paymentMethodData-" + method).val(JSON.stringify(state.data));
+                    $('.adyen-container').closest("form").find(".checkout-button-row .btn-primary").prop("disabled", false);
+                    $('.adyen-container').closest("form").get(0).submit();
+                }
+            },
+            onPaymentCompleted: function (result, component) {
+                console.log("onPaymentCompleted", result, component);
             }
-
         });
 
         switch (method) {
@@ -64,18 +72,18 @@ var pretixadyen = {
         $('.adyen-container').closest("form").find(".checkout-button-row .btn-primary").prop("disabled", false);
     },
 
-    'action': function () {
+    'action': async function () {
         if (pretixadyen.adyen !== null) {
             return;
         }
 
         waitingDialog.show(gettext("Contacting your bank …"));
 
-        pretixadyen.adyen = new AdyenCheckout({
+        pretixadyen.adyen = await AdyenCheckout({
             locale: $.trim($("#adyen_locale").html()),
             environment: $.trim($("#adyen_environment").html()),
-            originKey: $.trim($("#adyen_originKey").html()),
-            onAdditionalDetails: function(state, component) {
+            clientKey: $.trim($("#adyen_clientKey").html()),
+            onAdditionalDetails: function (state, component) {
                 $("#adyen_stateData").val(JSON.stringify(state.data));
                 $('#scacontainer').hide();
                 $('#continuebutton').removeClass('hidden');
@@ -86,9 +94,7 @@ var pretixadyen = {
 
         let action = JSON.parse($("#adyen_action").val());
         pretixadyen.adyen.createFromAction(action).mount('#scacontainer');
-        $('#scacontainer iframe').load(function () {
-            waitingDialog.hide();
-        });
+        waitingDialog.hide();
     }
 };
 
