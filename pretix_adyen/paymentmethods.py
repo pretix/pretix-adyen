@@ -4,7 +4,6 @@ from django.utils.translation import gettext_lazy as _
 from pretix_adyen.payment import AdyenMethod, AdyenSettingsHolder
 
 # Commented-out payment methods likely still need extra /payments handling
-
 payment_methods = [
     {
         'method': 'scheme',
@@ -163,8 +162,8 @@ payment_methods = [
         'help_text': _('Bank transfers and convenience store payments in Indonesia'),
     }, {
         'method': 'doku_bca_va',
-        'public_name': _('BCA Bank Transfer	'),
-        'verbose_name': _('BCA Bank Transfer	'),
+        'public_name': _('BCA Bank Transfer'),
+        'verbose_name': _('BCA Bank Transfer'),
         'help_text': _('Bank transfers and convenience store payments in Indonesia'),
     }, {
         'method': 'doku_bni_va',
@@ -341,6 +340,7 @@ payment_methods = [
     #     'verbose_name': _('Zip'),
     # }
 ]
+
 
 def get_payment_method_classes(payment_methods, baseclass, settingsholder):
     settingsholder.payment_methods_settingsholder = []
