@@ -147,7 +147,7 @@ class ScaView(AdyenOrderView, View):
                 'order': self.order,
                 'locale': self.order.locale,
                 'environment': 'test' if self.order.testmode else prov.settings.prod_env,
-                'originKey': prov._get_originKey('test' if self.order.testmode else prov.settings.prod_env),
+                'clientKey': prov.settings.test_client_key if self.order.testmode else prov.settings.prod_client_key,
                 'action': json.dumps(payment_info['action'])
             }
 
@@ -183,8 +183,15 @@ class ReturnView(AdyenOrderView, View):
                                   OrderPayment.PAYMENT_STATE_FAILED):
             return self._redirect_to_order()
 
-        if request.GET.get('payload'):
-            return redirect(prov._handle_action(request, self.payment, payload=request.GET.get('payload')))
+        if request.GET.get('payload') or request.GET.get('redirectResult'):
+            return redirect(
+                prov._handle_action(
+                    request,
+                    self.payment,
+                    payload=request.GET.get('payload', None),
+                    redirectResult=request.GET.get('redirectResult', None)
+                )
+            )
 
         messages.error(self.request, _('Sorry, there was an error in the payment process.'))
         return self._redirect_to_order()

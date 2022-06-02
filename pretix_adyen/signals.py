@@ -13,11 +13,9 @@ from pretix_adyen.payment import AdyenSettingsHolder
 
 @receiver(register_payment_providers, dispatch_uid="payment_adyen")
 def register_payment_provider(sender, **kwargs):
-    from .payment import (
-        AdyenSettingsHolder, AdyenScheme, AdyenGiropay
-    )
+    from .paymentmethods import payment_method_classes
 
-    return [AdyenSettingsHolder, AdyenScheme, AdyenGiropay]
+    return payment_method_classes
 
 
 @receiver(html_head, dispatch_uid="payment_adyen_html_head")
@@ -31,7 +29,7 @@ def html_head_presale(sender, request=None, **kwargs):
         ctx = {
             'locale': request.LANGUAGE_CODE,
             'environment': 'test' if sender.testmode else provider.settings.prod_env,
-            'originKey': provider._get_originKey('test' if provider.event.testmode else provider.settings.prod_env),
+            'clientKey': provider.settings.test_client_key if sender.testmode else provider.settings.prod_client_key,
         }
         return template.render(ctx)
     else:
