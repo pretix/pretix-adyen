@@ -5,6 +5,8 @@ try:
 except ImportError:
     raise RuntimeError("Please use pretix 2.7 or above to run this plugin!")
 
+__version__ = "1.2.0"
+
 
 class PluginApp(PluginConfig):
     name = 'pretix_adyen'
@@ -18,7 +20,7 @@ class PluginApp(PluginConfig):
         visible = True
         picture = 'pretix_adyen/adyen_logo.svg'
         category = 'PAYMENT'
-        version = '1.1.2'
+        version = __version__
         compatibility = "pretix>=2.7.0"
 
     def ready(self):

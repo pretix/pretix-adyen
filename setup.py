@@ -4,6 +4,8 @@ from distutils.command.build import build
 from django.core import management
 from setuptools import setup, find_packages
 
+from pretix_adyen import __version__
+
 
 try:
     with open(os.path.join(os.path.dirname(__file__), 'README.rst'), encoding='utf-8') as f:
@@ -25,7 +27,7 @@ cmdclass = {
 
 setup(
     name='pretix-adyen',
-    version='1.1.2',
+    version=__version__,
     description='This plugin allows to use Adyen as a payment provider',
     long_description=long_description,
     url='https://code.rami.io/pretix/pretix-adyen',
