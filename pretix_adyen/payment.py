@@ -10,13 +10,14 @@ import Adyen
 from Adyen import AdyenError
 from django import forms
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.http import HttpRequest
 from django.template.loader import get_template
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from pretix import __version__, settings
 from pretix.base.decimal import round_decimal
-from pretix.base.models import Event, InvoiceAddress, OrderPayment, OrderRefund
+from pretix.base.models import Event, InvoiceAddress, OrderPayment, OrderRefund, Order
 from pretix.base.payment import BasePaymentProvider, PaymentException
 from pretix.base.settings import SettingsSandbox
 from pretix.helpers.urls import build_absolute_uri as build_global_uri
@@ -574,3 +575,115 @@ class AdyenMethod(BasePaymentProvider):
         }
 
         return template.render(ctx)
+
+
+class AdyenPOSRefund(AdyenMethod):
+    def execute_refund(self, refund: OrderRefund):
+        # This is basically the same routine as the AdyenMethod execute_refund, with the exception that it is taking
+        # the required information from a pretixPOS boxoffice-payment.
+
+        self._init_api()
+
+        payment_info = refund.payment.info_data
+
+        if not payment_info or 'payment_data' not in payment_info:
+            raise PaymentException(_('No payment information found.'))
+
+        rqdata = {
+            'modificationAmount': {
+                'value': self._get_amount(refund),
+                'currency': self.event.currency,
+            },
+            'originalReference': payment_info['payment_data']['pspReference'],
+            'merchantOrderReference': '{event}-{code}'.format(event=self.event.slug.upper(), code=refund.order.code),
+            'reference': '{event}-{code}-R-{payment}'.format(event=self.event.slug.upper(), code=refund.order.code,
+                                                             payment=refund.local_id),
+            'shopperStatement': self.statement_descriptor(refund),
+            'captureDelayHours': 0,
+            **self.api_kwargs
+        }
+
+        try:
+            result = self.adyen.payment.refund(rqdata)
+        except AdyenError as e:
+            logger.exception('AdyenError: %s' % str(e))
+            return
+
+        refund.info = json.dumps(result.message)
+        refund.state = OrderRefund.REFUND_STATE_TRANSIT
+        refund.save()
+        refund.order.log_action('pretix.event.order.refund.created', {
+            'local_id': refund.local_id,
+            'provider': refund.provider,
+        })
+
+    class NewRefundForm(forms.Form):
+        payment = forms.ChoiceField(
+            label=_('Payment'),
+        )
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+
+            for n, f in self.fields.items():
+                f.required = False
+                f.widget.is_required = False
+
+            self.fields['payment'].choices = kwargs['data']['payments']
+            if 'refund-adyen-payment' in kwargs['data']:
+                kwargs['data']['refund-adyen-payment'] = kwargs['data']['refund-adyen-payment'][0]
+
+    def _get_refundable_payments(self, order: Order):
+        payments = []
+        for payment in order.payments.filter(provider='boxoffice'):
+            if (
+                payment.info_data.get('payment_type', '') != 'adyen_legacy'
+                and payment.info_data.get('payment_data', {}).get('pspReference', None)
+            ):
+                continue
+
+            available_amount = payment.amount - payment.refunded_amount
+            if available_amount <= 0:
+                continue
+
+            payments.append(
+                (payment.pk, '{}: {} {}'.format(payment.full_id, available_amount, self.event.currency))
+            )
+
+        return payments
+
+    def new_refund_control_form_render(self, request: HttpRequest, order: Order) -> str:
+        if self.method != 'posrefund':
+            return
+
+        payments = self._get_refundable_payments(order)
+
+        if payments:
+            f = self.NewRefundForm(
+                prefix="refund-adyen",
+                data={**request.POST, **{'payments': payments}}
+            )
+            template = get_template('pretix_adyen/new_refund_control_form.html')
+            ctx = {
+                'form': f,
+            }
+            return template.render(ctx)
+        return
+
+    def new_refund_control_form_process(self, request: HttpRequest, amount: Decimal, order: Order) -> OrderRefund:
+        f = self.NewRefundForm(
+            prefix="refund-adyen",
+            data={**request.POST, **{'payments': self._get_refundable_payments(order)}}
+        )
+        if not f.is_valid():
+            raise ValidationError(_('Your input was invalid, please see below for details.'))
+
+        payment = OrderPayment.objects.get(pk=f.cleaned_data['payment'])
+
+        return OrderRefund(
+            order=order,
+            payment=payment,
+            state=OrderRefund.REFUND_STATE_CREATED,
+            amount=amount,
+            provider=self.identifier,
+        )
