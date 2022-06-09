@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from pretix_adyen.payment import AdyenMethod, AdyenSettingsHolder
+from pretix_adyen.payment import AdyenMethod, AdyenSettingsHolder, AdyenPOSRefund
 
 # Commented-out payment methods likely still need extra /payments handling
 payment_methods = [
@@ -339,12 +339,21 @@ payment_methods = [
     #     'public_name': _('Zip'),
     #     'verbose_name': _('Zip'),
     # }
+    {
+        'method': 'posrefund',
+        'public_name': _('POS Refund'),
+        'verbose_name': _('POS Refund'),
+        'baseclass': AdyenPOSRefund
+    }
 ]
 
 
 def get_payment_method_classes(payment_methods, baseclass, settingsholder):
     settingsholder.payment_methods_settingsholder = []
     for m in payment_methods:
+        if m['method'] == 'posrefund':
+            continue
+
         settingsholder.payment_methods_settingsholder.append(
             ('method_{}'.format(m['method']),
              forms.BooleanField(
