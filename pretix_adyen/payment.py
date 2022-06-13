@@ -16,7 +16,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from pretix import __version__, settings
 from pretix.base.decimal import round_decimal
-from pretix.base.models import Event, InvoiceAddress, OrderPayment, OrderRefund
+from pretix.base.models import Event, InvoiceAddress, OrderPayment, OrderRefund, Order
 from pretix.base.payment import BasePaymentProvider, PaymentException
 from pretix.base.settings import SettingsSandbox
 from pretix.helpers.urls import build_absolute_uri as build_global_uri
@@ -514,11 +514,13 @@ class AdyenMethod(BasePaymentProvider):
         if request.event.testmode:
             local_allowed = request.event.settings.payment_adyen_test_merchant_account \
                 and request.event.settings.payment_adyen_test_api_key \
-                and request.event.settings.payment_adyen_test_hmac_key
+                and request.event.settings.payment_adyen_test_hmac_key \
+                and request.event.settings.payment_adyen_test_client_key
         else:
             local_allowed = request.event.settings.payment_adyen_prod_merchant_account \
                 and request.event.settings.payment_adyen_prod_api_key \
                 and request.event.settings.payment_adyen_prod_hmac_key \
+                and request.event.settings.payment_adyen_prod_client_key \
                 and request.event.settings.payment_adyen_prod_prefix
 
         if global_allowed and local_allowed:
@@ -550,6 +552,47 @@ class AdyenMethod(BasePaymentProvider):
             ia = get_invoice_address()
             if ia.country:
                 rqdata['countryCode'] = str(ia.country)
+
+            try:
+                response = self.adyen.checkout.payment_methods(rqdata)
+                if any(d.get('type', None) == self.method for d in response.message['paymentMethods']):
+                    self.payment_methods = json.dumps(response.message)
+                    return True
+            except AdyenError as e:
+                logger.exception('AdyenError: %s' % str(e))
+                return False
+
+        return False
+
+    def order_change_allowed(self, order: Order) -> bool:
+        global_allowed = super().order_change_allowed(order)
+
+        if order.event.testmode:
+            local_allowed = order.event.settings.payment_adyen_test_merchant_account \
+                and order.event.settings.payment_adyen_test_api_key \
+                and order.event.settings.payment_adyen_test_hmac_key \
+                and order.event.settings.payment_adyen_test_client_key
+        else:
+            local_allowed = order.event.settings.payment_adyen_prod_merchant_account \
+                and order.event.settings.payment_adyen_prod_api_key \
+                and order.event.settings.payment_adyen_prod_hmac_key \
+                and order.event.settings.payment_adyen_prod_client_key \
+                and order.event.settings.payment_adyen_prod_prefix
+
+        if global_allowed and local_allowed:
+            self._init_api()
+
+            rqdata = {
+                'amount': {
+                    'value': self._decimal_to_int(order.total),
+                    'currency': self.event.currency
+                },
+                'channel': 'Web',
+                **self.api_kwargs
+            }
+
+            if order.invoice_address.country:
+                rqdata['countryCode'] = str(order.invoice_address.country)
 
             try:
                 response = self.adyen.checkout.payment_methods(rqdata)
