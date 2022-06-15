@@ -10,6 +10,7 @@ import Adyen
 from Adyen import AdyenError
 from django import forms
 from django.contrib import messages
+from django.core.cache import cache
 from django.http import HttpRequest
 from django.template.loader import get_template
 from django.utils.safestring import mark_safe
@@ -553,14 +554,9 @@ class AdyenMethod(BasePaymentProvider):
             if ia.country:
                 rqdata['countryCode'] = str(ia.country)
 
-            try:
-                response = self.adyen.checkout.payment_methods(rqdata)
-                if any(d.get('type', None) == self.method for d in response.message['paymentMethods']):
-                    self.payment_methods = json.dumps(response.message)
-                    return True
-            except AdyenError as e:
-                logger.exception('AdyenError: %s' % str(e))
-                return False
+            self.payment_methods_hash = self._get_payment_methods_hash(rqdata)
+            self._get_payment_methods(rqdata)
+            return self._is_allowed_payment_method()
 
         return False
 
@@ -594,26 +590,50 @@ class AdyenMethod(BasePaymentProvider):
             if order.invoice_address.country:
                 rqdata['countryCode'] = str(order.invoice_address.country)
 
+            self.payment_methods_hash = self._get_payment_methods_hash(rqdata)
+            self._get_payment_methods(rqdata)
+            return self._is_allowed_payment_method()
+        return False
+
+    def _get_payment_methods_hash(self, rqdata):
+        return hashlib.sha256(json.dumps(rqdata).encode()).hexdigest()
+
+    def _get_payment_methods(self, rqdata):
+        checksum = self._get_payment_methods_hash(rqdata)
+        payment_methods = cache.get(f'adyen_payment_methods_{checksum}')
+        if not payment_methods:
             try:
                 response = self.adyen.checkout.payment_methods(rqdata)
-                if any(d.get('type', None) == self.method for d in response.message['paymentMethods']):
-                    self.payment_methods = json.dumps(response.message)
-                    return True
+                data = json.dumps(response.message)
+                cache.set(
+                    f'adyen_payment_methods_{checksum}',
+                    data,
+                    60
+                )
+                payment_methods = data
             except AdyenError as e:
                 logger.exception('AdyenError: %s' % str(e))
                 return False
+
+        return payment_methods
+
+    def _is_allowed_payment_method(self):
+        if any(
+                d.get('type', None) == self.method for d in json.loads(
+                    cache.get(f'adyen_payment_methods_{self.payment_methods_hash}')
+                )['paymentMethods']
+        ):
+            return True
 
         return False
 
     def payment_form_render(self, request, total) -> str:
         template = get_template('pretix_adyen/checkout_payment_form.html')
 
-        if not hasattr(self, 'payment_methods'):
-            self.is_allowed(request, total)
+        request.session['adyen_payment_methods_hash'] = self.payment_methods_hash
 
         ctx = {
             'method': self.method,
-            'paymentMethodsResponse': self.payment_methods,
         }
 
         return template.render(ctx)

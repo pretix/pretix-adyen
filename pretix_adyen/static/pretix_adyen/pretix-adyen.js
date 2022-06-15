@@ -15,7 +15,7 @@ var pretixadyen = {
             locale: $.trim($("#adyen_locale").html()),
             environment: $.trim($("#adyen_environment").html()),
             clientKey: $.trim($("#adyen_clientKey").html()),
-            paymentMethodsResponse: JSON.parse($("#adyen_paymentMethodsResponse-" + method).val()),
+            paymentMethodsResponse: JSON.parse($.trim($("#adyen_paymentMethodsResponse").html())),
             onChange: function (state, component) {
                 switch (method) {
                     case 'scheme':
