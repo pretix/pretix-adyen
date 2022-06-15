@@ -20,6 +20,7 @@ from pretix.base.decimal import round_decimal
 from pretix.base.models import Event, InvoiceAddress, OrderPayment, OrderRefund, Order
 from pretix.base.payment import BasePaymentProvider, PaymentException
 from pretix.base.settings import SettingsSandbox
+from pretix.helpers.http import get_client_ip
 from pretix.helpers.urls import build_absolute_uri as build_global_uri
 from pretix.multidomain.urlreverse import build_absolute_uri, eventreverse
 from pretix.presale.views.cart import cart_session
@@ -373,7 +374,7 @@ class AdyenMethod(BasePaymentProvider):
                     'allow3DS2': 'true'
                 }
                 rqdata['browserInfo'] = payment_method_data['browserInfo']
-                # Since we do not have the IP-address of the customer, we cannot pass rqdata['shopperIP'].
+                rqdata['shopperIP'] = get_client_ip(request)
 
             try:
                 result = self.adyen.checkout.payments(rqdata)
@@ -618,8 +619,15 @@ class AdyenMethod(BasePaymentProvider):
         return payment_methods
 
     def _is_allowed_payment_method(self):
+        method_brand = self.method.split("__")
+        method = method_brand[0]
+        brand = method_brand[-1]
+
+        # Some methods take the form of method__brand such as giftcard__svs.
+        # In this case, we do not only need to check if the method is allowed (there can be one or more
+        # giftcard-methods returned by Adyen), but also if the specific brand is mentioned.
         if any(
-                d.get('type', None) == self.method for d in json.loads(
+                d.get('type', None) == method and d.get('brand', method) == brand for d in json.loads(
                     cache.get(f'adyen_payment_methods_{self.payment_methods_hash}')
                 )['paymentMethods']
         ):
