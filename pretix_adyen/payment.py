@@ -104,7 +104,7 @@ class AdyenSettingsHolder(BasePaymentProvider):
              )),
             ('prod_client_key',
              forms.CharField(
-                 label=_('Test Client Key'),
+                 label=_('Production Client Key'),
                  required=False,
                  help_text=_('Please refer to the documentation '
                              '<a href="https://docs.adyen.com/development-resources/client-side-authentication/migrate-from-origin-key-to-client-key">here</a> '
