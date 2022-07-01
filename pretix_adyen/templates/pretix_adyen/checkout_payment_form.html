@@ -9,6 +9,5 @@
             touches our servers.
         {% endblocktrans %}
     </p>
-    <input type="hidden" name="adyen_paymentMethodsResponse-{{ method }}" value="{{ paymentMethodsResponse }}" id="adyen_paymentMethodsResponse-{{ method }}" />
     <input type="hidden" name="adyen_paymentMethodData-{{ method }}" value="{{ request.session.payment_adyen_paymentMethodData }}" id="adyen_paymentMethodData-{{ method }}"/>
 </div>

@@ -1,5 +1,6 @@
 import json
 
+from django.core.cache import cache
 from django.dispatch import receiver
 from django.http import HttpRequest, HttpResponse
 from django.template.loader import get_template
@@ -30,6 +31,7 @@ def html_head_presale(sender, request=None, **kwargs):
             'locale': request.LANGUAGE_CODE,
             'environment': 'test' if sender.testmode else provider.settings.prod_env,
             'clientKey': provider.settings.test_client_key if sender.testmode else provider.settings.prod_client_key,
+            'paymentMethodsResponse': cache.get('adyen_payment_methods_{}'.format(request.session.get('adyen_payment_methods_hash')))
         }
         return template.render(ctx)
     else:

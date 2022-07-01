@@ -10,15 +10,17 @@ import Adyen
 from Adyen import AdyenError
 from django import forms
 from django.contrib import messages
+from django.core.cache import cache
 from django.http import HttpRequest
 from django.template.loader import get_template
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from pretix import __version__, settings
 from pretix.base.decimal import round_decimal
-from pretix.base.models import Event, InvoiceAddress, OrderPayment, OrderRefund
+from pretix.base.models import Event, InvoiceAddress, OrderPayment, OrderRefund, Order
 from pretix.base.payment import BasePaymentProvider, PaymentException
 from pretix.base.settings import SettingsSandbox
+from pretix.helpers.http import get_client_ip
 from pretix.helpers.urls import build_absolute_uri as build_global_uri
 from pretix.multidomain.urlreverse import build_absolute_uri, eventreverse
 from pretix.presale.views.cart import cart_session
@@ -102,7 +104,7 @@ class AdyenSettingsHolder(BasePaymentProvider):
              )),
             ('prod_client_key',
              forms.CharField(
-                 label=_('Test Client Key'),
+                 label=_('Production Client Key'),
                  required=False,
                  help_text=_('Please refer to the documentation '
                              '<a href="https://docs.adyen.com/development-resources/client-side-authentication/migrate-from-origin-key-to-client-key">here</a> '
@@ -372,7 +374,7 @@ class AdyenMethod(BasePaymentProvider):
                     'allow3DS2': 'true'
                 }
                 rqdata['browserInfo'] = payment_method_data['browserInfo']
-                # Since we do not have the IP-address of the customer, we cannot pass rqdata['shopperIP'].
+                rqdata['shopperIP'] = get_client_ip(request)
 
             try:
                 result = self.adyen.checkout.payments(rqdata)
@@ -514,11 +516,13 @@ class AdyenMethod(BasePaymentProvider):
         if request.event.testmode:
             local_allowed = request.event.settings.payment_adyen_test_merchant_account \
                 and request.event.settings.payment_adyen_test_api_key \
-                and request.event.settings.payment_adyen_test_hmac_key
+                and request.event.settings.payment_adyen_test_hmac_key \
+                and request.event.settings.payment_adyen_test_client_key
         else:
             local_allowed = request.event.settings.payment_adyen_prod_merchant_account \
                 and request.event.settings.payment_adyen_prod_api_key \
                 and request.event.settings.payment_adyen_prod_hmac_key \
+                and request.event.settings.payment_adyen_prod_client_key \
                 and request.event.settings.payment_adyen_prod_prefix
 
         if global_allowed and local_allowed:
@@ -551,26 +555,93 @@ class AdyenMethod(BasePaymentProvider):
             if ia.country:
                 rqdata['countryCode'] = str(ia.country)
 
+            self.payment_methods_hash = self._get_payment_methods_hash(rqdata)
+            self._get_payment_methods(rqdata)
+            return self._is_allowed_payment_method()
+
+        return False
+
+    def order_change_allowed(self, order: Order) -> bool:
+        global_allowed = super().order_change_allowed(order)
+
+        if order.event.testmode:
+            local_allowed = order.event.settings.payment_adyen_test_merchant_account \
+                and order.event.settings.payment_adyen_test_api_key \
+                and order.event.settings.payment_adyen_test_hmac_key \
+                and order.event.settings.payment_adyen_test_client_key
+        else:
+            local_allowed = order.event.settings.payment_adyen_prod_merchant_account \
+                and order.event.settings.payment_adyen_prod_api_key \
+                and order.event.settings.payment_adyen_prod_hmac_key \
+                and order.event.settings.payment_adyen_prod_client_key \
+                and order.event.settings.payment_adyen_prod_prefix
+
+        if global_allowed and local_allowed:
+            self._init_api()
+
+            rqdata = {
+                'amount': {
+                    'value': self._decimal_to_int(order.total),
+                    'currency': self.event.currency
+                },
+                'channel': 'Web',
+                **self.api_kwargs
+            }
+
+            if order.invoice_address.country:
+                rqdata['countryCode'] = str(order.invoice_address.country)
+
+            self.payment_methods_hash = self._get_payment_methods_hash(rqdata)
+            self._get_payment_methods(rqdata)
+            return self._is_allowed_payment_method()
+        return False
+
+    def _get_payment_methods_hash(self, rqdata):
+        return hashlib.sha256(json.dumps(rqdata).encode()).hexdigest()
+
+    def _get_payment_methods(self, rqdata):
+        checksum = self._get_payment_methods_hash(rqdata)
+        payment_methods = cache.get(f'adyen_payment_methods_{checksum}')
+        if not payment_methods:
             try:
                 response = self.adyen.checkout.payment_methods(rqdata)
-                if any(d.get('type', None) == self.method for d in response.message['paymentMethods']):
-                    self.payment_methods = json.dumps(response.message)
-                    return True
+                data = json.dumps(response.message)
+                cache.set(
+                    f'adyen_payment_methods_{checksum}',
+                    data,
+                    60
+                )
+                payment_methods = data
             except AdyenError as e:
                 logger.exception('AdyenError: %s' % str(e))
                 return False
+
+        return payment_methods
+
+    def _is_allowed_payment_method(self):
+        method_brand = self.method.split("__")
+        method = method_brand[0]
+        brand = method_brand[-1]
+
+        # Some methods take the form of method__brand such as giftcard__svs.
+        # In this case, we do not only need to check if the method is allowed (there can be one or more
+        # giftcard-methods returned by Adyen), but also if the specific brand is mentioned.
+        if any(
+                d.get('type', None) == method and d.get('brand', method) == brand for d in json.loads(
+                    cache.get(f'adyen_payment_methods_{self.payment_methods_hash}')
+                )['paymentMethods']
+        ):
+            return True
 
         return False
 
     def payment_form_render(self, request, total) -> str:
         template = get_template('pretix_adyen/checkout_payment_form.html')
 
-        if not hasattr(self, 'payment_methods'):
-            self.is_allowed(request, total)
+        request.session['adyen_payment_methods_hash'] = self.payment_methods_hash
 
         ctx = {
             'method': self.method,
-            'paymentMethodsResponse': self.payment_methods,
         }
 
         return template.render(ctx)

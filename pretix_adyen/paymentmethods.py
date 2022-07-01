@@ -122,13 +122,222 @@ payment_methods = [
         'method': 'gcash',
         'public_name': _('GCash'),
         'verbose_name': _('GCash'),
-    },
-    # {
-    #     'method': 'giftcard',
-    #     'public_name': _('Gift card'),
-    #     'verbose_name': _('Gift card'),
-    # },
-    {
+    }, {
+        'method': 'giftcard__auriga',
+        'provider': 'nets',
+        'public_name': _('Auriga'),
+        'verbose_name': _('Auriga'),
+    }, {
+        'method': 'giftcard__babygiftcard',
+        'provider': 'intersolve',
+        'public_name': _('Baby Gift Card'),
+        'verbose_name': _('Baby Gift Card'),
+    }, {
+        'method': 'giftcard__bloemengiftcard',
+        'provider': 'intersolve',
+        'public_name': _('Bloemen Giftcard'),
+        'verbose_name': _('Bloemen Giftcard'),
+    }, {
+        'method': 'giftcard__cashcomgiftcard',
+        'provider': 'nets',
+        'public_name': _('Cashcom'),
+        'verbose_name': _('Cashcom'),
+    }, {
+        'method': 'giftcard__eagleeye_voucher',
+        'provider': 'fis',
+        'public_name': _('Eagle Eye'),
+        'verbose_name': _('Eagle Eye'),
+    }, {
+        'method': 'giftcard__entercard',
+        'provider': 'nets',
+        'public_name': _('EnterCard'),
+        'verbose_name': _('EnterCard'),
+    }, {
+        'method': 'giftcard__expertgiftcard',
+        'provider': 'intersolve',
+        'public_name': _('Expert Cadeaukaart'),
+        'verbose_name': _('Expert Cadeaukaart'),
+    }, {
+        'method': 'giftcard__fashioncheque',
+        'provider': 'intersolve',
+        'public_name': _('Fashiocheque'),
+        'verbose_name': _('Fashiocheque'),
+    }, {
+        'method': 'giftcard__fijncadeau',
+        'provider': 'intersolve',
+        'public_name': _('FijnCadeau'),
+        'verbose_name': _('FijnCadeau'),
+    }, {
+        'method': 'giftcard__valuelink',
+        'provider': 'fiserv',
+        'public_name': _('Fiserv (formerly ValueLink)'),
+        'verbose_name': _('Fiserv (formerly ValueLink)'),
+    }, {
+        'method': 'giftcard__fleuropbloemenbon',
+        'provider': 'intersolve',
+        'public_name': _('Fleurop Bloemenbon'),
+        'verbose_name': _('Fleurop Bloemenbon'),
+    }, {
+        'method': 'giftcard__fonqgiftcard',
+        'provider': 'intersolve',
+        'public_name': _('Fonq Giftcard'),
+        'verbose_name': _('Fonq Giftcard'),
+    }, {
+        'method': 'giftcard__gallgall',
+        'provider': 'intersolve',
+        'public_name': _('Gall & Gall'),
+        'verbose_name': _('Gall & Gall'),
+    }, {
+        'method': 'giftcard__givex',
+        'provider': 'givex',
+        'public_name': _('Givex'),
+        'verbose_name': _('Givex'),
+    }, {
+        'method': 'giftcard__hallmarkcard',
+        'provider': 'fis',
+        'public_name': _('Hallmark'),
+        'verbose_name': _('Hallmark'),
+    }, {
+        'method': 'giftcard__igive',
+        'provider': 'nets',
+        'public_name': _('iGive'),
+        'verbose_name': _('iGive'),
+    }, {
+        'method': 'giftcard__ikano',
+        'provider': 'nets',
+        'public_name': _('ikano'),
+        'verbose_name': _('Ikano'),
+    }, {
+        'method': 'giftcard__kadowereld',
+        'provider': 'intersolve',
+        'public_name': _('Kado Werekeld'),
+        'verbose_name': _('Kado Werekeld'),
+    }, {
+        'method': 'giftcard__kidscadeau',
+        'provider': 'intersolve',
+        'public_name': _('Kids Cadeau'),
+        'verbose_name': _('Kids Cadeau'),
+    }, {
+        'method': 'giftcard__kindpas',
+        'provider': 'intersolve',
+        'public_name': _('Kindpas'),
+        'verbose_name': _('Kindpas'),
+    }, {
+        'method': 'giftcard__leisurecard',
+        'provider': 'intersolve',
+        'public_name': _('Leisure Voucher'),
+        'verbose_name': _('Leisure Voucher'),
+    }, {
+        'method': 'giftcard__nationalebioscoopbon',
+        'provider': 'intersolve',
+        'public_name': _('Nationale Bioscoopbon'),
+        'verbose_name': _('Nationale Bioscoopbon'),
+    }, {
+        'method': 'giftcard__netscard',
+        'provider': 'nets',
+        'public_name': _('Netscard'),
+        'verbose_name': _('Netscard'),
+    }, {
+        'method': 'giftcard__oberthur',
+        'provider': 'nets',
+        'public_name': _('Oberthur'),
+        'verbose_name': _('Oberthur'),
+    }, {
+        'method': 'giftcard__pathegiftcard',
+        'provider': 'nets',
+        'public_name': _('Pathe Giftcard'),
+        'verbose_name': _('Pathe Giftcard'),
+    }, {
+        'method': 'giftcard__payex',
+        'provider': 'nets',
+        'public_name': _('PayEx'),
+        'verbose_name': _('PayEx'),
+    }, {
+        'method': 'giftcard__podiumcard',
+        'provider': 'intersolve',
+        'public_name': _('Podium Card'),
+        'verbose_name': _('Podium Card'),
+    }, {
+        'method': 'giftcard__resursgiftcard',
+        'provider': 'nets',
+        'public_name': _('Resurs Gift Card'),
+        'verbose_name': _('Resurs Gift Card'),
+    }, {
+        'method': 'giftcard__rotterdampas',
+        'provider': 'intersolve',
+        'public_name': _('Rotterdampas'),
+        'verbose_name': _('Rotterdampas'),
+    }, {
+        'method': 'giftcard__genericgiftcard',
+        'provider': 'intersolve',
+        'public_name': _('Savvy'),
+        'verbose_name': _('Savvy'),
+    }, {
+        'method': 'giftcard__schoolspullenpas',
+        'provider': 'intersolve',
+        'public_name': _('Schoolspullenpas'),
+        'verbose_name': _('Schoolspullenpas'),
+    }, {
+        'method': 'giftcard__sparnord',
+        'provider': 'nets',
+        'public_name': _('Spar Nord'),
+        'verbose_name': _('Spar Nord'),
+    }, {
+        'method': 'giftcard__sparebank',
+        'provider': 'nets',
+        'public_name': _('SpareBank'),
+        'verbose_name': _('SpareBank'),
+    }, {
+        'method': 'giftcard__svs',
+        'provider': 'svs',
+        'public_name': _('Stored Value Solutions (SVS)'),
+        'verbose_name': _('Stored Value Solutions (SVS)'),
+    }, {
+        'method': 'giftcard__universalgiftcard',
+        'provider': 'nets',
+        'public_name': _('Universal Gift Card'),
+        'verbose_name': _('Universal Gift Card'),
+    }, {
+        'method': 'giftcard__vvvcadeaubon',
+        'provider': 'intersolve',
+        'public_name': _('VVV Cadeaubon'),
+        'verbose_name': _('VVV Cadeaubon'),
+    }, {
+        'method': 'giftcard__vvvgiftcard',
+        'provider': 'intersolve',
+        'public_name': _('VVV Giftcard'),
+        'verbose_name': _('VVV Giftcard'),
+    }, {
+        'method': 'giftcard__webshopgiftcard',
+        'provider': 'intersolve',
+        'public_name': _('Webshop Giftcard'),
+        'verbose_name': _('Webshop Giftcard'),
+    }, {
+        'method': 'giftcard__winkelcheque',
+        'provider': 'intersolve',
+        'public_name': _('Winkel Cheque'),
+        'verbose_name': _('Winkel Cheque'),
+    }, {
+        'method': 'giftcard__winterkledingpas',
+        'provider': 'intersolve',
+        'public_name': _('Winterkledingpas'),
+        'verbose_name': _('Winterkledingpas'),
+    }, {
+        'method': 'giftcard__xponcard',
+        'provider': 'nets',
+        'public_name': _('XPonCard'),
+        'verbose_name': _('XPonCard'),
+    }, {
+        'method': 'giftcard__yourgift',
+        'provider': 'intersolve',
+        'public_name': _('Your Gift'),
+        'verbose_name': _('Your Gift'),
+    }, {
+        'method': 'giftcard__prosodie_illicado',
+        'provider': 'prosodie',
+        'public_name': _('Illicado'),
+        'verbose_name': _('Illicado'),
+    }, {
         'method': 'giropay',
         'public_name': _('giropay'),
         'verbose_name': _('giropay'),
@@ -348,11 +557,17 @@ def get_payment_method_classes(payment_methods, baseclass, settingsholder):
         settingsholder.payment_methods_settingsholder.append(
             ('method_{}'.format(m['method']),
              forms.BooleanField(
-                    label=m['verbose_name'],
+                    label='{} {}'.format(
+                        '<span class="fa fa-gift"></span>' if m['method'].split('__')[0] == 'giftcard' else '',
+                        m['verbose_name']
+                    ),
                     help_text=m['help_text'] if 'help_text' in m else '',
                     required=False,
             ))
         )
+
+        if 'extra_settings_fields' in m:
+            settingsholder.payment_methods_settingsholder += m['extra_settings_fields']
 
     return [settingsholder] + [
         type(
