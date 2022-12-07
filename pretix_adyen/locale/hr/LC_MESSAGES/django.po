@@ -1,0 +1,224 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-21 15:03+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: hr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: pretix_adyen/__init__.py:16
+msgid ""
+"Accept payments through Adyen, a global payment service provider offering a "
+"multitude of different payment methods."
+msgstr ""
+
+#: pretix_adyen/payment.py:33
+msgid "Adyen"
+msgstr ""
+
+#: pretix_adyen/payment.py:43
+msgid ""
+"Please configure a <a href=\"https://docs.adyen.com/development-resources/"
+"notifications\">Notification Webhook</a> to the following endpoint in order "
+"to automatically cancel orders when charges are refunded externally and to "
+"process asynchronous payment methods like SOFORT."
+msgstr ""
+
+#: pretix_adyen/payment.py:54
+msgid "Test Merchant Account"
+msgstr ""
+
+#: pretix_adyen/payment.py:59
+msgid "Test API Key"
+msgstr ""
+
+#: pretix_adyen/payment.py:61 pretix_adyen/payment.py:82
+msgid ""
+"Please refer to the documentation <a href=\"https://docs.adyen.com/user-"
+"management/how-to-get-the-api-key\">here</a> on how to obtain your API-key."
+msgstr ""
+
+#: pretix_adyen/payment.py:67
+msgid "Test HMAC Key"
+msgstr ""
+
+#: pretix_adyen/payment.py:69 pretix_adyen/payment.py:90
+msgid ""
+"Please refer to the documentation <a href=\"https://docs.adyen.com/"
+"development-resources/notifications/verify-hmac-signatures#enable-hmac-"
+"signatures\">here</a> on how to obtain your HMAC key."
+msgstr ""
+
+#: pretix_adyen/payment.py:75
+msgid "Production Merchant Account"
+msgstr ""
+
+#: pretix_adyen/payment.py:80
+msgid "Production API Key"
+msgstr ""
+
+#: pretix_adyen/payment.py:88
+msgid "Production HMAC Key"
+msgstr ""
+
+#: pretix_adyen/payment.py:96
+msgid "Production Endpoint Prefix"
+msgstr ""
+
+#: pretix_adyen/payment.py:98
+msgid ""
+"Please refer to the documentation <a href=\"https://docs.adyen.com/"
+"development-resources/live-endpoints\">here</a> on how to identify the "
+"Production Endpoint Prefix.<br />If your production checkout endpoint is "
+"https://[random]-[company name]-checkout-live.adyenpayments.com/, please use "
+"<i>[random]-[company name]</i> as the prefix."
+msgstr ""
+
+#: pretix_adyen/payment.py:107
+msgid "Production Environment"
+msgstr ""
+
+#: pretix_adyen/payment.py:114
+msgid "Please select the Adyen server closest to you."
+msgstr ""
+
+#: pretix_adyen/payment.py:121
+msgid "Credit card payments"
+msgstr ""
+
+#: pretix_adyen/payment.py:126 pretix_adyen/payment.py:600
+msgid "giropay"
+msgstr ""
+
+#: pretix_adyen/payment.py:147
+#, python-brace-format
+msgid ""
+"The Adyen plugin is operating in test mode. You can use one of <a {args}"
+">many test cards</a> to perform a transaction. No money will actually be "
+"transferred."
+msgstr ""
+
+#: pretix_adyen/payment.py:178
+msgid "You may need to enable JavaScript for Adyen payments."
+msgstr ""
+
+#: pretix_adyen/payment.py:309
+msgid "No payment information found."
+msgstr ""
+
+#: pretix_adyen/payment.py:408
+msgid ""
+"We had trouble communicating with Adyen. Please try again and get in touch "
+"with us if this problem persists."
+msgstr ""
+
+#: pretix_adyen/payment.py:493 pretix_adyen/payment.py:500
+#: pretix_adyen/views.py:171 pretix_adyen/views.py:189
+#: pretix_adyen/views.py:205
+msgid "Sorry, there was an error in the payment process."
+msgstr ""
+
+#: pretix_adyen/payment.py:592
+msgid "Credit card via Adyen"
+msgstr ""
+
+#: pretix_adyen/payment.py:593
+msgid "Credit card"
+msgstr ""
+
+#: pretix_adyen/payment.py:599
+msgid "giropay via Adyen"
+msgstr ""
+
+#: pretix_adyen/signals.py:86
+msgid "Adyen reported an event: {} {}"
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/checkout_payment_confirm.html:4
+msgid "The total amount will be withdrawn from your credit card."
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/checkout_payment_confirm.html:8
+msgid ""
+"After you submitted your order, we will redirect you to the payment service "
+"provider to complete your payment. You will then be redirected back here to "
+"get your tickets."
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/checkout_payment_confirm.html:13
+msgid "Payment method"
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/checkout_payment_form.html:7
+msgid ""
+"Your payment will be processed by Adyen NV. Your data will be transmitted "
+"directly to Adyen and never touches our servers."
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/control.html:6
+msgid "PSP reference"
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/control.html:10
+msgid "Refusal Reason"
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/control.html:14
+msgid "Reason"
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/control.html:18
+msgid "Total value"
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/pending.html:5
+msgid ""
+"We're waiting for an answer from the payment provider regarding your "
+"payment. Please contact us if this takes more than a few days."
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/pending.html:10
+msgid ""
+"You need to confirm your payment. Please click the link below to do so or "
+"start a new payment."
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/pending.html:16
+msgid "Confirm payment"
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/pending.html:23
+msgid ""
+"The payment transaction could not be completed for the following reason:"
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/pending.html:32
+msgid "Unknown reason"
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/sca.html:5
+msgid "Pay order"
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/sca.html:14
+#, python-format
+msgid "Confirm payment: %(code)s"
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/sca.html:26
+msgid "Cancel"
+msgstr ""
+
+#: pretix_adyen/templates/pretix_adyen/sca.html:34
+msgid "Continue"
+msgstr ""
