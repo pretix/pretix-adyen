@@ -1,13 +1,13 @@
+from typing import Any, Dict, Union
+
+import Adyen
 import hashlib
 import json
 import logging
 import re
+from Adyen import AdyenError
 from collections import OrderedDict
 from decimal import Decimal
-from typing import Any, Dict, Union
-
-import Adyen
-from Adyen import AdyenError
 from django import forms
 from django.contrib import messages
 from django.core.cache import cache
@@ -17,7 +17,9 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from pretix import __version__, settings
 from pretix.base.decimal import round_decimal
-from pretix.base.models import Event, InvoiceAddress, OrderPayment, OrderRefund, Order
+from pretix.base.models import (
+    Event, InvoiceAddress, Order, OrderPayment, OrderRefund,
+)
 from pretix.base.payment import BasePaymentProvider, PaymentException
 from pretix.base.settings import SettingsSandbox
 from pretix.helpers.http import get_client_ip
