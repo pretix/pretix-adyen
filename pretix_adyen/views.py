@@ -1,7 +1,6 @@
 import hashlib
 import json
 import logging
-
 from django.contrib import messages
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render

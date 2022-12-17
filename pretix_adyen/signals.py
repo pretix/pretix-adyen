@@ -1,5 +1,4 @@
 import json
-
 from django.core.cache import cache
 from django.dispatch import receiver
 from django.http import HttpRequest, HttpResponse
@@ -9,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from pretix.base.middleware import _merge_csp, _parse_csp, _render_csp
 from pretix.base.signals import logentry_display, register_payment_providers
 from pretix.presale.signals import html_head, process_response
+
 from pretix_adyen.payment import AdyenSettingsHolder
 
 
