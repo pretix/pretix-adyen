@@ -9,6 +9,7 @@ except ImportError:
 
 
 class PluginApp(PluginConfig):
+    default = True
     name = 'pretix_adyen'
     verbose_name = 'Adyen payments for pretix'
 
