@@ -27,7 +27,7 @@ from pretix.helpers.urls import build_absolute_uri as build_global_uri
 from pretix.multidomain.urlreverse import build_absolute_uri, eventreverse
 from pretix.presale.views.cart import cart_session
 
-from . import PluginApp
+from .apps import PluginApp
 
 logger = logging.getLogger('pretix_adyen')
 
