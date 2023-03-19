@@ -8,13 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-21 15:03+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-03-19 20:00+0000\n"
+"Last-Translator: Michael <michael.happl@gmx.at>\n"
+"Language-Team: Czech <https://translate.pretix.eu/projects/pretix/"
+"pretix-plugin-adyen/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Weblate 4.16.4\n"
 
 #: pretix_adyen/__init__.py:16
 msgid ""
@@ -94,7 +97,7 @@ msgstr ""
 
 #: pretix_adyen/payment.py:121
 msgid "Credit card payments"
-msgstr ""
+msgstr "Platby kreditní kartou"
 
 #: pretix_adyen/payment.py:126 pretix_adyen/payment.py:600
 msgid "giropay"
@@ -157,7 +160,7 @@ msgstr ""
 
 #: pretix_adyen/templates/pretix_adyen/checkout_payment_confirm.html:13
 msgid "Payment method"
-msgstr ""
+msgstr "Způsob platby"
 
 #: pretix_adyen/templates/pretix_adyen/checkout_payment_form.html:7
 msgid ""
@@ -179,7 +182,7 @@ msgstr ""
 
 #: pretix_adyen/templates/pretix_adyen/control.html:18
 msgid "Total value"
-msgstr ""
+msgstr "Celková částka"
 
 #: pretix_adyen/templates/pretix_adyen/pending.html:5
 msgid ""
@@ -208,7 +211,7 @@ msgstr ""
 
 #: pretix_adyen/templates/pretix_adyen/sca.html:5
 msgid "Pay order"
-msgstr ""
+msgstr "Zaplatit objednávku"
 
 #: pretix_adyen/templates/pretix_adyen/sca.html:14
 #, python-format
