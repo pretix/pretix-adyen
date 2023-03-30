@@ -74,14 +74,11 @@ var pretixadyen = {
                 pretixadyen.mountedcomponent = pretixadyen.adyen.create(pretixadyen.method).mount("#adyen-component-" + method_brand);
                 break;
         }
-
-        // pretixadyen.mountedcomponent = method_brand;
     },
 
     'unmountcomponent': function() {
-        // $('#adyen-component-' + pretixadyen.mountedcomponent).empty();
         pretixadyen.mountedcomponent.unmount();
-        // pretixadyen.mountedcomponent = null;
+        console.log(pretixadyen.mountedcomponent);
         pretixadyen.adyen = null;
         $('.adyen-container').closest("form").find(".checkout-button-row .btn-primary").prop("disabled", false);
     },
