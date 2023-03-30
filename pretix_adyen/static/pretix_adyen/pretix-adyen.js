@@ -21,6 +21,9 @@ var pretixadyen = {
             environment: $.trim($("#adyen_environment").html()),
             clientKey: $.trim($("#adyen_clientKey").html()),
             paymentMethodsResponse: JSON.parse($.trim($("#adyen_paymentMethodsResponse").html())),
+            analytics: {
+                enabled: false
+            },
             onChange: function (state, component) {
                 switch (pretixadyen.method) {
                     case 'scheme':
