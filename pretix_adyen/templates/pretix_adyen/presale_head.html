@@ -5,6 +5,10 @@
 {% compress js %}
     <script type="text/javascript" src="{% static "pretix_adyen/pretix-adyen.js" %}"></script>
 {% endcompress %}
+{% compress css %}
+    <link type="text/css" rel="stylesheet" href="{% static "pretix_adyen/pretix-adyen.css" %}">
+{% endcompress %}
+
 <script src="https://checkoutshopper-{{ environment }}.adyen.com/checkoutshopper/sdk/5.38.0/adyen.js"
         integrity="sha384-uoYZHqftW2oZ6ZlSSv3pu0w4+zqVc0lKpXeVl2b/rgwsOvVAVYYSoFBkChjWls50"
         crossorigin="anonymous"></script>
