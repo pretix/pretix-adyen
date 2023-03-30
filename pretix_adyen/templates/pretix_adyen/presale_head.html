@@ -5,12 +5,16 @@
 {% compress js %}
     <script type="text/javascript" src="{% static "pretix_adyen/pretix-adyen.js" %}"></script>
 {% endcompress %}
-<script src="https://checkoutshopper-{{ environment }}.adyen.com/checkoutshopper/sdk/5.14.0/adyen.js"
-        integrity="sha384-JsWtX9H7PkCMYb50ZDb4AdPdVNcPDx/O+aUYtLyLxU3D04jiqFEqnLKMDUIWxBpv"
+{% compress css %}
+    <link type="text/css" rel="stylesheet" href="{% static "pretix_adyen/pretix-adyen.css" %}">
+{% endcompress %}
+
+<script src="https://checkoutshopper-{{ environment }}.adyen.com/checkoutshopper/sdk/5.38.0/adyen.js"
+        integrity="sha384-uoYZHqftW2oZ6ZlSSv3pu0w4+zqVc0lKpXeVl2b/rgwsOvVAVYYSoFBkChjWls50"
         crossorigin="anonymous"></script>
 
-<link rel="stylesheet" href="https://checkoutshopper-{{ environment }}.adyen.com/checkoutshopper/sdk/5.14.0/adyen.css"
-     integrity="sha384-Dm1w8jaVOWA8rxpzkxA41DIyw5VlBjpoMTPfAijlfepYGgLKF+hke3NKeU/KTX7t"
+<link rel="stylesheet" href="https://checkoutshopper-{{ environment }}.adyen.com/checkoutshopper/sdk/5.38.0/adyen.css"
+     integrity="sha384-dzFUmC8dpGlHeo+gB2Bf4d9PXOtHJj90UPbuZhE8U41Fy1ONLJwBOCJVWZ5DhxFM"
      crossorigin="anonymous" />
 
 <script type="text/plain" id="adyen_locale">{{ locale }}</script>

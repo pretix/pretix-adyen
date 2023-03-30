@@ -1,0 +1,7 @@
+/*
+By default, pretix uses vertical-align: middle on images. This causes Adyen's card scheme icons to be misaligned
+within their container/border-outline.
+ */
+.adyen-checkout__image {
+    vertical-align: unset;
+}
