@@ -57,27 +57,28 @@ var pretixadyen = {
 
         switch (pretixadyen.method) {
             case "scheme":
-                pretixadyen.adyen.create(pretixadyen.method, {
+                pretixadyen.mountedcomponent = pretixadyen.adyen.create(pretixadyen.method, {
                     hasHolderName: true,
                     holderNameRequired: true,
                 }).mount("#adyen-component-" + pretixadyen.method);
                 break;
             case "giftcard":
-                pretixadyen.adyen.create(pretixadyen.method, {
+                pretixadyen.mountedcomponent = pretixadyen.adyen.create(pretixadyen.method, {
                     brand: pretixadyen.brand
                 }).mount("#adyen-component-" + method_brand);
                 break;
             default:
-                pretixadyen.adyen.create(pretixadyen.method).mount("#adyen-component-" + method_brand);
+                pretixadyen.mountedcomponent = pretixadyen.adyen.create(pretixadyen.method).mount("#adyen-component-" + method_brand);
                 break;
         }
 
-        pretixadyen.mountedcomponent = method_brand;
+        // pretixadyen.mountedcomponent = method_brand;
     },
 
     'unmountcomponent': function() {
-        $('#adyen-component-' + pretixadyen.mountedcomponent).empty();
-        pretixadyen.mountedcomponent = null;
+        // $('#adyen-component-' + pretixadyen.mountedcomponent).empty();
+        pretixadyen.mountedcomponent.unmount();
+        // pretixadyen.mountedcomponent = null;
         pretixadyen.adyen = null;
         $('.adyen-container').closest("form").find(".checkout-button-row .btn-primary").prop("disabled", false);
     },
@@ -103,7 +104,7 @@ var pretixadyen = {
         });
 
         let action = JSON.parse($("#adyen_action").val());
-        pretixadyen.adyen.createFromAction(action).mount('#scacontainer');
+        pretixadyen.mountedcomponent = pretixadyen.adyen.createFromAction(action).mount('#scacontainer');
         waitingDialog.hide();
     },
 
