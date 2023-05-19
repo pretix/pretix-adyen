@@ -3,12 +3,9 @@ pypi:
         - cp /keys/.pypirc ~/.pypirc
         - virtualenv env
         - source env/bin/activate
-        - XDG_CACHE_HOME=/cache pip3 install -U pip wheel setuptools twine check-manifest
-        - XDG_CACHE_HOME=/cache pip3 install -U pretix
-        - python setup.py develop
-        - python setup.py sdist bdist_wheel
-        - check-manifest .
-        - twine check dist/*
+        - XDG_CACHE_HOME=/cache pip3 install -U pip wheel setuptools twine build pretix-plugin-build
+        - python -m build
+        - check-manifest .twine check dist/*
         - twine upload dist/*
     tags:
         - python3
