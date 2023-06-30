@@ -8,23 +8,29 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-21 15:03+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-07-01 01:00+0000\n"
+"Last-Translator: Maurice Kaag <maurice@kaag.me>\n"
+"Language-Team: French <https://translate.pretix.eu/projects/pretix/"
+"pretix-plugin-adyen/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.17\n"
 
 #: pretix_adyen/__init__.py:16
 msgid ""
 "Accept payments through Adyen, a global payment service provider offering a "
 "multitude of different payment methods."
 msgstr ""
+"Accepter des paiements par l'intermédiaire d'Adyen, un fournisseur mondial "
+"de services de paiement offrant une multitude de méthodes de paiement "
+"différentes."
 
 #: pretix_adyen/payment.py:33
 msgid "Adyen"
-msgstr ""
+msgstr "Adyen"
 
 #: pretix_adyen/payment.py:43
 msgid ""
@@ -33,24 +39,32 @@ msgid ""
 "to automatically cancel orders when charges are refunded externally and to "
 "process asynchronous payment methods like SOFORT."
 msgstr ""
+"Veuillez configurer un <a href=\"https://docs.adyen.com/"
+"development-resources/notifications\">Webhook de notification</a> vers le "
+"point de terminaison suivant afin d'annuler automatiquement les commandes "
+"lorsque les frais sont remboursés en externe et de traiter les méthodes de "
+"paiement asynchrones telles que SOFORT."
 
 #: pretix_adyen/payment.py:54
 msgid "Test Merchant Account"
-msgstr ""
+msgstr "Compte marchand de test"
 
 #: pretix_adyen/payment.py:59
 msgid "Test API Key"
-msgstr ""
+msgstr "Clef de l'API de test"
 
 #: pretix_adyen/payment.py:61 pretix_adyen/payment.py:82
 msgid ""
 "Please refer to the documentation <a href=\"https://docs.adyen.com/user-"
 "management/how-to-get-the-api-key\">here</a> on how to obtain your API-key."
 msgstr ""
+"Veuillez consulter la documentation <a href=\"https://docs.adyen.com/"
+"user-management/how-to-get-the-api-key\">ici</a> pour savoir comment obtenir "
+"votre clé API."
 
 #: pretix_adyen/payment.py:67
 msgid "Test HMAC Key"
-msgstr ""
+msgstr "Clef HMAC de test"
 
 #: pretix_adyen/payment.py:69 pretix_adyen/payment.py:90
 msgid ""
@@ -58,10 +72,13 @@ msgid ""
 "development-resources/notifications/verify-hmac-signatures#enable-hmac-"
 "signatures\">here</a> on how to obtain your HMAC key."
 msgstr ""
+"Veuillez consulter la documentation <a href=\"https://docs.adyen.com/"
+"development-resources/notifications/verify-hmac-signatures#enable-hmac-"
+"signatures\">ici</a> pour savoir comment obtenir votre clé HMAC."
 
 #: pretix_adyen/payment.py:75
 msgid "Production Merchant Account"
-msgstr ""
+msgstr "Compte marchand de production"
 
 #: pretix_adyen/payment.py:80
 msgid "Production API Key"
