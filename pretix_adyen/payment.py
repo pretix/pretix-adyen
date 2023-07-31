@@ -230,6 +230,10 @@ class AdyenMethod(BasePaymentProvider):
 
         return kwargs
 
+    @property
+    def additional_rqdata(self):
+        return {}
+
     def _init_api(self, env=None):
         self.adyen = Adyen.Adyen()
         self.adyen.client.xapikey = self.settings.test_api_key if self.event.testmode else self.settings.prod_api_key
@@ -328,7 +332,8 @@ class AdyenMethod(BasePaymentProvider):
             'reference': '{event}-{code}-R-{payment}'.format(event=self.event.slug.upper(), code=refund.order.code, payment=refund.local_id),
             'shopperStatement': self.statement_descriptor(refund),
             'captureDelayHours': 0,
-            **self.api_kwargs
+            **self.additional_rqdata,
+            **self.api_kwargs,
         }
 
         try:
@@ -368,7 +373,8 @@ class AdyenMethod(BasePaymentProvider):
                 'origin': settings.SITE_URL,
                 'captureDelayHours': 0,
                 'shopperInteraction': 'Ecommerce',
-                **self.api_kwargs
+                **self.additional_rqdata,
+                **self.api_kwargs,
             }
 
             if self.method == "scheme":
@@ -550,7 +556,8 @@ class AdyenMethod(BasePaymentProvider):
                     'currency': self.event.currency
                 },
                 'channel': 'Web',
-                **self.api_kwargs
+                **self.additional_rqdata,
+                **self.api_kwargs,
             }
 
             ia = get_invoice_address()
@@ -587,7 +594,8 @@ class AdyenMethod(BasePaymentProvider):
                     'currency': self.event.currency
                 },
                 'channel': 'Web',
-                **self.api_kwargs
+                **self.additional_rqdata,
+                **self.api_kwargs,
             }
 
             if order.invoice_address.country:
