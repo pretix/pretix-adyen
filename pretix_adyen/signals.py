@@ -51,9 +51,7 @@ def signal_process_response(sender, request: HttpRequest, response: HttpResponse
 
         sources = ['frame-src', 'style-src', 'script-src', 'img-src', 'connect-src']
 
-        env = 'test' if sender.testmode else provider.settings.prod_env
-
-        csps = {src: ['https://checkoutshopper-{}.adyen.com'.format(env)] for src in sources}
+        csps = {src: ['https://*.adyen.com'] for src in sources}
 
         # Adyen unfortunately applies styles through their script-src
         # Also, the unsafe-inline needs to specified within single quotes!
