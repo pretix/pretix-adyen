@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-21 15:03+0100\n"
-"PO-Revision-Date: 2023-07-19 17:00+0000\n"
+"PO-Revision-Date: 2023-09-11 18:00+0000\n"
 "Last-Translator: Ronan LE MEILLAT <ronan.le_meillat@highcanfly.club>\n"
 "Language-Team: French <https://translate.pretix.eu/projects/pretix/"
 "pretix-plugin-adyen/fr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.17\n"
+"X-Generator: Weblate 4.18.2\n"
 
 #: pretix_adyen/__init__.py:16
 msgid ""
@@ -115,7 +115,7 @@ msgstr ""
 
 #: pretix_adyen/payment.py:126 pretix_adyen/payment.py:600
 msgid "giropay"
-msgstr ""
+msgstr "giropay"
 
 #: pretix_adyen/payment.py:147
 #, python-brace-format
@@ -151,7 +151,7 @@ msgstr ""
 
 #: pretix_adyen/payment.py:593
 msgid "Credit card"
-msgstr ""
+msgstr "Carte de crédit"
 
 #: pretix_adyen/payment.py:599
 msgid "giropay via Adyen"
@@ -203,6 +203,8 @@ msgid ""
 "We're waiting for an answer from the payment provider regarding your "
 "payment. Please contact us if this takes more than a few days."
 msgstr ""
+"Nous attendons une réponse du fournisseur de paiement concernant votre "
+"paiement. Veuillez nous contacter si cela prend plus de quelques jours."
 
 #: pretix_adyen/templates/pretix_adyen/pending.html:10
 msgid ""
@@ -218,10 +220,11 @@ msgstr ""
 msgid ""
 "The payment transaction could not be completed for the following reason:"
 msgstr ""
+"L’opération de paiement n’a pas pu être effectuée pour la raison suivante :"
 
 #: pretix_adyen/templates/pretix_adyen/pending.html:32
 msgid "Unknown reason"
-msgstr ""
+msgstr "Raison inconnue"
 
 #: pretix_adyen/templates/pretix_adyen/sca.html:5
 msgid "Pay order"
