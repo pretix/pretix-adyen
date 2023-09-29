@@ -598,8 +598,10 @@ class AdyenMethod(BasePaymentProvider):
                 **self.api_kwargs,
             }
 
-            if order.invoice_address.country:
+            try:
                 rqdata['countryCode'] = str(order.invoice_address.country)
+            except InvoiceAddress.DoesNotExist:
+                pass
 
             self.payment_methods_hash = self._get_payment_methods_hash(rqdata)
             self._get_payment_methods(rqdata)
