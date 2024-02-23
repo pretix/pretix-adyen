@@ -1,3 +1,4 @@
+from json import JSONDecodeError
 from typing import Any, Dict, Union
 
 import Adyen
@@ -623,7 +624,7 @@ class AdyenMethod(BasePaymentProvider):
                 )
                 payment_methods = data
             except AdyenError as e:
-                logger.exception('AdyenError: %s' % str(e))
+                logger.exception('AdyenError: %s; rqdata: %s' % str(e), json.dumps(rqdata))
                 return False
 
         return payment_methods
@@ -633,13 +634,16 @@ class AdyenMethod(BasePaymentProvider):
         method = method_brand[0]
         brand = method_brand[-1]
 
+        try:
+            payment_methods = json.loads(payment_methods)['paymentMethods']
+        except (JSONDecodeError, TypeError, KeyError):
+            payment_methods = {}
+
         # Some methods take the form of method__brand such as giftcard__svs.
         # In this case, we do not only need to check if the method is allowed (there can be one or more
         # giftcard-methods returned by Adyen), but also if the specific brand is mentioned.
         if any(
-                d.get('type', None) == method and d.get('brand', method) == brand for d in json.loads(
-                    payment_methods
-                )['paymentMethods']
+                d.get('type', None) == method and d.get('brand', method) == brand for d in payment_methods
         ):
             return True
 
