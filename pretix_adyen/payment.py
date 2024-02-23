@@ -565,8 +565,7 @@ class AdyenMethod(BasePaymentProvider):
                 rqdata['countryCode'] = str(ia.country)
 
             self.payment_methods_hash = self._get_payment_methods_hash(rqdata)
-            self._get_payment_methods(rqdata)
-            return self._is_allowed_payment_method()
+            return self._is_allowed_payment_method(self._get_payment_methods(rqdata))
 
         return False
 
@@ -604,8 +603,7 @@ class AdyenMethod(BasePaymentProvider):
                 pass
 
             self.payment_methods_hash = self._get_payment_methods_hash(rqdata)
-            self._get_payment_methods(rqdata)
-            return self._is_allowed_payment_method()
+            return self._is_allowed_payment_method(self._get_payment_methods(rqdata))
         return False
 
     def _get_payment_methods_hash(self, rqdata):
@@ -630,7 +628,7 @@ class AdyenMethod(BasePaymentProvider):
 
         return payment_methods
 
-    def _is_allowed_payment_method(self):
+    def _is_allowed_payment_method(self, payment_methods):
         method_brand = self.method.split("__")
         method = method_brand[0]
         brand = method_brand[-1]
@@ -640,7 +638,7 @@ class AdyenMethod(BasePaymentProvider):
         # giftcard-methods returned by Adyen), but also if the specific brand is mentioned.
         if any(
                 d.get('type', None) == method and d.get('brand', method) == brand for d in json.loads(
-                    cache.get(f'adyen_payment_methods_{self.payment_methods_hash}')
+                    payment_methods
                 )['paymentMethods']
         ):
             return True
