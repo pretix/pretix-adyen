@@ -624,7 +624,7 @@ class AdyenMethod(BasePaymentProvider):
                 )
                 payment_methods = data
             except AdyenError as e:
-                logger.exception('AdyenError: %s; rqdata: %s' % str(e), json.dumps(rqdata))
+                logger.exception('AdyenError: %s; rqdata: %s' % (str(e), json.dumps(rqdata)))
                 return False
 
         return payment_methods
