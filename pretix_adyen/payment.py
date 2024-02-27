@@ -614,6 +614,11 @@ class AdyenMethod(BasePaymentProvider):
         checksum = self._get_payment_methods_hash(rqdata)
         payment_methods = cache.get(f'adyen_payment_methods_{checksum}')
         if not payment_methods:
+            # Since Kosovo is not yet an ISO3166-country, everyone will do whatever they feel like doing.
+            # Case in point: While for us/django-countries, Kosovo is XK, it's QZ for Adyen. (Adyen Ticket #03572543)
+            if rqdata.get('countryCode', False):
+                rqdata['countryCode'] = 'QZ'
+
             try:
                 response = self.adyen.checkout.payment_methods(rqdata)
                 data = json.dumps(response.message)
