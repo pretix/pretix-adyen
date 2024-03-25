@@ -271,10 +271,16 @@ class AdyenMethod(BasePaymentProvider):
         }
         return template.render(ctx)
 
+    def matching_id(self, payment: OrderPayment):
+        return payment.info_data.get("pspReference", None)
+
+    def refund_matching_id(self, refund: OrderRefund):
+        return refund.info_data.get('pspReference', None)
+
     def api_payment_details(self, payment: OrderPayment):
         return {
-            "id": payment.info_data.get("id", None),
-            "payment_method": payment.info_data.get("payment_method", None)
+            "id": payment.info_data.get("pspReference", None),
+            "payment_method": payment.info_data.get("paymentMethod", None)
         }
 
     def payment_control_render(self, request, payment) -> str:
