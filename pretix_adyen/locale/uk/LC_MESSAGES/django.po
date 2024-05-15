@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-21 15:03+0100\n"
-"PO-Revision-Date: 2024-05-13 21:00+0000\n"
+"PO-Revision-Date: 2024-05-15 23:00+0000\n"
 "Last-Translator: Serhii Horichenko <m@sgg.im>\n"
 "Language-Team: Ukrainian <https://translate.pretix.eu/projects/pretix/"
 "pretix-plugin-adyen/uk/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.4.3\n"
+"X-Generator: Weblate 5.5.5\n"
 
 #: pretix_adyen/__init__.py:16
 msgid ""
@@ -102,7 +102,7 @@ msgstr ""
 
 #: pretix_adyen/payment.py:126 pretix_adyen/payment.py:600
 msgid "giropay"
-msgstr ""
+msgstr "giropay"
 
 #: pretix_adyen/payment.py:147
 #, python-brace-format
@@ -138,7 +138,7 @@ msgstr ""
 
 #: pretix_adyen/payment.py:593
 msgid "Credit card"
-msgstr ""
+msgstr "Кредитна картка"
 
 #: pretix_adyen/payment.py:599
 msgid "giropay via Adyen"
@@ -161,7 +161,7 @@ msgstr ""
 
 #: pretix_adyen/templates/pretix_adyen/checkout_payment_confirm.html:13
 msgid "Payment method"
-msgstr ""
+msgstr "Спосіб оплати"
 
 #: pretix_adyen/templates/pretix_adyen/checkout_payment_form.html:7
 msgid ""
@@ -190,6 +190,8 @@ msgid ""
 "We're waiting for an answer from the payment provider regarding your "
 "payment. Please contact us if this takes more than a few days."
 msgstr ""
+"Ми чекаємо відповідь щодо Вашого платежу від платіжного провайдера. Зв’"
+"яжіться з нами, якщо це займе більше кількох днів."
 
 #: pretix_adyen/templates/pretix_adyen/pending.html:10
 msgid ""
@@ -204,11 +206,11 @@ msgstr ""
 #: pretix_adyen/templates/pretix_adyen/pending.html:23
 msgid ""
 "The payment transaction could not be completed for the following reason:"
-msgstr ""
+msgstr "Платіжну операцію не вдалося завершити з наступної причини:"
 
 #: pretix_adyen/templates/pretix_adyen/pending.html:32
 msgid "Unknown reason"
-msgstr ""
+msgstr "Невідома причина"
 
 #: pretix_adyen/templates/pretix_adyen/sca.html:5
 msgid "Pay order"
