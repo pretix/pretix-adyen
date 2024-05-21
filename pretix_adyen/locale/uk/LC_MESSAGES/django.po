@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-21 15:03+0100\n"
-"PO-Revision-Date: 2024-05-15 23:00+0000\n"
+"PO-Revision-Date: 2024-05-21 22:00+0000\n"
 "Last-Translator: Serhii Horichenko <m@sgg.im>\n"
 "Language-Team: Ukrainian <https://translate.pretix.eu/projects/pretix/"
 "pretix-plugin-adyen/uk/>\n"
@@ -25,10 +25,12 @@ msgid ""
 "Accept payments through Adyen, a global payment service provider offering a "
 "multitude of different payment methods."
 msgstr ""
+"Приймайте платежі через Adyen, глобального постачальника платіжних послуг, "
+"який пропонує різноманітні способи оплати."
 
 #: pretix_adyen/payment.py:33
 msgid "Adyen"
-msgstr ""
+msgstr "Adyen"
 
 #: pretix_adyen/payment.py:43
 msgid ""
@@ -37,24 +39,31 @@ msgid ""
 "to automatically cancel orders when charges are refunded externally and to "
 "process asynchronous payment methods like SOFORT."
 msgstr ""
+"Налаштуйте <a href=\"https://docs.adyen.com/development-resources/"
+"notifications\">Перехоплення сповіщень</a> для вказаної кінцевої точки для "
+"автоматичного скасування замовлення, коли кошти повертаються ззовні та для "
+"обробки асинхронних способів оплати на кшталт SOFORT."
 
 #: pretix_adyen/payment.py:54
 msgid "Test Merchant Account"
-msgstr ""
+msgstr "Тестовий обліковий запис продавця"
 
 #: pretix_adyen/payment.py:59
 msgid "Test API Key"
-msgstr ""
+msgstr "Тестовий ключ API"
 
 #: pretix_adyen/payment.py:61 pretix_adyen/payment.py:82
 msgid ""
 "Please refer to the documentation <a href=\"https://docs.adyen.com/user-"
 "management/how-to-get-the-api-key\">here</a> on how to obtain your API-key."
 msgstr ""
+"Для того щоби дізнатися, як отримати свій ключ API, зверніться до <a href="
+"\"https://docs.adyen.com/user-management/how-to-get-the-api-key\""
+">документації</a>."
 
 #: pretix_adyen/payment.py:67
 msgid "Test HMAC Key"
-msgstr ""
+msgstr "Тестовий ключ HMAC"
 
 #: pretix_adyen/payment.py:69 pretix_adyen/payment.py:90
 msgid ""
@@ -62,22 +71,25 @@ msgid ""
 "development-resources/notifications/verify-hmac-signatures#enable-hmac-"
 "signatures\">here</a> on how to obtain your HMAC key."
 msgstr ""
+"Для того щоби дізнатися, як отримати свій ключ HMAC, зверніться до <a href="
+"\"https://docs.adyen.com/development-resources/notifications/verify-hmac-"
+"signatures#enable-hmac-signatures\">документації</a>."
 
 #: pretix_adyen/payment.py:75
 msgid "Production Merchant Account"
-msgstr ""
+msgstr "Робочий обліковий запис продавця"
 
 #: pretix_adyen/payment.py:80
 msgid "Production API Key"
-msgstr ""
+msgstr "Робочий ключ API"
 
 #: pretix_adyen/payment.py:88
 msgid "Production HMAC Key"
-msgstr ""
+msgstr "Робочий ключ HMAC"
 
 #: pretix_adyen/payment.py:96
 msgid "Production Endpoint Prefix"
-msgstr ""
+msgstr "Робочий префікс кінцевої точки"
 
 #: pretix_adyen/payment.py:98
 msgid ""
@@ -87,18 +99,23 @@ msgid ""
 "https://[random]-[company name]-checkout-live.adyenpayments.com/, please use "
 "<i>[random]-[company name]</i> as the prefix."
 msgstr ""
+"Для того, щоби дізнатися, як визначити робочий префікс кінцевої точки, "
+"перегляньте <a href=\"https://docs.adyen.com/development-resources/live-"
+"endpoints\">документацію</a>.<br />Якщо Ваша робоча кінцева точка для "
+"перевірки є https://[random]-[company name]-checkout-live.adyenpayments.com/"
+", використовуйте як префікс <i>[random]-[company name]</i>."
 
 #: pretix_adyen/payment.py:107
 msgid "Production Environment"
-msgstr ""
+msgstr "Робоче середовище"
 
 #: pretix_adyen/payment.py:114
 msgid "Please select the Adyen server closest to you."
-msgstr ""
+msgstr "Виберіть найближчий до Вас сервер Adyen."
 
 #: pretix_adyen/payment.py:121
 msgid "Credit card payments"
-msgstr ""
+msgstr "Оплата кредитними картками"
 
 #: pretix_adyen/payment.py:126 pretix_adyen/payment.py:600
 msgid "giropay"
@@ -111,30 +128,35 @@ msgid ""
 ">many test cards</a> to perform a transaction. No money will actually be "
 "transferred."
 msgstr ""
+"Плагін Adyen працює у тестовому режимі. Для транзакцій Ви можете "
+"використовувати одну з <a {args}>багатьох тестових карток</a>. Фактично "
+"гроші не будуть перераховані."
 
 #: pretix_adyen/payment.py:178
 msgid "You may need to enable JavaScript for Adyen payments."
-msgstr ""
+msgstr "Для платежів Adyen Вам можливо буде потрібно увімкнути JavaScript."
 
 #: pretix_adyen/payment.py:309
 msgid "No payment information found."
-msgstr ""
+msgstr "Інформації про платіж не знайдено."
 
 #: pretix_adyen/payment.py:408
 msgid ""
 "We had trouble communicating with Adyen. Please try again and get in touch "
 "with us if this problem persists."
 msgstr ""
+"У нас виникли проблеми під час обміну даними з Adyen. Спробуйте, будь ласка, "
+"ще раз, і якщо проблема не зникне, зв’яжіться з нами."
 
 #: pretix_adyen/payment.py:493 pretix_adyen/payment.py:500
 #: pretix_adyen/views.py:171 pretix_adyen/views.py:189
 #: pretix_adyen/views.py:205
 msgid "Sorry, there was an error in the payment process."
-msgstr ""
+msgstr "На жаль, під час оплати виникла помилка."
 
 #: pretix_adyen/payment.py:592
 msgid "Credit card via Adyen"
-msgstr ""
+msgstr "Кредитна картка через Adyen"
 
 #: pretix_adyen/payment.py:593
 msgid "Credit card"
@@ -142,15 +164,15 @@ msgstr "Кредитна картка"
 
 #: pretix_adyen/payment.py:599
 msgid "giropay via Adyen"
-msgstr ""
+msgstr "giropay через Adyen"
 
 #: pretix_adyen/signals.py:86
 msgid "Adyen reported an event: {} {}"
-msgstr ""
+msgstr "Adyen повідомляє про подію: {} {}"
 
 #: pretix_adyen/templates/pretix_adyen/checkout_payment_confirm.html:4
 msgid "The total amount will be withdrawn from your credit card."
-msgstr ""
+msgstr "Загальна сума буде списана з Вашої кредитної картки."
 
 #: pretix_adyen/templates/pretix_adyen/checkout_payment_confirm.html:8
 msgid ""
@@ -158,6 +180,9 @@ msgid ""
 "provider to complete your payment. You will then be redirected back here to "
 "get your tickets."
 msgstr ""
+"Після завершення замовлення ми перенаправимо Вас до постачальника платіжних "
+"послуг для здійснення оплати. Потім, для отримання квитків, Ви будете "
+"перенаправлені назад сюди."
 
 #: pretix_adyen/templates/pretix_adyen/checkout_payment_confirm.html:13
 msgid "Payment method"
@@ -168,22 +193,24 @@ msgid ""
 "Your payment will be processed by Adyen NV. Your data will be transmitted "
 "directly to Adyen and never touches our servers."
 msgstr ""
+"Ваш платіж буде опрацьований Adyen NV. Ваші дані будуть передані напряму до "
+"Adyen та ніколи не обробляються нашими серверами."
 
 #: pretix_adyen/templates/pretix_adyen/control.html:6
 msgid "PSP reference"
-msgstr ""
+msgstr "Посилання PSP"
 
 #: pretix_adyen/templates/pretix_adyen/control.html:10
 msgid "Refusal Reason"
-msgstr ""
+msgstr "Причина відмови"
 
 #: pretix_adyen/templates/pretix_adyen/control.html:14
 msgid "Reason"
-msgstr ""
+msgstr "Причина"
 
 #: pretix_adyen/templates/pretix_adyen/control.html:18
 msgid "Total value"
-msgstr ""
+msgstr "Загальна вартість"
 
 #: pretix_adyen/templates/pretix_adyen/pending.html:5
 msgid ""
@@ -198,10 +225,12 @@ msgid ""
 "You need to confirm your payment. Please click the link below to do so or "
 "start a new payment."
 msgstr ""
+"Вам потрібно підтвердити платіж. Для підтвердження клацніть посилання нижче "
+"або розпочніть новий платіж."
 
 #: pretix_adyen/templates/pretix_adyen/pending.html:16
 msgid "Confirm payment"
-msgstr ""
+msgstr "Підтвердити платіж"
 
 #: pretix_adyen/templates/pretix_adyen/pending.html:23
 msgid ""
@@ -214,12 +243,12 @@ msgstr "Невідома причина"
 
 #: pretix_adyen/templates/pretix_adyen/sca.html:5
 msgid "Pay order"
-msgstr ""
+msgstr "Оплатити замовлення"
 
 #: pretix_adyen/templates/pretix_adyen/sca.html:14
 #, python-format
 msgid "Confirm payment: %(code)s"
-msgstr ""
+msgstr "Підтвердіть оплату: %(code)s"
 
 #: pretix_adyen/templates/pretix_adyen/sca.html:26
 msgid "Cancel"
