@@ -4,7 +4,7 @@ pypi:
     before_script:
         - cat $PYPIRC > ~/.pypirc
         - pip install -U pip uv
-        - uv pip install --system -U wheel setuptools twine build pretix-plugin-build
+        - uv pip install --system -U wheel setuptools twine build pretix-plugin-build check-manifest
     script:
         - python -m build
         - check-manifest .
