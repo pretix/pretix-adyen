@@ -1,15 +1,23 @@
 pypi:
+    image:
+        name: pretix/ci-image
+    before_script:
+        - cat $PYPIRC > ~/.pypirc
+        - pip install -U pip uv
+        - uv pip install --system -U wheel setuptools twine build pretix-plugin-build
     script:
-        - cp /keys/.pypirc ~/.pypirc
-        - virtualenv env
-        - source env/bin/activate
-        - XDG_CACHE_HOME=/cache pip3 install -U pip wheel setuptools twine build check-manifest pretix-plugin-build
         - python -m build
         - check-manifest .
         - twine check dist/*
         - twine upload dist/*
-    tags:
-        - python3
+    variables:
+        PIP_CACHE_DIR: $CI_PROJECT_DIR/.cache/pip
+        XDG_CACHE_HOME: $CI_PROJECT_DIR/.cache
+    cache:
+        key:
+            files:
+                - pyproject.toml
+        paths: .cache
     only:
         - pypi
     artifacts:
