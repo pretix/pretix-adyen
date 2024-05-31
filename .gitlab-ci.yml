@@ -17,7 +17,8 @@ pypi:
         key:
             files:
                 - pyproject.toml
-        paths: .cache
+        paths:
+            - .cache
     only:
         - pypi
     artifacts:
