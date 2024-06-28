@@ -2,10 +2,10 @@
 {% load compress %}
 {% load i18n %}
 
-{% compress js %}
+{% compress js file adyen %}
     <script type="text/javascript" src="{% static "pretix_adyen/pretix-adyen.js" %}"></script>
 {% endcompress %}
-{% compress css %}
+{% compress css file adyen %}
     <link type="text/css" rel="stylesheet" href="{% static "pretix_adyen/pretix-adyen.css" %}">
 {% endcompress %}
 
