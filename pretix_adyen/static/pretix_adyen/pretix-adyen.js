@@ -18,6 +18,7 @@ var pretixadyen = {
 
         pretixadyen.adyen = await AdyenCheckout({
             locale: $.trim($("#adyen_locale").html()),
+            translations: JSON.parse($("#adyen_translations-" + method_brand).val() || '{}'),
             environment: $.trim($("#adyen_environment").html()),
             clientKey: $.trim($("#adyen_clientKey").html()),
             paymentMethodsResponse: JSON.parse($.trim($("#adyen_paymentMethodsResponse").html())),
