@@ -416,8 +416,8 @@ payment_methods = [
         'help_text': _('Japanese Convienience Stores'),
     }, {
         'method': 'kakaopay',
-        'public_name': _('KakoPay'),
-        'verbose_name': _('KakoPay'),
+        'public_name': _('KakaoPay'),
+        'verbose_name': _('KakaoPay'),
     },
     # {
     #     'method': 'klarna',
