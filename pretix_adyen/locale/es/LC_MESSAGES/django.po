@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-21 15:03+0100\n"
-"PO-Revision-Date: 2024-11-01 23:00+0000\n"
+"PO-Revision-Date: 2024-11-04 19:00+0000\n"
 "Last-Translator: CVZ-es <damien.bremont@casadevelazquez.org>\n"
 "Language-Team: Spanish <https://translate.pretix.eu/projects/pretix/"
 "pretix-plugin-adyen/es/>\n"
@@ -24,10 +24,12 @@ msgid ""
 "Accept payments through Adyen, a global payment service provider offering a "
 "multitude of different payment methods."
 msgstr ""
+"Aceptar pagos a través de Adyen, un proveedor global de servicios de pago "
+"que ofrece multitud de métodos de pago diferentes."
 
 #: pretix_adyen/payment.py:33
 msgid "Adyen"
-msgstr ""
+msgstr "Adyen"
 
 #: pretix_adyen/payment.py:43
 msgid ""
@@ -224,4 +226,4 @@ msgstr "Cancelar"
 
 #: pretix_adyen/templates/pretix_adyen/sca.html:34
 msgid "Continue"
-msgstr ""
+msgstr "Continuar"
