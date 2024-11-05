@@ -38,11 +38,19 @@ msgid ""
 "to automatically cancel orders when charges are refunded externally and to "
 "process asynchronous payment methods like SOFORT."
 msgstr ""
+<<<<<<< HEAD
 "Por favor, configure una <a href=\"https://docs.adyen.com/"
 "development-resources/notifications\">Notificación Webhook</a> al siguiente "
 "endpoint para cancelar automáticamente los pedidos cuando los cargos sean "
 "devueltos de forma externa y para procesar los métodos de pago asíncronos "
 "como SOFORT."
+=======
+"Por favor, configure un <a href=\"https://docs.adyen.com/"
+"development-resources/notifications\">Notificaciones Webhook</a> al "
+"siguiente endpoint para cancelar automáticamente los pedidos cuando los "
+"cargos se reembolsan de forma externa y para procesar métodos de pago "
+"asíncronos como SOFORT."
+>>>>>>> b2d512b (Translated on translate.pretix.eu (Spanish))
 
 #: pretix_adyen/payment.py:54
 msgid "Test Merchant Account"
@@ -206,7 +214,11 @@ msgstr "Motivo del rechazo"
 
 #: pretix_adyen/templates/pretix_adyen/control.html:14
 msgid "Reason"
+<<<<<<< HEAD
 msgstr "Razón"
+=======
+msgstr "Motivo"
+>>>>>>> b2d512b (Translated on translate.pretix.eu (Spanish))
 
 #: pretix_adyen/templates/pretix_adyen/control.html:18
 msgid "Total value"
