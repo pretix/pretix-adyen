@@ -504,6 +504,11 @@ class AdyenMethod(BasePaymentProvider):
         except AdyenError as e:
             logger.exception('AdyenError: %s' % str(e))
             messages.error(request, _('Sorry, there was an error in the payment process.'))
+            try:
+                payment.fail(info=json.loads(e.raw_response))
+            except (JSONDecodeError, AttributeError):
+                payment.fail(log_data=str(e))
+
             return eventreverse(self.event, 'presale:event.order', kwargs={
                 'order': payment.order.code,
                 'secret': payment.order.secret
