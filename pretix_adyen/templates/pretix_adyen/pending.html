@@ -28,6 +28,8 @@
             {{ payment_info.refusalReason }}
         {% elif payment_info and payment_info.reason %}
             {{ payment_info.reason }}
+        {% elif payment_info and payment_info.scaError %}
+            {{ payment_info.scaError.name }}: {{ payment_info.scaError.message }}
         {% else %}
             {% trans "Unknown reason" %}
         {% endif %}

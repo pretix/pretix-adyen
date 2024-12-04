@@ -101,7 +101,18 @@ var pretixadyen = {
                 $('#continuebutton').removeClass('hidden');
                 $('#continuebutton').closest("form").submit();
                 waitingDialog.show(gettext("Contacting your bank …"));
-            }
+            },
+            onError: function(error) {
+                let errordata = {
+                    "name": error.name,
+                    "message": error.message
+                };
+                $("#adyen_error").val(JSON.stringify(errordata));
+                $('#scacontainer').hide();
+                $('#continuebutton').removeClass('hidden');
+                $('#continuebutton').closest("form").submit();
+                waitingDialog.show(gettext("Contacting your bank …"));
+            },
         });
 
         let action = JSON.parse($("#adyen_action").val());

@@ -30,6 +30,7 @@
             <form action="{{ request.path }}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="adyen_stateData" value="" id="adyen_stateData" />
+                <input type="hidden" name="adyen_error" value="" id="adyen_error" />
                 <button type="submit" class="btn-block btn-primary btn-lg hidden" id="continuebutton">
                     {% trans "Continue" %}
                 </button>

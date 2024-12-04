@@ -167,6 +167,13 @@ class ScaView(AdyenOrderView, View):
         if request.POST.get('adyen_stateData'):
             return redirect(prov._handle_action(request, self.payment, statedata=request.POST.get('adyen_stateData')))
 
+        if request.POST.get('adyen_error'):
+            error_data = json.loads(request.POST.get('adyen_error'))
+            info_data = self.payment.info_data
+            info_data['scaError'] = error_data
+            self.payment.fail(info=info_data, log_data=error_data)
+            return self._redirect_to_order()
+
         messages.error(self.request, _('Sorry, there was an error in the payment process.'))
         return self._redirect_to_order()
 
