@@ -362,7 +362,7 @@ class AdyenMethod(BasePaymentProvider):
         self._init_api()
         try:
             payment_method_data = json.loads(request.session['{}-{}'.format('payment_adyen_paymentMethodData', self.method)])
-            base_url = urlparse(build_absolute_uri(request.event,'presale:event.index'))
+            base_url = urlparse(build_absolute_uri(request.event, 'presale:event.index'))
 
             rqdata = {
                 'amount': {
