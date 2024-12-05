@@ -1,5 +1,6 @@
 from json import JSONDecodeError
 from typing import Any, Dict, Union
+from urllib.parse import urlparse
 
 import Adyen
 import hashlib
@@ -361,6 +362,7 @@ class AdyenMethod(BasePaymentProvider):
         self._init_api()
         try:
             payment_method_data = json.loads(request.session['{}-{}'.format('payment_adyen_paymentMethodData', self.method)])
+            base_url = urlparse(build_absolute_uri(request.event,'presale:event.index'))
 
             rqdata = {
                 'amount': {
@@ -377,7 +379,7 @@ class AdyenMethod(BasePaymentProvider):
                     'hash': hashlib.sha1(payment.order.secret.lower().encode()).hexdigest(),
                 }),
                 'channel': 'Web',
-                'origin': settings.SITE_URL,
+                'origin': f'{base_url.scheme}://{base_url.netloc}/',
                 'captureDelayHours': 0,
                 'shopperInteraction': 'Ecommerce',
                 **self.additional_rqdata,
