@@ -382,6 +382,7 @@ class AdyenMethod(BasePaymentProvider):
                 'origin': f'{base_url.scheme}://{base_url.netloc}/',
                 'captureDelayHours': 0,
                 'shopperInteraction': 'Ecommerce',
+                'shopperIP': get_client_ip(request),
                 **self.additional_rqdata,
                 **self.api_kwargs,
             }
@@ -390,8 +391,9 @@ class AdyenMethod(BasePaymentProvider):
                 rqdata['additionalData'] = {
                     'allow3DS2': 'true'
                 }
+
+            if 'browserInfo' in payment_method_data:
                 rqdata['browserInfo'] = payment_method_data['browserInfo']
-                rqdata['shopperIP'] = get_client_ip(request)
 
             try:
                 result = self.adyen.checkout.payments(rqdata)
