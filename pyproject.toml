@@ -14,7 +14,7 @@ maintainers = [
 ]
 
 dependencies = [
-    "Adyen==6.0.*",
+    "Adyen==13.0.*",
 ]
 
 [project.entry-points."pretix.plugin"]
