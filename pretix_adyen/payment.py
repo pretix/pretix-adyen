@@ -132,7 +132,9 @@ class AdyenSettingsHolder(BasePaymentProvider):
                  choices=[
                      ('live', 'Europe'),
                      ('live-au', 'Australia'),
-                     ('live-us', 'US')
+                     ('live-us', 'US'),
+                     ('live-apse', 'Asia Pacific & Southeast'),
+                     ('live-in', 'India'),
                  ],
                  help_text=_('Please select the Adyen server closest to you.')
              )),
@@ -345,7 +347,7 @@ class AdyenMethod(BasePaymentProvider):
         }
 
         try:
-            result = self.adyen.payment.refund(rqdata)
+            result = self.adyen.payments_api.refund(rqdata)
         except AdyenError as e:
             logger.exception('AdyenError: %s' % str(e))
             return
@@ -396,7 +398,7 @@ class AdyenMethod(BasePaymentProvider):
                 rqdata['browserInfo'] = payment_method_data['browserInfo']
 
             try:
-                result = self.adyen.checkout.payments(rqdata)
+                result = self.adyen.checkout.payments_api.payments(rqdata)
             except AdyenError as e:
                 logger.exception('Adyen error: %s' % str(e))
                 payment.state = OrderPayment.PAYMENT_STATE_FAILED
@@ -477,22 +479,22 @@ class AdyenMethod(BasePaymentProvider):
 
         try:
             if statedata:
-                result = self.adyen.checkout.payments_details(json.loads(statedata))
+                result = self.adyen.checkout.payments_api.payments_details(json.loads(statedata))
             elif payload:
-                result = self.adyen.checkout.payments_details({
+                result = self.adyen.checkout.payments_api.payments_details({
                     'paymentData': payment_info['paymentData'],
                     'details': {
                         'payload': payload,
                     },
                 })
             elif redirectResult:
-                result = self.adyen.checkout.payments_details({
+                result = self.adyen.checkout.payments_api.payments_details({
                     'details': {
                         'redirectResult': redirectResult,
                     },
                 })
             elif md and pares:
-                result = self.adyen.checkout.payments_details({
+                result = self.adyen.checkout.payments_api.payments_details({
                     'paymentData': payment_info['paymentData'],
                     'details': {
                         'MD': md,
@@ -631,11 +633,11 @@ class AdyenMethod(BasePaymentProvider):
         if not payment_methods:
             # Since Kosovo is not yet an ISO3166-country, everyone will do whatever they feel like doing.
             # Case in point: While for us/django-countries, Kosovo is XK, it's QZ for Adyen. (Adyen Ticket #03572543)
-            if rqdata.get('countryCode', False):
+            if rqdata.get('countryCode', False) == 'XK':
                 rqdata['countryCode'] = 'QZ'
 
             try:
-                response = self.adyen.checkout.payment_methods(rqdata)
+                response = self.adyen.checkout.payments_api.payment_methods(rqdata)
                 data = json.dumps(response.message)
                 cache.set(
                     f'adyen_payment_methods_{checksum}',

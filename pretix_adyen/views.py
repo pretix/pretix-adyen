@@ -1,6 +1,8 @@
 import hashlib
 import json
 import logging
+
+from Adyen.util import is_valid_hmac_notification
 from django.contrib import messages
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -14,8 +16,6 @@ from django.views.decorators.http import require_POST
 from django_scopes import scopes_disabled
 from pretix.base.models import Order, OrderPayment, OrderRefund
 from pretix.multidomain.urlreverse import eventreverse
-
-from .utils import is_valid_hmac
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +43,7 @@ def webhook(request, *args, **kwargs):
                     else:
                         hmac = refund.order.event.settings.payment_adyen_test_hmac_key
 
-                    if is_valid_hmac(notification_item, hmac):
+                    if is_valid_hmac_notification(notification_item, hmac):
                         refund.order.log_action('pretix_adyen.adyen.event', data=notification_item)
                         refund.info = json.dumps(notification_item)
                         refund.save(update_fields=['info'])
@@ -71,7 +71,7 @@ def webhook(request, *args, **kwargs):
                     else:
                         hmac = payment.order.event.settings.payment_adyen_test_hmac_key
 
-                    if is_valid_hmac(notification_item, hmac):
+                    if is_valid_hmac_notification(notification_item, hmac):
                         payment.order.log_action('pretix_adyen.adyen.event', data=notification_item)
                         payment.info = json.dumps(notification_item)
                         payment.save(update_fields=['info'])
