@@ -347,7 +347,7 @@ class AdyenMethod(BasePaymentProvider):
         }
 
         try:
-            result = self.adyen.payments_api.refund(rqdata)
+            result = self.adyen.payment.modifications_api.refund(rqdata)
         except AdyenError as e:
             logger.exception('AdyenError: %s' % str(e))
             return
