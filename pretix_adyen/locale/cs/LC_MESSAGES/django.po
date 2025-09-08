@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-21 15:03+0100\n"
-"PO-Revision-Date: 2025-02-19 17:00+0000\n"
-"Last-Translator: Petr Čermák <pcermak@live.com>\n"
+"PO-Revision-Date: 2025-09-08 17:00+0000\n"
+"Last-Translator: Alois Pospíšil <alois.pospisil@gmail.com>\n"
 "Language-Team: Czech <https://translate.pretix.eu/projects/pretix/"
 "pretix-plugin-adyen/cs/>\n"
 "Language: cs\n"
@@ -17,13 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.10\n"
+"X-Generator: Weblate 5.13\n"
 
 #: pretix_adyen/__init__.py:16
 msgid ""
 "Accept payments through Adyen, a global payment service provider offering a "
 "multitude of different payment methods."
 msgstr ""
+"Přijímejte platby prostřednictvím Adyen, globálního poskytovatele platebních "
+"služb, který nabízí celou řadu různých platebních metod."
 
 #: pretix_adyen/payment.py:33
 msgid "Adyen"
@@ -39,17 +41,20 @@ msgstr ""
 
 #: pretix_adyen/payment.py:54
 msgid "Test Merchant Account"
-msgstr ""
+msgstr "Testovací účet obchodníka"
 
 #: pretix_adyen/payment.py:59
 msgid "Test API Key"
-msgstr ""
+msgstr "Testovací API klíč"
 
 #: pretix_adyen/payment.py:61 pretix_adyen/payment.py:82
 msgid ""
 "Please refer to the documentation <a href=\"https://docs.adyen.com/user-"
 "management/how-to-get-the-api-key\">here</a> on how to obtain your API-key."
 msgstr ""
+"Podívejte se do dokumentace <a href="
+"\"https://docs.adyen.com/user-management/how-to-get-the-api-key\">zde</a>, "
+"kde se dozvíte, jak získat svůj API klíč."
 
 #: pretix_adyen/payment.py:67
 msgid "Test HMAC Key"
@@ -64,7 +69,7 @@ msgstr ""
 
 #: pretix_adyen/payment.py:75
 msgid "Production Merchant Account"
-msgstr ""
+msgstr "Operátor"
 
 #: pretix_adyen/payment.py:80
 msgid "Production API Key"
@@ -72,7 +77,7 @@ msgstr ""
 
 #: pretix_adyen/payment.py:88
 msgid "Production HMAC Key"
-msgstr ""
+msgstr "Produkční API klíč"
 
 #: pretix_adyen/payment.py:96
 msgid "Production Endpoint Prefix"
@@ -93,7 +98,7 @@ msgstr ""
 
 #: pretix_adyen/payment.py:114
 msgid "Please select the Adyen server closest to you."
-msgstr ""
+msgstr "Vyberte prosím server Adyen, který je vám nejblíže."
 
 #: pretix_adyen/payment.py:121
 msgid "Credit card payments"
@@ -101,7 +106,7 @@ msgstr "Platby kreditní kartou"
 
 #: pretix_adyen/payment.py:126 pretix_adyen/payment.py:600
 msgid "giropay"
-msgstr ""
+msgstr "Smazat"
 
 #: pretix_adyen/payment.py:147
 #, python-brace-format
@@ -129,7 +134,7 @@ msgstr ""
 #: pretix_adyen/views.py:171 pretix_adyen/views.py:189
 #: pretix_adyen/views.py:205
 msgid "Sorry, there was an error in the payment process."
-msgstr ""
+msgstr "Omlouváme se, při platebním procesu došlo k chybě."
 
 #: pretix_adyen/payment.py:592
 msgid "Credit card via Adyen"
@@ -167,6 +172,8 @@ msgid ""
 "Your payment will be processed by Adyen NV. Your data will be transmitted "
 "directly to Adyen and never touches our servers."
 msgstr ""
+"Vaše platba bude zpracována společností Adyen NV. Vaše údaje budou odeslány "
+"přímo společnosti Adyen a nikdy se nedostanou na naše servery."
 
 #: pretix_adyen/templates/pretix_adyen/control.html:6
 msgid "PSP reference"
@@ -189,6 +196,8 @@ msgid ""
 "We're waiting for an answer from the payment provider regarding your "
 "payment. Please contact us if this takes more than a few days."
 msgstr ""
+"Čekáme na odpověď od poskytovatele plateb ohledně vaší platby. Pokud to bude "
+"trvat déle než několik dní, kontaktujte nás."
 
 #: pretix_adyen/templates/pretix_adyen/pending.html:10
 msgid ""
@@ -216,11 +225,11 @@ msgstr "Zaplatit objednávku"
 #: pretix_adyen/templates/pretix_adyen/sca.html:14
 #, python-format
 msgid "Confirm payment: %(code)s"
-msgstr ""
+msgstr "Potvrdit platbu: %(code)s"
 
 #: pretix_adyen/templates/pretix_adyen/sca.html:26
 msgid "Cancel"
-msgstr ""
+msgstr "Zrušit"
 
 #: pretix_adyen/templates/pretix_adyen/sca.html:34
 msgid "Continue"
