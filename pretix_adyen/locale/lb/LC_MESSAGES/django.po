@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-21 15:03+0100\n"
-"PO-Revision-Date: 2025-10-21 20:00+0000\n"
+"PO-Revision-Date: 2025-10-27 21:00+0000\n"
 "Last-Translator: Sven Muhlen <sven.muhlen@bnl.etat.lu>\n"
 "Language-Team: Luxembourgish <https://translate.pretix.eu/projects/pretix/"
 "pretix-plugin-adyen/lb/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 5.14\n"
 
 #: pretix_adyen/__init__.py:16
 msgid ""
@@ -160,7 +160,7 @@ msgstr ""
 
 #: pretix_adyen/templates/pretix_adyen/checkout_payment_confirm.html:13
 msgid "Payment method"
-msgstr ""
+msgstr "Bezuelungsmethod"
 
 #: pretix_adyen/templates/pretix_adyen/checkout_payment_form.html:7
 msgid ""
