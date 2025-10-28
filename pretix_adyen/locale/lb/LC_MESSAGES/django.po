@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-21 15:03+0100\n"
-"PO-Revision-Date: 2025-10-27 21:00+0000\n"
+"PO-Revision-Date: 2025-10-28 18:00+0000\n"
 "Last-Translator: Sven Muhlen <sven.muhlen@bnl.etat.lu>\n"
 "Language-Team: Luxembourgish <https://translate.pretix.eu/projects/pretix/"
 "pretix-plugin-adyen/lb/>\n"
@@ -207,7 +207,7 @@ msgstr ""
 
 #: pretix_adyen/templates/pretix_adyen/pending.html:32
 msgid "Unknown reason"
-msgstr ""
+msgstr "Onbekannte Grond"
 
 #: pretix_adyen/templates/pretix_adyen/sca.html:5
 msgid "Pay order"
