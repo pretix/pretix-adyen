@@ -61,11 +61,11 @@ msgstr "HMAC-Key (Test)"
 #: pretix_adyen/payment.py:69 pretix_adyen/payment.py:90
 msgid ""
 "Please refer to the documentation <a href=\"https://docs.adyen.com/"
-"development-resources/notifications/verify-hmac-signatures#enable-hmac-"
+"development-resources/webhooks/secure-webhooks/verify-hmac-signatures#enable-hmac-"
 "signatures\">here</a> on how to obtain your HMAC key."
 msgstr ""
 "Informationen zum Erhalt des HMAC-Key finden sich <a href=\"https://docs."
-"adyen.com/development-resources/notifications/verify-hmac-signatures#enable-"
+"adyen.com/development-resources/webhooks/secure-webhooks/verify-hmac-signatures#enable-"
 "hmac-signatures\">hier</a> in der Dokumentation."
 
 #: pretix_adyen/payment.py:75
