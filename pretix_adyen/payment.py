@@ -74,7 +74,7 @@ class AdyenSettingsHolder(BasePaymentProvider):
                  label=_('Test HMAC Key'),
                  required=False,
                  help_text=_('Please refer to the documentation '
-                             '<a href="https://docs.adyen.com/development-resources/notifications/verify-hmac-signatures#enable-hmac-signatures">here</a> '
+                             '<a href="https://docs.adyen.com/development-resources/webhooks/secure-webhooks/verify-hmac-signatures#enable-hmac-signatures">here</a> '
                              'on how to obtain your HMAC key.')
              )),
             ('test_client_key',
@@ -103,7 +103,7 @@ class AdyenSettingsHolder(BasePaymentProvider):
                  label=_('Production HMAC Key'),
                  required=False,
                  help_text=_('Please refer to the documentation '
-                             '<a href="https://docs.adyen.com/development-resources/notifications/verify-hmac-signatures#enable-hmac-signatures">here</a> '
+                             '<a href="https://docs.adyen.com/development-resources/webhooks/secure-webhooks/verify-hmac-signatures#enable-hmac-signatures">here</a> '
                              'on how to obtain your HMAC key.')
              )),
             ('prod_client_key',
