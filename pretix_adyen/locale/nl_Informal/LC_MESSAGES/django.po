@@ -8,21 +8,24 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-04 16:28+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-01-20 09:28+0000\n"
+"Last-Translator: Ruud Hendrickx <ruud@leckxicon.eu>\n"
+"Language-Team: Dutch (informal) <https://translate.pretix.eu/projects/pretix/"
+"pretix-plugin-adyen/nl_Informal/>\n"
 "Language: nl_Informal\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: pretix_adyen/__init__.py:14
 msgid "Adyen payments for pretix"
-msgstr ""
+msgstr "Adyen-betalingen voor pretix"
 
 #: pretix_adyen/__init__.py:16
 msgid "This plugin allows to use Adyen as a payment provider"
-msgstr ""
+msgstr "Met deze plugin kun je Adyen als betalingsprovider gebruiken"
 
 #: pretix_adyen/payment.py:33
 msgid "Adyen"
@@ -60,6 +63,9 @@ msgid ""
 "development-resources/webhooks/secure-webhooks/verify-hmac-signatures#enable-hmac-"
 "signatures\">here</a> on how to obtain your HMAC key."
 msgstr ""
+"Raadpleeg <a href=\"https://docs.adyen.com/development-resources/webhooks/"
+"secure-webhooks/verify-hmac-signatures#enable-hmac-signatures\">hier</a> de "
+"documentatie over hoe je een HMAC-sleutel kunt verkrijgen."
 
 #: pretix_adyen/payment.py:75
 msgid "Production Merchant Account"
