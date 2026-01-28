@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-04 16:28+0100\n"
-"PO-Revision-Date: 2026-01-23 12:28+0000\n"
+"PO-Revision-Date: 2026-01-29 09:28+0000\n"
 "Last-Translator: Ruud Hendrickx <ruud@leckxicon.eu>\n"
 "Language-Team: Dutch <https://translate.pretix.eu/projects/pretix/pretix-"
 "plugin-adyen/nl/>\n"
@@ -38,10 +38,10 @@ msgid ""
 "to automatically cancel orders when charges are refunded externally and to "
 "process asynchronous payment methods like SOFORT."
 msgstr ""
-"Stel een <a href=\"https://docs.adyen.com/development-resources/notifications"
-"\">Webhook</a> in naar het volgende endpoint om automatisch bestellingen te "
-"annuleren wanneer een betaling extern wordt terugbetaald, en om asynchrone "
-"betalingsmethoden zoals SOFORT te kunnen verwerken."
+"Stel een <a href=\"https://docs.adyen.com/development-resources/"
+"notifications\">Webhook</a> in naar het volgende endpoint om automatisch "
+"bestellingen te annuleren wanneer een betaling extern wordt terugbetaald, en "
+"om asynchrone betaalmethoden zoals SOFORT te kunnen verwerken."
 
 #: pretix_adyen/payment.py:54
 msgid "Test Merchant Account"
@@ -187,7 +187,7 @@ msgstr ""
 
 #: pretix_adyen/templates/pretix_adyen/checkout_payment_confirm.html:13
 msgid "Payment method"
-msgstr "Betalingsmethode"
+msgstr "Betaalmethode"
 
 #: pretix_adyen/templates/pretix_adyen/checkout_payment_form.html:7
 msgid ""
