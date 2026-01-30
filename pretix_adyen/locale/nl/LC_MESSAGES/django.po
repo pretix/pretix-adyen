@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-04 16:28+0100\n"
-"PO-Revision-Date: 2026-01-29 09:28+0000\n"
+"PO-Revision-Date: 2026-01-31 14:28+0000\n"
 "Last-Translator: Ruud Hendrickx <ruud@leckxicon.eu>\n"
 "Language-Team: Dutch <https://translate.pretix.eu/projects/pretix/pretix-"
 "plugin-adyen/nl/>\n"
@@ -25,7 +25,7 @@ msgstr "Adyen-betalingen voor pretix"
 
 #: pretix_adyen/__init__.py:16
 msgid "This plugin allows to use Adyen as a payment provider"
-msgstr "Deze plugin staat u toe om Adyen als betalingsprovider te gebruiken"
+msgstr "Met deze plug-in kunt u Adyen als betalingsprovider gebruiken"
 
 #: pretix_adyen/payment.py:33
 msgid "Adyen"
@@ -39,7 +39,7 @@ msgid ""
 "process asynchronous payment methods like SOFORT."
 msgstr ""
 "Stel een <a href=\"https://docs.adyen.com/development-resources/"
-"notifications\">Webhook</a> in naar het volgende endpoint om automatisch "
+"notifications\">webhook</a> in naar het volgende endpoint om automatisch "
 "bestellingen te annuleren wanneer een betaling extern wordt terugbetaald, en "
 "om asynchrone betaalmethoden zoals SOFORT te kunnen verwerken."
 
@@ -75,7 +75,7 @@ msgstr ""
 
 #: pretix_adyen/payment.py:75
 msgid "Production Merchant Account"
-msgstr "Productie-handelaarsccount"
+msgstr "Productie-handelaarsaccount"
 
 #: pretix_adyen/payment.py:80
 msgid "Production API Key"
@@ -127,7 +127,7 @@ msgid ""
 ">many test cards</a> to perform a transaction. No money will actually be "
 "transferred."
 msgstr ""
-"De Adyen-plugin is ingesteld in testmodus. U kunt een van <a {args}>de "
+"De Adyen-plug-in is ingesteld in testmodus. U kunt een van <a {args}>de vele "
 "testkaarten</a> gebruiken om een transactie uit te voeren. Er zal geen echt "
 "geld worden overgemaakt."
 
@@ -195,7 +195,7 @@ msgid ""
 "directly to Adyen and never touches our servers."
 msgstr ""
 "Uw betaling zal worden verwerkt door Adyen NV. Uw betalingsgegevens zullen "
-"rechtstreeks naar Adyen worden gestuurd, en niet op onze servers worden "
+"rechtstreeks naar Adyen worden gestuurd en niet op onze servers worden "
 "verwerkt of opgeslagen."
 
 #: pretix_adyen/templates/pretix_adyen/control.html:6
