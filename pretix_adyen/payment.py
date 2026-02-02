@@ -587,8 +587,8 @@ class AdyenMethod(BasePaymentProvider):
 
         return False
 
-    def order_change_allowed(self, order: Order) -> bool:
-        global_allowed = super().order_change_allowed(order)
+    def order_change_allowed(self, order: Order, request=None) -> bool:
+        global_allowed = super().order_change_allowed(order, request)
 
         if order.event.testmode:
             local_allowed = order.event.settings.payment_adyen_test_merchant_account \
