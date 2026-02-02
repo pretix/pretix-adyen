@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-04 16:28+0100\n"
-"PO-Revision-Date: 2026-01-31 14:28+0000\n"
+"PO-Revision-Date: 2026-02-03 11:28+0000\n"
 "Last-Translator: Ruud Hendrickx <ruud@leckxicon.eu>\n"
 "Language-Team: Dutch <https://translate.pretix.eu/projects/pretix/pretix-"
 "plugin-adyen/nl/>\n"
@@ -45,11 +45,11 @@ msgstr ""
 
 #: pretix_adyen/payment.py:54
 msgid "Test Merchant Account"
-msgstr "Test-handelaarsaccount"
+msgstr "Test handelaarsaccount"
 
 #: pretix_adyen/payment.py:59
 msgid "Test API Key"
-msgstr "Test-API-sleutel"
+msgstr "Test API-sleutel"
 
 #: pretix_adyen/payment.py:61 pretix_adyen/payment.py:82
 msgid ""
@@ -61,7 +61,7 @@ msgstr ""
 
 #: pretix_adyen/payment.py:67
 msgid "Test HMAC Key"
-msgstr "Test-HMAC-sleutel"
+msgstr "Test HMAC-sleutel"
 
 #: pretix_adyen/payment.py:69 pretix_adyen/payment.py:90
 msgid ""
@@ -75,19 +75,19 @@ msgstr ""
 
 #: pretix_adyen/payment.py:75
 msgid "Production Merchant Account"
-msgstr "Productie-handelaarsaccount"
+msgstr "Productie handelaarsaccount"
 
 #: pretix_adyen/payment.py:80
 msgid "Production API Key"
-msgstr "Productie-API-sleutel"
+msgstr "Productie API-sleutel"
 
 #: pretix_adyen/payment.py:88
 msgid "Production HMAC Key"
-msgstr "Productie-HMAC-sleutel"
+msgstr "Productie HMAC-sleutel"
 
 #: pretix_adyen/payment.py:96
 msgid "Production Endpoint Prefix"
-msgstr "Productie-endpoint-voorvoegsel"
+msgstr "Prefix productie-endpoint"
 
 #: pretix_adyen/payment.py:98
 msgid ""
@@ -97,11 +97,11 @@ msgid ""
 "https://[random]-[company name]-checkout-live.adyenpayments.com/, please use "
 "<i>[random]-[company name]</i> as the prefix."
 msgstr ""
-"U kunt <a href=\"https://docs.adyen.com/development-resources/live-endpoints"
-"\">hier</a> informatie vinden over hoe u het juiste endpoint-voorvoegsel "
+"U kunt <a href=\"https://docs.adyen.com/development-resources/live-"
+"endpoints\">hier</a> informatie vinden over hoe u het juiste endpoint-prefix "
 "kunt vinden.<br />Als uw productieomgeving https://[willekeurig]-"
-"[bedrijfsnaam]-checkout-live.adyenpayments.com/ is, gebruik dan "
-"<i>[willekeurig]-[bedrijfsnaam]</i> als het voorvoegsel."
+"[bedrijfsnaam]-checkout-live.adyenpayments.com/ is, gebruik dan <i>"
+"[willekeurig]-[bedrijfsnaam]</i> als het voorvoegsel."
 
 #: pretix_adyen/payment.py:107
 msgid "Production Environment"
