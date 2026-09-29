@@ -19,6 +19,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from pretix import __version__, settings
 from pretix.base.decimal import round_decimal
+from pretix.base.forms import SecretKeySettingsField
 from pretix.base.models import (
     Event, InvoiceAddress, Order, OrderPayment, OrderRefund,
 )
@@ -62,7 +63,7 @@ class AdyenSettingsHolder(BasePaymentProvider):
                  required=False,
              )),
             ('test_api_key',
-             forms.CharField(
+             SecretKeySettingsField(
                  label=_('Test API Key'),
                  required=False,
                  help_text=_('Please refer to the documentation '
@@ -70,7 +71,7 @@ class AdyenSettingsHolder(BasePaymentProvider):
                              'to obtain your API-key.')
              )),
             ('test_hmac_key',
-             forms.CharField(
+             SecretKeySettingsField(
                  label=_('Test HMAC Key'),
                  required=False,
                  help_text=_('Please refer to the documentation '
@@ -91,7 +92,7 @@ class AdyenSettingsHolder(BasePaymentProvider):
                  required=False,
              )),
             ('prod_api_key',
-             forms.CharField(
+             SecretKeySettingsField(
                  label=_('Production API Key'),
                  required=False,
                  help_text=_('Please refer to the documentation '
@@ -99,7 +100,7 @@ class AdyenSettingsHolder(BasePaymentProvider):
                              'to obtain your API-key.')
              )),
             ('prod_hmac_key',
-             forms.CharField(
+             SecretKeySettingsField(
                  label=_('Production HMAC Key'),
                  required=False,
                  help_text=_('Please refer to the documentation '
