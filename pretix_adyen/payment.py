@@ -71,7 +71,7 @@ class AdyenSettingsHolder(BasePaymentProvider):
                              'to obtain your API-key.')
              )),
             ('test_hmac_key',
-             forms.CharField(
+             SecretKeySettingsField(
                  label=_('Test HMAC Key'),
                  required=False,
                  help_text=_('Please refer to the documentation '
@@ -100,7 +100,7 @@ class AdyenSettingsHolder(BasePaymentProvider):
                              'to obtain your API-key.')
              )),
             ('prod_hmac_key',
-             forms.CharField(
+             SecretKeySettingsField(
                  label=_('Production HMAC Key'),
                  required=False,
                  help_text=_('Please refer to the documentation '
