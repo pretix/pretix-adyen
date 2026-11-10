@@ -340,7 +340,7 @@ class AdyenMethod(BasePaymentProvider):
             },
             'originalReference': payment_info['pspReference'],
             'merchantOrderReference': '{event}-{code}'.format(event=self.event.slug.upper(), code=refund.order.code),
-            'reference': '{event}-{code}-R-{payment}'.format(event=self.event.slug.upper(), code=refund.order.code, payment=refund.local_id),
+            'reference': self._get_merchant_reference(refund),
             'shopperStatement': self.statement_descriptor(refund),
             'captureDelayHours': 0,
             **self.additional_rqdata,
@@ -373,7 +373,7 @@ class AdyenMethod(BasePaymentProvider):
                     'currency': self.event.currency,
                 },
                 'merchantOrderReference': '{event}-{code}'.format(event=self.event.slug.upper(), code=payment.order.code),
-                'reference': '{event}-{code}-P-{payment}'.format(event=self.event.slug.upper(), code=payment.order.code, payment=payment.local_id),
+                'reference': self._get_merchant_reference(payment),
                 'shopperStatement': self.statement_descriptor(payment),
                 'paymentMethod': payment_method_data['paymentMethod'],
                 'returnUrl': build_absolute_uri(self.event, 'plugins:pretix_adyen:return', kwargs={
@@ -521,6 +521,26 @@ class AdyenMethod(BasePaymentProvider):
                 'secret': payment.order.secret
             })
 
+        payment_tampered = False
+        # We rely on the pspReference as it is Adyen-unique. But on the off-chance that the webhook has not yet hit,
+        # we fall back to the merchantReference. Unfortunately we usually do not know the pspReference at the time of
+        # payment creation.
+        if 'pspReference' in payment.info_data and result.message['pspReference'] != payment.info_data['pspReference']:
+            payment_tampered = True
+            logger.exception(f'Received pspReference {result.message['pspReference']} - but expected {payment.info_data['pspReference']}')
+        elif result.message['merchantReference'] != self._get_merchant_reference(payment):
+            payment_tampered = True
+            logger.exception(f'Received merchantReference {result.message['merchantReference']} - but expected {self._get_merchant_reference(payment)}')
+
+        if payment_tampered:
+            messages.error(request, _('Sorry, there was an error in the payment process.'))
+            payment.fail(log_data=json.dumps(result.message))
+
+            return eventreverse(self.event, 'presale:event.order', kwargs={
+                'order': payment.order.code,
+                'secret': payment.order.secret
+            })
+
         payment.info = json.dumps(result.message)
         payment.save(update_fields=['info'])
 
@@ -536,6 +556,13 @@ class AdyenMethod(BasePaymentProvider):
                 'order': payment.order.code,
                 'secret': payment.order.secret
             }) + ('?paid=yes' if state in [OrderPayment.PAYMENT_STATE_CONFIRMED, OrderPayment.PAYMENT_STATE_PENDING] else '')
+
+    def _get_merchant_reference(self, obj):
+        return '{event}-{code}-{type}-{obj}'.format(
+            event=self.event.slug.upper(),
+            code=obj.order.code,
+            type='R' if isinstance(obj, OrderRefund) else 'P',
+            obj=obj.local_id)
 
     def is_allowed(self, request: HttpRequest, total: Decimal = None) -> bool:
         global_allowed = super().is_allowed(request, total)
