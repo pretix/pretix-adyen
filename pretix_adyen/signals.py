@@ -5,7 +5,7 @@ from django.http import HttpRequest, HttpResponse
 from django.template.loader import get_template
 from django.urls import resolve
 from django.utils.translation import gettext_lazy as _
-from pretix.base.middleware import _merge_csp, _parse_csp, _render_csp
+from pretix.base.middleware import add_to_response_csp
 from pretix.base.signals import logentry_display, register_payment_providers
 from pretix.presale.signals import html_head, process_response
 
@@ -44,23 +44,13 @@ def signal_process_response(sender, request: HttpRequest, response: HttpResponse
     url = resolve(request.path_info)
 
     if provider.settings.get('_enabled', as_type=bool) and ("checkout" in url.url_name or "order.pay" in url.url_name):
-        if 'Content-Security-Policy' in response:
-            h = _parse_csp(response['Content-Security-Policy'])
-        else:
-            h = {}
-
-        sources = ['frame-src', 'style-src', 'script-src', 'img-src', 'connect-src']
-
-        csps = {src: ['https://*.adyen.com'] for src in sources}
-
-        # Adyen unfortunately applies styles through their script-src
-        # Also, the unsafe-inline needs to specified within single quotes!
-        csps['style-src'].append("'unsafe-inline'")
-
-        _merge_csp(h, csps)
-
-        if h:
-            response['Content-Security-Policy'] = _render_csp(h)
+        add_to_response_csp(response, {
+            'frame-src': ['https://*.adyen.com'],
+            'style-src': ['https://*.adyen.com', "'unsafe-inline'"],  # Adyen unfortunately applies styles through their script
+            'script-src': ['https://*.adyen.com'],
+            'img-src': ['https://*.adyen.com'],
+            'connect-src': ['https://*.adyen.com'],
+        })
     return response
 
 

@@ -1,6 +1,7 @@
 {% load static %}
 {% load compress %}
 {% load i18n %}
+{% load escapejson %}
 
 {% compress js file adyen %}
     <script type="text/javascript" src="{% static "pretix_adyen/pretix-adyen.js" %}"></script>
@@ -20,4 +21,4 @@
 <script type="text/plain" id="adyen_locale">{{ locale }}</script>
 <script type="text/plain" id="adyen_environment">{{ environment }}</script>
 <script type="text/plain" id="adyen_clientKey">{{ clientKey }}</script>
-<script type="text/plain" id="adyen_paymentMethodsResponse">{{ paymentMethodsResponse|safe }}</script>
+<script type="text/plain" id="adyen_paymentMethodsResponse">{{ paymentMethodsResponse|escapejson }}</script>

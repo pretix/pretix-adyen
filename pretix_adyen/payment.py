@@ -34,6 +34,8 @@ from .apps import PluginApp
 
 logger = logging.getLogger('pretix_adyen')
 
+URL_PREFIX_PATTERN = re.compile('^[a-zA-Z0-9-]+$')
+
 
 class AdyenSettingsHolder(BasePaymentProvider):
     identifier = 'adyen_settings'
@@ -116,7 +118,7 @@ class AdyenSettingsHolder(BasePaymentProvider):
                              'on how to obtain your Client key.')
              )),
             ('prod_prefix',
-             forms.CharField(
+             forms.RegexField(
                  label=_('Production Endpoint Prefix'),
                  required=False,
                  help_text=_('Please refer to the documentation '
@@ -124,7 +126,8 @@ class AdyenSettingsHolder(BasePaymentProvider):
                              'on how to identify the Production Endpoint Prefix.<br />'
                              'If your production checkout endpoint is '
                              'https://[random]-[company name]-checkout-live.adyenpayments.com/, please use '
-                             '<i>[random]-[company name]</i> as the prefix.')
+                             '<i>[random]-[company name]</i> as the prefix.'),
+                 regex=URL_PREFIX_PATTERN
              )),
             ('prod_env',
              forms.ChoiceField(
@@ -244,6 +247,8 @@ class AdyenMethod(BasePaymentProvider):
         self.adyen.client.xapikey = self.settings.test_api_key if self.event.testmode else self.settings.prod_api_key
         # API-calls go only to -live in prod - not to -live-au or -live-us like in the frontend.
         self.adyen.client.platform = env if env else 'test' if self.event.testmode else 'live'
+        if not URL_PREFIX_PATTERN.match(self.settings.prod_prefix):
+            raise ValueError('Invalid prod_prefix setting')
         self.adyen.client.live_endpoint_prefix = self.settings.prod_prefix
 
     def checkout_confirm_render(self, request) -> str:

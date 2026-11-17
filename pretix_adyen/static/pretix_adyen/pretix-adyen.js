@@ -136,7 +136,7 @@ $(function () {
     }
 
     if (!$(".adyen-container").length)
-    return;
+        return;
 
     $("input[name=payment][value^='adyen_']").change(function () {
         let method_brand = $(this).val().replace('adyen_', '');
