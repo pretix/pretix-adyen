@@ -76,15 +76,34 @@ def webhook(request, *args, **kwargs):
                         payment.info = json.dumps(notification_item)
                         payment.save(update_fields=['info'])
 
-                        if notification_item['success'] == 'true':  # Yes, seriously...
-                            payment.confirm()
-                        else:
+                        if notification_item['eventCode'] in ["AUTHORISATION", "CAPTURE"]:
+                            if notification_item['success'] == 'true':  # Yes, seriously...
+                                payment.confirm()
+                            else:
+                                payment.state = OrderPayment.PAYMENT_STATE_FAILED
+                                payment.save(update_fields=['state'])
+                                payment.order.log_action('pretix.event.order.payment.failed', {
+                                    'local_id': payment.local_id,
+                                    'provider': payment.provider
+                                })
+                        elif notification_item['eventCode'] in ["CHARGEBACK", "SECOND_CHARGEBACK", "CAPTURE_FAILED",
+                                                                "EXPIRE"]:
                             payment.state = OrderPayment.PAYMENT_STATE_FAILED
                             payment.save(update_fields=['state'])
                             payment.order.log_action('pretix.event.order.payment.failed', {
                                 'local_id': payment.local_id,
                                 'provider': payment.provider
                             })
+                        elif notification_item['eventCode'] == "CANCELLATION":
+                            if notification_item['success'] == 'true':
+                                payment.state = OrderPayment.PAYMENT_STATE_CANCELED
+                                payment.save(update_fields=['state'])
+                                payment.order.log_action('pretix.event.order.payment.canceled', {
+                                    'local_id': payment.local_id,
+                                    'provider': payment.provider
+                                })
+                        else:
+                            pass
                     else:
                         logger.exception('Webhook error: Could not verify HMAC. {}'.format(notification_item))
                 else:
