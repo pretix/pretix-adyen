@@ -48,7 +48,8 @@ def webhook(request, *args, **kwargs):
                         refund.info = json.dumps(notification_item)
                         refund.save(update_fields=['info'])
 
-                        if notification_item['success'] == 'true':  # Yes, seriously...
+                        if notification_item['eventCode'] in ["REFUND", "REFUND_WITH_DATA"] and notification_item[
+                            'success'] == 'true':  # Yes, seriously...
                             refund.done()
                         else:
                             refund.state = OrderRefund.REFUND_STATE_FAILED
