@@ -35,11 +35,13 @@ payment_methods = [
     #     'public_name': _('12 Oney installments'),
     #     'verbose_name': _('12 Oney installments'),
     #     'help_text': _('Only available in Spain'),
-    # }, {
-    #     'method': 'ach',
-    #     'public_name': _('ACH Direct Debit'),
-    #     'verbose_name': _('Direct Debit'),
-    # }, {
+    # },
+    {
+        'method': 'ach',
+        'public_name': _('ACH Direct Debit'),
+        'verbose_name': _('ACH Direct Debit'),
+    },
+    # {
     #     'method': 'affirm',
     #     'public_name': _('Affirm'),
     #     'verbose_name': _('Affirm'),
